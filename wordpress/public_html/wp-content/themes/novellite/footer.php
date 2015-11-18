@@ -15,18 +15,11 @@
 <div class="back-to-top">
 <a class="page-scroll" href="#page-top"></li><i class="fa fa-angle-up"></i></a>
 </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-				<?php if (get_theme_mod('footertext','') != '') { ?>
-		<span class="copyright"><?php echo get_theme_mod('footertext',''); ?></span> 
-			<?php } else { ?>
-                    <p><a href="<?php echo esc_url('http://www.themehunk.com'); ?>"><?php _e('NovelLite Theme', 'novellite'); ?></a> <?php _e('Powered By ', 'novellite'); ?><a href="http://www.wordpress.org"><?php _e(' WordPress', 'novellite'); ?></a></p>
-					<?php } ?>
-			                </div>
-                    </div>
-        </div>
-    </footer>
-	<?php wp_footer(); ?>
+    <script>
+        $(document).ready( function() {
+            $('#scrollingMenu').smint();
+        });
+    </script>
+</footer>
 </body>
 </html>

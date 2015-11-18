@@ -15,6 +15,9 @@
         <link rel="profile" href="http://gmpg.org/xfn/11" />
         <link rel="pingback" href="<?php bloginfo('pingback_url'); ?>" />
 
+		<script src="/lib/js/jquery.min.js"></script>
+		<script src="/lib/js/jquery.smint.js"></script>
+
 		        <?php wp_head(); ?>
 		</head>
 	<body id="page-top" class="index" <?php body_class(); ?>>		
@@ -24,14 +27,13 @@
         <div class="container">		
 		<div class="row">
             <!-- Brand and toggle get grouped for better mobile display -->
-			 <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12">
+			 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <div class="navbar-header page-scroll">               
 				 <?php
               if(get_theme_mod( 'logo_upload')!=''){?>
               <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><img src="<?php echo esc_url(get_theme_mod( 'logo_upload')); ?>" alt="logo"></a>
               <?php }else{ ?>
               <h1><a href="<?php echo home_url('/'); ?>"><?php bloginfo('name'); ?></a></h1>
-              <p><?php bloginfo('description'); ?></p>
               <?php } ?>
 				</div>
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -43,10 +45,17 @@
 				</div>
 				 
 				
-				 <div class="col-lg-8 col-md-8 col-sm-7 col-xs-12">
+				 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 				<?php if (is_front_page()) { ?>
-				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<?php NovelLitemenu_frontpage_nav() ?>
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="position: relative;">
+					<ul class="sf-menu nav navbar-nav navbar-right" id="scrollingMenu">
+						<a href="#top" class="subNavBtn">Home</a>
+						<a href="#project" class="subNavBtn">The Project</a>
+						<a href="#participate" class="subNavBtn">Participate</a>
+						<a href="#news" class="subNavBtn">News</a>
+						<a href="#us" class="subNavBtn">Us</a>
+						<a href="#contact" class="subNavBtn end">Contact Us</a>
+					</ul>
 				</div>
 				<?php } else { ?>
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

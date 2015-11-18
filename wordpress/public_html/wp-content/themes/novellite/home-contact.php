@@ -49,6 +49,7 @@ if (isset($_POST['submitted'])) {
 ?>
 <!-- blog title -->
 <!-- blog title ends -->
+<div id="contact" class="section contact">
 <?php if (get_theme_mod('cf_image','') != '') { ?>
 <section id="section5" class="contact_section" style="background: url(<?php echo get_theme_mod('cf_image',''); ?>) center repeat fixed;">
 <?php } else { ?>
@@ -134,3 +135,4 @@ if (isset($_POST['submitted'])) {
             </div>
         </div>
     </section>
+</div>
