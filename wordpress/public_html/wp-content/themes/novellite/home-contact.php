@@ -66,7 +66,7 @@ if (isset($_POST['submitted'])) {
 					<?php if (get_theme_mod('cf_desc_','') != '') { ?>
 					<h3 class="section-subheading text-muted contact"><?php echo get_theme_mod('cf_desc_',''); ?></h3>
 					<?php } else { ?>
-					<h3 class="section-subheading text-muted contact">Lorem ipsum dolor sit amet consectetur.</h3>
+					<h3 class="section-subheading text-muted contact">We'd love to hear any suggestions!  Please inform us if our art is LAME enough.</h3>
 					<?php } ?>
                 </div>
             </div>

@@ -242,8 +242,7 @@ font-size:20px;
     color: #fff;
 }
 
-.navbar-default .nav a.subNavBtn:hover,
-.navbar-default .nav a.subNavBtn:focus {
+.navbar-default .nav a.subNavBtn:hover {
     outline: 0;
     color: #fff;
 }
@@ -254,8 +253,7 @@ font-size:20px;
     background-color: #fed136;
 }
 
-.navbar-default .navbar-nav a:hover,
-.navbar-default .navbar-nav a:focus {
+.navbar-default .navbar-nav a:hover {
     color: #fff;
     background-color: #fec503;
 }
@@ -301,8 +299,7 @@ font-size:20px;
 /*** DEMO SKIN ***/
 .navbar .sf-menu {
 	float: left;
-    margin-top: 28px;
-    max-width: 500px;
+    max-width: 450px;
 }
 .navbar .sf-menu ul {
 	min-width: 12em; /* allow long menu items to determine submenu width */

@@ -137,12 +137,12 @@
 				<?php if (get_theme_mod('col_heading','') != '') { ?>
 						<h2 class="section-heading"><?php echo stripslashes(get_theme_mod('col_heading')); ?></h2>
                         <?php } else { ?>
-                            <h2 class="section-heading">Services</h2>
+                            <h2 class="section-heading">The Project</h2>
                         <?php } ?>
                         <?php if (get_theme_mod('col_sub','') != '') { ?>
                             <h3 class="section-subheading text-muted"><?php echo stripslashes(get_theme_mod('col_sub','')); ?></h3>
                         <?php } else { ?>
-							<h3 class="section-subheading text-muted">Phasellus elementum odio faucibus diam sollicitudin</h3>
+							<h3 class="section-subheading text-muted">We're creating an adventure vending machine.</h3>
                         <?php } ?>
                 </div>
             </div>
@@ -236,37 +236,9 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="testimonial-inner animated bottom-to-top">
-				<?php if (get_theme_mod('testimonial_heading','') != '') { ?>
-                    <h1 class="testimonial-header"><?php echo get_theme_mod('testimonial_heading',''); ?></h1>
-					<?php } else { ?>
-                    <h1 class="testimonial-header">Show Multiple Testimonials.</h1>
-					<?php } ?>
+                    <h1 class="testimonial-header">Participate</h1>
                     <ul class="bxslider">
-					<!-- *Testimonial 1 Starts* -->
-					<?php if (get_theme_mod('first_author_desc','') != '') { ?>
-                        <li>
-                            <img src="<?php if (get_theme_mod('first_author_image','') != '') { ?><?php echo get_theme_mod('first_author_image',''); } else { echo get_template_directory_uri(); ?>/images/testimonial-image.png<?php } ?>" onMouseOver="javascript: this.title='';" title="<a class='arrow'></a>
-							<?php echo get_theme_mod('first_author_desc',''); ?>	
-							<p><a class='testimonial'><?php echo get_theme_mod('first_author_name','') ; ?></a></p>">
-                        </li>
-					<?php } else { ?>
-					
-					<?php } ?>
-					<!-- *Testimonial 1 Ends* -->
-
-                    <!-- *Testimonial 2 Starts* -->
-					<?php if (get_theme_mod('second_author_desc','') != '') { ?>
-                        <li>
-                            <img src="<?php if (get_theme_mod('second_author_image','') != '') { ?><?php echo get_theme_mod('second_author_image',''); } else { echo get_template_directory_uri(); ?>/images/testimonial-image.png <?php } ?>" onMouseOver="javascript: this.title='';" title="<a class='arrow'></a>
-							<?php echo get_theme_mod('second_author_desc',''); ?>
-							<p><a class='testimonial'><?php echo get_theme_mod('second_author_name',''); ?></a></p>">
-                        </li>
-					<?php } else { ?>
-					<li>
-								<img src="<?php echo get_template_directory_uri(); ?>/images/testimonial-image.png" onMouseOver="javascript: this.title='';" title="<a class='arrow'></a>NovelLite comes with amazing business features. It is perfect for a business website with required features.<p><a class='testimonial'>NovelLite</a></p>">
-					</li>
-					<?php } ?>
-					<!-- *Testimonial 2 Ends* -->					
+                        <h2 style="text-align: center; color: white;">Submit your own adventure ideas! Coming Soon!</h2>
                     </ul>
                 </div>
             </div>
@@ -356,18 +328,18 @@
                         <?php if (get_theme_mod('team_head_','') != '') { ?>
                             <h2 class="section-heading"><?php echo stripslashes(get_theme_mod('team_head_','')); ?></h2>
                         <?php } else { ?>
-                            <h2 class="section-heading">Our Amazing Team</h2>
+                            <h2 class="section-heading">Who We Are</h2>
                         <?php } ?>
                         <?php if (get_theme_mod('team_desc_','') != '') { ?>
                             <h3><?php echo stripslashes(get_theme_mod('team_desc_','')); ?></h3>
                         <?php } else { ?>
-                            <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+                            <h3 class="section-subheading text-muted">LAME Arts is brought together by Sparkle Donkey Village</h3>
                         <?php } ?>
 
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-sm-6">
                         <div class="team-member">
                             <?php if (get_theme_mod('our_team_img_first','') != '') { ?>
                                 <a href="<?php echo get_theme_mod('our_team_link_first',''); ?>"><img src="<?php echo get_theme_mod('our_team_img_first',''); ?>" class="img-responsive img-circle" alt="Feature Image 1"/></a>
@@ -391,7 +363,7 @@
                             <?php } ?>
                         </div>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-6">
                         <div class="team-member">
                             <?php if (get_theme_mod('our_team_img_second','') != '') { ?>
                                 <a href="<?php echo get_theme_mod('our_team_link_second',''); ?>"><img src="<?php echo get_theme_mod('our_team_img_second',''); ?>" class="img-responsive img-circle" alt="Feature Image 1"/></a>
@@ -410,30 +382,6 @@
                             <?php } ?>
                             <?php if (get_theme_mod('our_team_desc_second','') != '') { ?>
                                 <p><?php echo stripslashes(get_theme_mod('our_team_desc_second','')); ?></p>
-                            <?php } else { ?>
-                                <p> Phasellus elementum odio faucibus diam sollicitudin, in bibendum quam feugiat.</p>
-                            <?php } ?>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="team-member">
-                            <?php if (get_theme_mod('our_team_img_third','') != '') { ?>
-                                <a href="<?php echo get_theme_mod('our_team_link_third',''); ?>"><img src="<?php echo get_theme_mod('our_team_img_third',''); ?>" class="img-responsive img-circle" alt="Feature Image 3"/></a>
-                            <?php } else { ?>
-                                <img src="<?php echo get_template_directory_uri(); ?>/images/team/Team-Placeholder.jpg" class="img-responsive img-circle" alt="">
-                            <?php } ?>
-                            <?php if (get_theme_mod('our_team_heading_third','') != '') { ?>
-                                <a href="<?php echo get_theme_mod('our_team_link_third',''); ?>"><h4><?php echo stripslashes(get_theme_mod('our_team_heading_third','')); ?></h4></a>
-                            <?php } else { ?>
-                                <a href="#"><h4>Diana Pertersen</h4></a>
-                            <?php } ?>
-                            <?php if (get_theme_mod('our_team_subhead_third','') != '') { ?>
-                                <p class="text-muted"><?php echo stripslashes(get_theme_mod('our_team_subhead_third','')); ?></p>
-                            <?php } else { ?>
-                                <p class="text-muted">Lead Developer</p>
-                            <?php } ?>
-                            <?php if (get_theme_mod('our_team_desc_third','') != '') { ?>
-                                <p><?php echo stripslashes(get_theme_mod('our_team_desc_third','')); ?></p>
                             <?php } else { ?>
                                 <p> Phasellus elementum odio faucibus diam sollicitudin, in bibendum quam feugiat.</p>
                             <?php } ?>
