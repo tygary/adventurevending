@@ -813,6 +813,190 @@ $wp_customize->add_panel( 'our_team', array(
     ));
 
 
+//our team fourth section
+
+     $wp_customize->add_section('our_team_fourth', array(
+        'title'    => __('Fourth Our Team Feature', 'novellite'),
+         'panel'  => 'our_team',
+    ));
+    $wp_customize->add_setting('our_team_img_fourth', array(
+        'capability'        => 'edit_theme_options',
+        'sanitize_callback' => 'NovelLite_sanitize_upload'
+    ));
+   $wp_customize->add_control( new WP_Customize_Image_Control($wp_customize, 'our_team_img_fourth', array(
+        'label'    => __('Our Team Image Upload', 'novellite'),
+        'section'  => 'our_team_fourth',
+        'settings' => 'our_team_img_fourth',
+    )));
+    $wp_customize->add_setting('our_team_heading_fourth', array(
+        'capability'        => 'edit_theme_options',
+        'sanitize_callback' => 'sanitize_text_field'
+    ));
+    $wp_customize->add_control('our_team_heading_fourth', array(
+        'label'    => __('Our Team Heading', 'novellite'),
+        'section'  => 'our_team_fourth',
+        'settings' => 'our_team_heading_fourth',
+         'type'       => 'text',
+    ));
+
+    $wp_customize->add_setting('our_team_subhead_fourth', array(
+        'capability'        => 'edit_theme_options',
+        'sanitize_callback' => 'sanitize_text_field'
+    ));
+    $wp_customize->add_control('our_team_subhead_fourth', array(
+        'label'    => __('Our Team Sub Heading', 'novellite'),
+        'section'  => 'our_team_fourth',
+        'settings' => 'our_team_subhead_fourth',
+         'type'       => 'text',
+    ));
+
+     $wp_customize->add_setting('our_team_desc_fourth', array(
+        'capability'        => 'edit_theme_options',
+        'sanitize_callback' => 'NovelLite_sanitize_textarea'
+    ));
+    $wp_customize->add_control('our_team_desc_fourth', array(
+        'label'    => __('Description for Our Team', 'novellite'),
+        'section'  => 'our_team_fourth',
+        'settings' => 'our_team_desc_fourth',
+         'type'       => 'textarea',
+    ));
+
+       $wp_customize->add_setting('our_team_link_fourth', array(
+        'default'           => '#',
+        'capability'        => 'edit_theme_options',
+        'sanitize_callback' => 'esc_url_raw'
+    ));
+    $wp_customize->add_control('our_team_link_fourth', array(
+        'label'    => __('Link for Our Team', 'novellite'),
+        'section'  => 'our_team_fourth',
+        'settings' => 'our_team_link_fourth',
+         'type'       => 'text',
+    ));
+    
+    //our team fifth section
+    
+         $wp_customize->add_section('our_team_fifth', array(
+            'title'    => __('Fifth Our Team Feature', 'novellite'),
+             'panel'  => 'our_team',
+        ));
+        $wp_customize->add_setting('our_team_img_fifth', array(
+            'capability'        => 'edit_theme_options',
+            'sanitize_callback' => 'NovelLite_sanitize_upload'
+        ));
+       $wp_customize->add_control( new WP_Customize_Image_Control($wp_customize, 'our_team_img_fifth', array(
+            'label'    => __('Our Team Image Upload', 'novellite'),
+            'section'  => 'our_team_fifth',
+            'settings' => 'our_team_img_fifth',
+        )));
+        $wp_customize->add_setting('our_team_heading_fifth', array(
+            'capability'        => 'edit_theme_options',
+            'sanitize_callback' => 'sanitize_text_field'
+        ));
+        $wp_customize->add_control('our_team_heading_fifth', array(
+            'label'    => __('Our Team Heading', 'novellite'),
+            'section'  => 'our_team_fifth',
+            'settings' => 'our_team_heading_fifth',
+             'type'       => 'text',
+        ));
+    
+        $wp_customize->add_setting('our_team_subhead_fifth', array(
+            'capability'        => 'edit_theme_options',
+            'sanitize_callback' => 'sanitize_text_field'
+        ));
+        $wp_customize->add_control('our_team_subhead_fifth', array(
+            'label'    => __('Our Team Sub Heading', 'novellite'),
+            'section'  => 'our_team_fifth',
+            'settings' => 'our_team_subhead_fifth',
+             'type'       => 'text',
+        ));
+    
+         $wp_customize->add_setting('our_team_desc_fifth', array(
+            'capability'        => 'edit_theme_options',
+            'sanitize_callback' => 'NovelLite_sanitize_textarea'
+        ));
+        $wp_customize->add_control('our_team_desc_fifth', array(
+            'label'    => __('Description for Our Team', 'novellite'),
+            'section'  => 'our_team_fifth',
+            'settings' => 'our_team_desc_fifth',
+             'type'       => 'textarea',
+        ));
+    
+           $wp_customize->add_setting('our_team_link_fifth', array(
+            'default'           => '#',
+            'capability'        => 'edit_theme_options',
+            'sanitize_callback' => 'esc_url_raw'
+        ));
+        $wp_customize->add_control('our_team_link_fifth', array(
+            'label'    => __('Link for Our Team', 'novellite'),
+            'section'  => 'our_team_fifth',
+            'settings' => 'our_team_link_fifth',
+             'type'       => 'text',
+        ));
+        
+        //our team six section
+        
+             $wp_customize->add_section('our_team_six', array(
+                'title'    => __('Six Our Team Feature', 'novellite'),
+                 'panel'  => 'our_team',
+            ));
+            $wp_customize->add_setting('our_team_img_six', array(
+                'capability'        => 'edit_theme_options',
+                'sanitize_callback' => 'NovelLite_sanitize_upload'
+            ));
+           $wp_customize->add_control( new WP_Customize_Image_Control($wp_customize, 'our_team_img_six', array(
+                'label'    => __('Our Team Image Upload', 'novellite'),
+                'section'  => 'our_team_six',
+                'settings' => 'our_team_img_six',
+            )));
+            $wp_customize->add_setting('our_team_heading_six', array(
+                'capability'        => 'edit_theme_options',
+                'sanitize_callback' => 'sanitize_text_field'
+            ));
+            $wp_customize->add_control('our_team_heading_six', array(
+                'label'    => __('Our Team Heading', 'novellite'),
+                'section'  => 'our_team_six',
+                'settings' => 'our_team_heading_six',
+                 'type'       => 'text',
+            ));
+        
+            $wp_customize->add_setting('our_team_subhead_six', array(
+                'capability'        => 'edit_theme_options',
+                'sanitize_callback' => 'sanitize_text_field'
+            ));
+            $wp_customize->add_control('our_team_subhead_six', array(
+                'label'    => __('Our Team Sub Heading', 'novellite'),
+                'section'  => 'our_team_six',
+                'settings' => 'our_team_subhead_six',
+                 'type'       => 'text',
+            ));
+        
+             $wp_customize->add_setting('our_team_desc_six', array(
+                'capability'        => 'edit_theme_options',
+                'sanitize_callback' => 'NovelLite_sanitize_textarea'
+            ));
+            $wp_customize->add_control('our_team_desc_six', array(
+                'label'    => __('Description for Our Team', 'novellite'),
+                'section'  => 'our_team_six',
+                'settings' => 'our_team_desc_six',
+                 'type'       => 'textarea',
+            ));
+        
+               $wp_customize->add_setting('our_team_link_six', array(
+                'default'           => '#',
+                'capability'        => 'edit_theme_options',
+                'sanitize_callback' => 'esc_url_raw'
+            ));
+            $wp_customize->add_control('our_team_link_six', array(
+                'label'    => __('Link for Our Team', 'novellite'),
+                'section'  => 'our_team_six',
+                'settings' => 'our_team_link_six',
+                 'type'       => 'text',
+            ));
+
+
+
+
+
            //  =============================
         //  = lead detail Settings       =
         //  =============================

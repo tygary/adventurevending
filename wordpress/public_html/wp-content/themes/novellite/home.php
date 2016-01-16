@@ -58,12 +58,12 @@
                                 }
                                 ?>" class="theme-slider-button">
 				<?php echo stripslashes(get_theme_mod('first_button_text')); ?>
-				
+
 				</a>
 				<?php } else { ?>
 				<a href="#" class="theme-slider-button">Buy Now!</a>
 				<?php } ?>
-				</div>	
+				</div>
             </div>
         </li>
         <?php if (get_theme_mod('second_slider_image','') != '') { ?>
@@ -111,7 +111,7 @@
                                 }
                                 ?>" class="theme-slider-button">
 				<?php echo stripslashes(get_theme_mod('second_button_text')); ?>
-				
+
 				</a>
 				<?php } else { ?>
 				<a href="#" class="theme-slider-button">Buy Now!</a>
@@ -154,7 +154,7 @@
 						if (get_theme_mod('first_feature_font_icon','') != '') {
 							echo stripslashes(get_theme_mod('first_feature_font_icon',''));
 						} else {
-							?> fa-microphone <?php } ?> fa-stack-1x fa-inverse"></i>
+							?> fa-key <?php } ?> fa-stack-1x fa-inverse"></i>
                     </span>
 					<?php if (get_theme_mod('first_feature_heading','') != '') { ?>
                                 <a href="<?php
@@ -179,7 +179,7 @@
                                 if (get_theme_mod('second_feature_font_icon','') != '') {
                                     echo stripslashes(get_theme_mod('second_feature_font_icon',''));
                                 } else {
-                                    ?> fa-rocket <?php } ?> fa-stack-1x fa-inverse"></i>
+                                    ?> fa-bicycle <?php } ?> fa-stack-1x fa-inverse"></i>
                     </span>
 					<?php if (get_theme_mod('second_feature_heading','') != '') { ?>
                                 <a href="<?php
@@ -204,7 +204,7 @@
                                 if (get_theme_mod('third_feature_font_icon','') != '') {
                                     echo get_theme_mod('third_feature_font_icon','');
                                 } else {
-                                    ?>fa-signal <?php } ?> fa-stack-1x fa-inverse"></i>
+                                    ?>fa-heart <?php } ?> fa-stack-1x fa-inverse"></i>
                     </span>
 					<?php if (get_theme_mod('third_feature_heading','') != '') { ?>
                                 <a href="<?php
@@ -339,7 +339,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <div class="team-member">
                             <?php if (get_theme_mod('our_team_img_first','') != '') { ?>
                                 <a href="<?php echo get_theme_mod('our_team_link_first',''); ?>"><img src="<?php echo get_theme_mod('our_team_img_first',''); ?>" class="img-responsive img-circle" alt="Feature Image 1"/></a>
@@ -363,7 +363,7 @@
                             <?php } ?>
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <div class="team-member">
                             <?php if (get_theme_mod('our_team_img_second','') != '') { ?>
                                 <a href="<?php echo get_theme_mod('our_team_link_second',''); ?>"><img src="<?php echo get_theme_mod('our_team_img_second',''); ?>" class="img-responsive img-circle" alt="Feature Image 1"/></a>
@@ -387,8 +387,106 @@
                             <?php } ?>
                         </div>
                     </div>
+                    <div class="col-sm-4">
+                        <div class="team-member">
+                            <?php if (get_theme_mod('our_team_img_third','') != '') { ?>
+                                <a href="<?php echo get_theme_mod('our_team_link_third',''); ?>"><img src="<?php echo get_theme_mod('our_team_img_third',''); ?>" class="img-responsive img-circle" alt="Feature Image 3"/></a>
+                            <?php } else { ?>
+                                <img src="<?php echo get_template_directory_uri(); ?>/images/team/Team-Placeholder.jpg" class="img-responsive img-circle" alt="">
+                            <?php } ?>
+                            <?php if (get_theme_mod('our_team_heading_third','') != '') { ?>
+                                <a href="<?php echo get_theme_mod('our_team_link_third',''); ?>"><h4><?php echo stripslashes(get_theme_mod('our_team_heading_third','')); ?></h4></a>
+                            <?php } else { ?>
+                                <a href="#"><h4>Diana Pertersen</h4></a>
+                            <?php } ?>
+                            <?php if (get_theme_mod('our_team_subhead_third','') != '') { ?>
+                                <p class="text-muted"><?php echo stripslashes(get_theme_mod('our_team_subhead_third','')); ?></p>
+                            <?php } else { ?>
+                                <p class="text-muted">Lead Developer</p>
+                            <?php } ?>
+                            <?php if (get_theme_mod('our_team_desc_third','') != '') { ?>
+                                <p><?php echo stripslashes(get_theme_mod('our_team_desc_third','')); ?></p>
+                            <?php } else { ?>
+                                <p> Phasellus elementum odio faucibus diam sollicitudin, in bibendum quam feugiat.</p>
+                            <?php } ?>
+                        </div>
+                    </div>
+                </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="team-member">
+                        <?php if (get_theme_mod('our_team_img_fourth','') != '') { ?>
+                            <a href="<?php echo get_theme_mod('our_team_link_fourth',''); ?>"><img src="<?php echo get_theme_mod('our_team_img_fourth',''); ?>" class="img-responsive img-circle" alt="Feature Image 1"/></a>
+                        <?php } else { ?>
+                            <a href="#"><img src="<?php echo get_template_directory_uri(); ?>/images/team/Team-Placeholder.jpg" class="img-responsive img-circle" alt=""></a>
+                        <?php } ?>
+                        <?php if (get_theme_mod('our_team_heading_fourth','') != '') { ?>
+                            <a href="<?php echo get_theme_mod('our_team_link_fourth',''); ?>"><h4><?php echo stripslashes(get_theme_mod('our_team_heading_fourth','')); ?></h4></a>
+                        <?php } else { ?>
+                            <a href="#"><h4>Kay Garland</h4></a>
+                        <?php } ?>
+                        <?php if (get_theme_mod('our_team_subhead_fourth','') != '') { ?>
+                            <p class="text-muted"><?php echo stripslashes(get_theme_mod('our_team_subhead_fourth','')); ?></p>
+                        <?php } else { ?>
+                            <p class="text-muted">Lead Designer</p>
+                        <?php } ?>
+                        <?php if (get_theme_mod('our_team_desc_fourth','') != '') { ?>
+                            <p><?php echo stripslashes(get_theme_mod('our_team_desc_fourth','')); ?></p>
+                        <?php } else { ?>
+                            <p> Phasellus elementum odio faucibus diam sollicitudin, in bibendum quam feugiat.</p>
+                        <?php } ?>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="team-member">
+                        <?php if (get_theme_mod('our_team_img_fifth','') != '') { ?>
+                            <a href="<?php echo get_theme_mod('our_team_link_fifth',''); ?>"><img src="<?php echo get_theme_mod('our_team_img_fifth',''); ?>" class="img-responsive img-circle" alt="Feature Image 1"/></a>
+                        <?php } else { ?>
+                            <img src="<?php echo get_template_directory_uri(); ?>/images/team/Team-Placeholder.jpg" class="img-responsive img-circle" alt="">
+                        <?php } ?>
+                        <?php if (get_theme_mod('our_team_heading_fifth','') != '') { ?>
+                            <a href="<?php echo get_theme_mod('our_team_link_fifth',''); ?>"><h4><?php echo stripslashes(get_theme_mod('our_team_heading_fifth','')); ?></h4></a>
+                        <?php } else { ?>
+                            <a href="#"><h4>Larry Parker</h4></a>
+                        <?php } ?>
+                        <?php if (get_theme_mod('our_team_subhead_fifth','') != '') { ?>
+                            <p class="text-muted"><?php echo stripslashes(get_theme_mod('our_team_subhead_fifth','')); ?></p>
+                        <?php } else { ?>
+                            <p class="text-muted">Lead Marketer</p>
+                        <?php } ?>
+                        <?php if (get_theme_mod('our_team_desc_fifth','') != '') { ?>
+                            <p><?php echo stripslashes(get_theme_mod('our_team_desc_fifth','')); ?></p>
+                        <?php } else { ?>
+                            <p> Phasellus elementum odio faucibus diam sollicitudin, in bibendum quam feugiat.</p>
+                        <?php } ?>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="team-member">
+                        <?php if (get_theme_mod('our_team_img_sixth','') != '') { ?>
+                            <a href="<?php echo get_theme_mod('our_team_link_sixth',''); ?>"><img src="<?php echo get_theme_mod('our_team_img_sixth',''); ?>" class="img-responsive img-circle" alt="Feature Image 3"/></a>
+                        <?php } else { ?>
+                            <img src="<?php echo get_template_directory_uri(); ?>/images/team/Team-Placeholder.jpg" class="img-responsive img-circle" alt="">
+                        <?php } ?>
+                        <?php if (get_theme_mod('our_team_heading_sixth','') != '') { ?>
+                            <a href="<?php echo get_theme_mod('our_team_link_sixth',''); ?>"><h4><?php echo stripslashes(get_theme_mod('our_team_heading_sixth','')); ?></h4></a>
+                        <?php } else { ?>
+                            <a href="#"><h4>Diana Pertersen</h4></a>
+                        <?php } ?>
+                        <?php if (get_theme_mod('our_team_subhead_sixth','') != '') { ?>
+                            <p class="text-muted"><?php echo stripslashes(get_theme_mod('our_team_subhead_sixth','')); ?></p>
+                        <?php } else { ?>
+                            <p class="text-muted">Lead Developer</p>
+                        <?php } ?>
+                        <?php if (get_theme_mod('our_team_desc_sixth','') != '') { ?>
+                            <p><?php echo stripslashes(get_theme_mod('our_team_desc_sixth','')); ?></p>
+                        <?php } else { ?>
+                            <p> Phasellus elementum odio faucibus diam sollicitudin, in bibendum quam feugiat.</p>
+                        <?php } ?>
+                    </div>
                 </div>
             </div>
+        </div>
     </section>
     </div>
     <?php get_template_part('home-contact'); ?>
