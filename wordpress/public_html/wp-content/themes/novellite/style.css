@@ -518,15 +518,14 @@ margin-top:30px;
 }
 
 .theme-slider-button {
-background:rgba(255, 255, 255, 0.2);
+background: rgb(254, 209, 54);
 color:#fff;
 padding:15px 65px;
-border:2px solid white;
 font-size:18px;
 }
 
 .theme-slider-button:hover {
-background:rgba(255, 255, 255, 0.7);
+background: #fec503;
 color:#000;
 -webkit-transition: background 0.5s linear;
         -moz-transition: background 0.3s linear;
