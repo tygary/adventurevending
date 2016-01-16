@@ -56,7 +56,7 @@
                                 } else {
                                     echo "#";
                                 }
-                                ?>" class="theme-slider-button">
+                                ?>" class="theme-slider-button" onclick="$('#participate').click()">
 				<?php echo stripslashes(get_theme_mod('first_button_text')); ?>
 
 				</a>
