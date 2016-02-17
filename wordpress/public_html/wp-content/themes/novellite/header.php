@@ -33,7 +33,12 @@
               if(get_theme_mod( 'logo_upload')!=''){?>
               <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><img src="<?php echo esc_url(get_theme_mod( 'logo_upload')); ?>" alt="logo"></a>
               <?php }else{ ?>
-              <h1 style="margin-top:0"><a href="<?php echo home_url('/'); ?>"><?php bloginfo('name'); ?></a></h1>
+              <h1 class="large-title" style="margin-top:0"><a href="<?php echo home_url('/'); ?>"><?php bloginfo('name'); ?></a></h1>
+              <h1 class="small-title" style="margin-top:0">
+                <a href="<?php echo home_url('/'); ?>">LAME Arts</a>
+                <br>
+                <a href="<?php echo home_url('/'); ?>" style="font-size: x-small;"><?php bloginfo('name'); ?></a>
+              </h1>
               <?php } ?>
 				</div>
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">

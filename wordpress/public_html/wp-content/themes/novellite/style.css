@@ -415,7 +415,7 @@ div#slides_full {
     z-index: -1;
 }
 .NovelLite_slider .container.container_caption {
-    margin-top: 300px;
+    margin-top: 25%;
     text-align: center;
 }
 .NovelLite_slider .container h1{
@@ -522,6 +522,10 @@ background: rgb(254, 209, 54);
 color:#fff;
 padding:15px 65px;
 font-size:18px;
+display: inline-block;
+margin-bottom: 30px;
+margin-left: 10px;
+margin-right: 10px;
 }
 
 .theme-slider-button:hover {
@@ -2877,9 +2881,6 @@ margin-right: 0px;
 .brand-carousel #carousel-full .carousel-listing {
   width: 163px!important;
 }
-.NovelLite_slider .container.container_caption{
-display:none;
-}
 }
 
 @media only screen and (min-width: 320px) and (max-width: 479px) {
@@ -2892,4 +2893,20 @@ height:560px;
 .home_blog_content .post{
 width:280px;
 }
+}
+
+@media only screen and (min-width: 767px) {
+    .small-title {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .large-title {
+        display: none;
+    }
+}
+
+.small-title {
+    line-height: 0.5;
 }

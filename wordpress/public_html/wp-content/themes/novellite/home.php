@@ -60,6 +60,9 @@
 				<?php echo stripslashes(get_theme_mod('first_button_text')); ?>
 
 				</a>
+                <a href="https://www.gofundme.com/adventurevending" class="theme-slider-button">
+                Donate
+                </a>
 				<?php } else { ?>
 				<a href="#" class="theme-slider-button">Buy Now!</a>
 				<?php } ?>
@@ -241,7 +244,7 @@
                         <h2 style="text-align: center; color: white;">
                             Become part of the experience.
                         </h2>
-                        <div style="margin: auto; width: 580px; margin-top: 60px;">
+                        <div style="margin-top:60px;">
                             <a style="margin-right:20px;" href="http://lamearts.org/adventures/" class="theme-slider-button">Create an Adventure!</a>
                             <a href="http://lamearts.org/gifts/" class="theme-slider-button">Submit Art!</a>
                         </div>
