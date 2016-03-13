@@ -933,63 +933,63 @@ $wp_customize->add_panel( 'our_team', array(
              'type'       => 'text',
         ));
         
-        //our team six section
+        //our team sixth section
         
-             $wp_customize->add_section('our_team_six', array(
-                'title'    => __('Six Our Team Feature', 'novellite'),
+             $wp_customize->add_section('our_team_sixth', array(
+                'title'    => __('sixth Our Team Feature', 'novellite'),
                  'panel'  => 'our_team',
             ));
-            $wp_customize->add_setting('our_team_img_six', array(
+            $wp_customize->add_setting('our_team_img_sixth', array(
                 'capability'        => 'edit_theme_options',
                 'sanitize_callback' => 'NovelLite_sanitize_upload'
             ));
-           $wp_customize->add_control( new WP_Customize_Image_Control($wp_customize, 'our_team_img_six', array(
+           $wp_customize->add_control( new WP_Customize_Image_Control($wp_customize, 'our_team_img_sixth', array(
                 'label'    => __('Our Team Image Upload', 'novellite'),
-                'section'  => 'our_team_six',
-                'settings' => 'our_team_img_six',
+                'section'  => 'our_team_sixth',
+                'settings' => 'our_team_img_sixth',
             )));
-            $wp_customize->add_setting('our_team_heading_six', array(
+            $wp_customize->add_setting('our_team_heading_sixth', array(
                 'capability'        => 'edit_theme_options',
                 'sanitize_callback' => 'sanitize_text_field'
             ));
-            $wp_customize->add_control('our_team_heading_six', array(
+            $wp_customize->add_control('our_team_heading_sixth', array(
                 'label'    => __('Our Team Heading', 'novellite'),
-                'section'  => 'our_team_six',
-                'settings' => 'our_team_heading_six',
+                'section'  => 'our_team_sixth',
+                'settings' => 'our_team_heading_sixth',
                  'type'       => 'text',
             ));
         
-            $wp_customize->add_setting('our_team_subhead_six', array(
+            $wp_customize->add_setting('our_team_subhead_sixth', array(
                 'capability'        => 'edit_theme_options',
                 'sanitize_callback' => 'sanitize_text_field'
             ));
-            $wp_customize->add_control('our_team_subhead_six', array(
+            $wp_customize->add_control('our_team_subhead_sixth', array(
                 'label'    => __('Our Team Sub Heading', 'novellite'),
-                'section'  => 'our_team_six',
-                'settings' => 'our_team_subhead_six',
+                'section'  => 'our_team_sixth',
+                'settings' => 'our_team_subhead_sixth',
                  'type'       => 'text',
             ));
         
-             $wp_customize->add_setting('our_team_desc_six', array(
+             $wp_customize->add_setting('our_team_desc_sixth', array(
                 'capability'        => 'edit_theme_options',
                 'sanitize_callback' => 'NovelLite_sanitize_textarea'
             ));
-            $wp_customize->add_control('our_team_desc_six', array(
+            $wp_customize->add_control('our_team_desc_sixth', array(
                 'label'    => __('Description for Our Team', 'novellite'),
-                'section'  => 'our_team_six',
-                'settings' => 'our_team_desc_six',
+                'section'  => 'our_team_sixth',
+                'settings' => 'our_team_desc_sixth',
                  'type'       => 'textarea',
             ));
         
-               $wp_customize->add_setting('our_team_link_six', array(
+               $wp_customize->add_setting('our_team_link_sixth', array(
                 'default'           => '#',
                 'capability'        => 'edit_theme_options',
                 'sanitize_callback' => 'esc_url_raw'
             ));
-            $wp_customize->add_control('our_team_link_six', array(
+            $wp_customize->add_control('our_team_link_sixth', array(
                 'label'    => __('Link for Our Team', 'novellite'),
-                'section'  => 'our_team_six',
-                'settings' => 'our_team_link_six',
+                'section'  => 'our_team_sixth',
+                'settings' => 'our_team_link_sixth',
                  'type'       => 'text',
             ));
 
