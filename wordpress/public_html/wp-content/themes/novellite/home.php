@@ -244,7 +244,7 @@
                         <h2 style="text-align: center; color: white;">
                             Become part of the experience.
                         </h2>
-                        <div style="margin-top:60px;">
+                        <div style="margin-top:60px; text-alight: center">
                             <a style="margin-right:20px;" href="http://lamearts.org/adventures/" class="theme-slider-button">Create an Adventure!</a>
                             <a href="http://lamearts.org/gifts/" class="theme-slider-button">Submit Art!</a>
                         </div>
@@ -489,6 +489,81 @@
                         <?php } ?>
                         <?php if (get_theme_mod('our_team_desc_sixth','') != '') { ?>
                             <p><?php echo stripslashes(get_theme_mod('our_team_desc_sixth','')); ?></p>
+                        <?php } else { ?>
+                            <p> Phasellus elementum odio faucibus diam sollicitudin, in bibendum quam feugiat.</p>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="team-member">
+                        <?php if (get_theme_mod('our_team_img_seventh','') != '') { ?>
+                            <a href="<?php echo get_theme_mod('our_team_link_seventh',''); ?>"><img src="<?php echo get_theme_mod('our_team_img_seventh',''); ?>" class="img-responsive img-circle" alt="Feature Image 1"/></a>
+                        <?php } else { ?>
+                            <a href="#"><img src="<?php echo get_template_directory_uri(); ?>/images/team/Team-Placeholder.jpg" class="img-responsive img-circle" alt=""></a>
+                        <?php } ?>
+                        <?php if (get_theme_mod('our_team_heading_seventh','') != '') { ?>
+                            <a href="<?php echo get_theme_mod('our_team_link_seventh',''); ?>"><h4><?php echo stripslashes(get_theme_mod('our_team_heading_seventh','')); ?></h4></a>
+                        <?php } else { ?>
+                            <a href="#"><h4>Kay Garland</h4></a>
+                        <?php } ?>
+                        <?php if (get_theme_mod('our_team_subhead_seventh','') != '') { ?>
+                            <p class="text-muted"><?php echo stripslashes(get_theme_mod('our_team_subhead_seventh','')); ?></p>
+                        <?php } else { ?>
+                            <p class="text-muted">Lead Designer</p>
+                        <?php } ?>
+                        <?php if (get_theme_mod('our_team_desc_seventh','') != '') { ?>
+                            <p><?php echo stripslashes(get_theme_mod('our_team_desc_seventh','')); ?></p>
+                        <?php } else { ?>
+                            <p> Phasellus elementum odio faucibus diam sollicitudin, in bibendum quam feugiat.</p>
+                        <?php } ?>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="team-member">
+                        <?php if (get_theme_mod('our_team_img_eighth','') != '') { ?>
+                            <a href="<?php echo get_theme_mod('our_team_link_eighth',''); ?>"><img src="<?php echo get_theme_mod('our_team_img_eighth',''); ?>" class="img-responsive img-circle" alt="Feature Image 1"/></a>
+                        <?php } else { ?>
+                            <img src="<?php echo get_template_directory_uri(); ?>/images/team/Team-Placeholder.jpg" class="img-responsive img-circle" alt="">
+                        <?php } ?>
+                        <?php if (get_theme_mod('our_team_heading_eighth','') != '') { ?>
+                            <a href="<?php echo get_theme_mod('our_team_link_eighth',''); ?>"><h4><?php echo stripslashes(get_theme_mod('our_team_heading_eighth','')); ?></h4></a>
+                        <?php } else { ?>
+                            <a href="#"><h4>Larry Parker</h4></a>
+                        <?php } ?>
+                        <?php if (get_theme_mod('our_team_subhead_eighth','') != '') { ?>
+                            <p class="text-muted"><?php echo stripslashes(get_theme_mod('our_team_subhead_eighth','')); ?></p>
+                        <?php } else { ?>
+                            <p class="text-muted">Lead Marketer</p>
+                        <?php } ?>
+                        <?php if (get_theme_mod('our_team_desc_eighth','') != '') { ?>
+                            <p><?php echo stripslashes(get_theme_mod('our_team_desc_eighth','')); ?></p>
+                        <?php } else { ?>
+                            <p> Phasellus elementum odio faucibus diam sollicitudin, in bibendum quam feugiat.</p>
+                        <?php } ?>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="team-member">
+                        <?php if (get_theme_mod('our_team_img_ninth','') != '') { ?>
+                            <a href="<?php echo get_theme_mod('our_team_link_ninth',''); ?>"><img src="<?php echo get_theme_mod('our_team_img_ninth',''); ?>" class="img-responsive img-circle" alt="Feature Image 3"/></a>
+                        <?php } else { ?>
+                            <img src="<?php echo get_template_directory_uri(); ?>/images/team/Team-Placeholder.jpg" class="img-responsive img-circle" alt="">
+                        <?php } ?>
+                        <?php if (get_theme_mod('our_team_heading_ninth','') != '') { ?>
+                            <a href="<?php echo get_theme_mod('our_team_link_ninth',''); ?>"><h4><?php echo stripslashes(get_theme_mod('our_team_heading_ninth','')); ?></h4></a>
+                        <?php } else { ?>
+                            <a href="#"><h4>Diana Pertersen</h4></a>
+                        <?php } ?>
+                        <?php if (get_theme_mod('our_team_subhead_ninth','') != '') { ?>
+                            <p class="text-muted"><?php echo stripslashes(get_theme_mod('our_team_subhead_ninth','')); ?></p>
+                        <?php } else { ?>
+                            <p class="text-muted">Lead Developer</p>
+                        <?php } ?>
+                        <?php if (get_theme_mod('our_team_desc_ninth','') != '') { ?>
+                            <p><?php echo stripslashes(get_theme_mod('our_team_desc_ninth','')); ?></p>
                         <?php } else { ?>
                             <p> Phasellus elementum odio faucibus diam sollicitudin, in bibendum quam feugiat.</p>
                         <?php } ?>

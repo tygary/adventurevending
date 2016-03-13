@@ -994,7 +994,185 @@ $wp_customize->add_panel( 'our_team', array(
             ));
 
 
+//our team seventh section
+        
+             $wp_customize->add_section('our_team_seventh', array(
+                'title'    => __('seventh Our Team Feature', 'novellite'),
+                 'panel'  => 'our_team',
+            ));
+            $wp_customize->add_setting('our_team_img_seventh', array(
+                'capability'        => 'edit_theme_options',
+                'sanitize_callback' => 'NovelLite_sanitize_upload'
+            ));
+           $wp_customize->add_control( new WP_Customize_Image_Control($wp_customize, 'our_team_img_seventh', array(
+                'label'    => __('Our Team Image Upload', 'novellite'),
+                'section'  => 'our_team_seventh',
+                'settings' => 'our_team_img_seventh',
+            )));
+            $wp_customize->add_setting('our_team_heading_seventh', array(
+                'capability'        => 'edit_theme_options',
+                'sanitize_callback' => 'sanitize_text_field'
+            ));
+            $wp_customize->add_control('our_team_heading_seventh', array(
+                'label'    => __('Our Team Heading', 'novellite'),
+                'section'  => 'our_team_seventh',
+                'settings' => 'our_team_heading_seventh',
+                 'type'       => 'text',
+            ));
+        
+            $wp_customize->add_setting('our_team_subhead_seventh', array(
+                'capability'        => 'edit_theme_options',
+                'sanitize_callback' => 'sanitize_text_field'
+            ));
+            $wp_customize->add_control('our_team_subhead_seventh', array(
+                'label'    => __('Our Team Sub Heading', 'novellite'),
+                'section'  => 'our_team_seventh',
+                'settings' => 'our_team_subhead_seventh',
+                 'type'       => 'text',
+            ));
+        
+             $wp_customize->add_setting('our_team_desc_seventh', array(
+                'capability'        => 'edit_theme_options',
+                'sanitize_callback' => 'NovelLite_sanitize_textarea'
+            ));
+            $wp_customize->add_control('our_team_desc_seventh', array(
+                'label'    => __('Description for Our Team', 'novellite'),
+                'section'  => 'our_team_seventh',
+                'settings' => 'our_team_desc_seventh',
+                 'type'       => 'textarea',
+            ));
+        
+               $wp_customize->add_setting('our_team_link_seventh', array(
+                'default'           => '#',
+                'capability'        => 'edit_theme_options',
+                'sanitize_callback' => 'esc_url_raw'
+            ));
+            $wp_customize->add_control('our_team_link_seventh', array(
+                'label'    => __('Link for Our Team', 'novellite'),
+                'section'  => 'our_team_seventh',
+                'settings' => 'our_team_link_seventh',
+                 'type'       => 'text',
+            ));
 
+            //our team eighth section
+        
+             $wp_customize->add_section('our_team_eighth', array(
+                'title'    => __('eighth Our Team Feature', 'novellite'),
+                 'panel'  => 'our_team',
+            ));
+            $wp_customize->add_setting('our_team_img_eighth', array(
+                'capability'        => 'edit_theme_options',
+                'sanitize_callback' => 'NovelLite_sanitize_upload'
+            ));
+           $wp_customize->add_control( new WP_Customize_Image_Control($wp_customize, 'our_team_img_eighth', array(
+                'label'    => __('Our Team Image Upload', 'novellite'),
+                'section'  => 'our_team_eighth',
+                'settings' => 'our_team_img_eighth',
+            )));
+            $wp_customize->add_setting('our_team_heading_eighth', array(
+                'capability'        => 'edit_theme_options',
+                'sanitize_callback' => 'sanitize_text_field'
+            ));
+            $wp_customize->add_control('our_team_heading_eighth', array(
+                'label'    => __('Our Team Heading', 'novellite'),
+                'section'  => 'our_team_eighth',
+                'settings' => 'our_team_heading_eighth',
+                 'type'       => 'text',
+            ));
+        
+            $wp_customize->add_setting('our_team_subhead_eighth', array(
+                'capability'        => 'edit_theme_options',
+                'sanitize_callback' => 'sanitize_text_field'
+            ));
+            $wp_customize->add_control('our_team_subhead_eighth', array(
+                'label'    => __('Our Team Sub Heading', 'novellite'),
+                'section'  => 'our_team_eighth',
+                'settings' => 'our_team_subhead_eighth',
+                 'type'       => 'text',
+            ));
+        
+             $wp_customize->add_setting('our_team_desc_eighth', array(
+                'capability'        => 'edit_theme_options',
+                'sanitize_callback' => 'NovelLite_sanitize_textarea'
+            ));
+            $wp_customize->add_control('our_team_desc_eighth', array(
+                'label'    => __('Description for Our Team', 'novellite'),
+                'section'  => 'our_team_eighth',
+                'settings' => 'our_team_desc_eighth',
+                 'type'       => 'textarea',
+            ));
+        
+               $wp_customize->add_setting('our_team_link_eighth', array(
+                'default'           => '#',
+                'capability'        => 'edit_theme_options',
+                'sanitize_callback' => 'esc_url_raw'
+            ));
+            $wp_customize->add_control('our_team_link_eighth', array(
+                'label'    => __('Link for Our Team', 'novellite'),
+                'section'  => 'our_team_eighth',
+                'settings' => 'our_team_link_eighth',
+                 'type'       => 'text',
+            ));
+
+            //our team ninth section
+        
+             $wp_customize->add_section('our_team_ninth', array(
+                'title'    => __('ninth Our Team Feature', 'novellite'),
+                 'panel'  => 'our_team',
+            ));
+            $wp_customize->add_setting('our_team_img_ninth', array(
+                'capability'        => 'edit_theme_options',
+                'sanitize_callback' => 'NovelLite_sanitize_upload'
+            ));
+           $wp_customize->add_control( new WP_Customize_Image_Control($wp_customize, 'our_team_img_ninth', array(
+                'label'    => __('Our Team Image Upload', 'novellite'),
+                'section'  => 'our_team_ninth',
+                'settings' => 'our_team_img_ninth',
+            )));
+            $wp_customize->add_setting('our_team_heading_ninth', array(
+                'capability'        => 'edit_theme_options',
+                'sanitize_callback' => 'sanitize_text_field'
+            ));
+            $wp_customize->add_control('our_team_heading_ninth', array(
+                'label'    => __('Our Team Heading', 'novellite'),
+                'section'  => 'our_team_ninth',
+                'settings' => 'our_team_heading_ninth',
+                 'type'       => 'text',
+            ));
+        
+            $wp_customize->add_setting('our_team_subhead_ninth', array(
+                'capability'        => 'edit_theme_options',
+                'sanitize_callback' => 'sanitize_text_field'
+            ));
+            $wp_customize->add_control('our_team_subhead_ninth', array(
+                'label'    => __('Our Team Sub Heading', 'novellite'),
+                'section'  => 'our_team_ninth',
+                'settings' => 'our_team_subhead_ninth',
+                 'type'       => 'text',
+            ));
+        
+             $wp_customize->add_setting('our_team_desc_ninth', array(
+                'capability'        => 'edit_theme_options',
+                'sanitize_callback' => 'NovelLite_sanitize_textarea'
+            ));
+            $wp_customize->add_control('our_team_desc_ninth', array(
+                'label'    => __('Description for Our Team', 'novellite'),
+                'section'  => 'our_team_ninth',
+                'settings' => 'our_team_desc_ninth',
+                 'type'       => 'textarea',
+            ));
+        
+               $wp_customize->add_setting('our_team_link_ninth', array(
+                'default'           => '#',
+                'capability'        => 'edit_theme_options',
+                'sanitize_callback' => 'esc_url_raw'
+            ));
+            $wp_customize->add_control('our_team_link_ninth', array(
+                'label'    => __('Link for Our Team', 'novellite'),
+                'section'  => 'our_team_ninth',
+                'settings' => 'our_team_link_ninth',
+                 'type'       => 'text',
+            ));
 
 
            //  =============================
