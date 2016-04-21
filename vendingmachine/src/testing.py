@@ -1,77 +1,260 @@
 import RPi.GPIO as GPIO
 import time
+import threading
+import cups
+import os
 
 
 class VendingMachine(object):
-    active_ouput_pins = [18]
-    active_input_pins = [7]
-    adventure_button_pin = 6
-    coin_input_pin = 7
-    waiting_for_coin = 0;
+    active_ouput_pins = []
+    active_input_pins = [24]
+    adventure_button_pin = 8
+    coin_input_pin = 13
+    coin_counter_input_pin = 15
+    coin_enable_pin = 19
+    coin_status_pin = 12
+    box_select_pins = [18,22]
+    waiting_for_coin = False
+    accepted_a_coin = False
+
+    coin_detected = False
+    coin_counted = False
+    coin_pending = False
+
+    box_controller = None
+    printer = None
 
     def __init__(self):
+        GPIO.cleanup()
         GPIO.setmode(GPIO.BOARD)
         self.__init_pins()
-        self.__close_box(18)
+        self.box_controller = BinaryBoxController()
+        self.printer = Printer()
+        self.__set_accepted_coin(False)
         
     # Private -------------------------------------------
 
     def __init_pins(self):
-        GPIO.setup(self.active_ouput_pins, GPIO.OUT)
-        GPIO.setup(7, GPIO.IN)
+        GPIO.setup(self.coin_status_pin, GPIO.OUT)
+        GPIO.setup(self.coin_enable_pin, GPIO.OUT)
+        GPIO.setup(self.coin_input_pin, GPIO.IN)
+        GPIO.setup(self.coin_counter_input_pin, GPIO.IN)
+        GPIO.setup(self.box_select_pins, GPIO.IN)
+        GPIO.setup(self.adventure_button_pin, GPIO.IN)
 
-    def __open_box(self, box_number):
-        print "open box"
-        self.__set_latch(box_number, False)
+    def __adventure_button_cb(self, pin):
+        if self.waiting_to_give_adventure == True:
+            self.dispense_adventure()
+            self.waiting_to_give_adventure = False
+            t = threading.Timer(1.0, self.__allow_dispensing_adventures)
+            t.start()
 
-    def __close_box(self, box_number):
-        print "Close box"
-        self.__set_latch(box_number, True)
-
-    def __set_latch(self, pin, value):
-        GPIO.output(pin, value)
-        print "Setting Latch %s to %s" % (pin, value)
-
-    def __adventure_button_cb(self):
-        self.dispense_adventure()
-
+    def __allow_dispensing_adventures(self):
+        self.waiting_to_give_adventure = True
+        
     def __start_waiting_for_user(self):
         print "waiting for user at pin %s" % self.adventure_button_pin
-        GPIO.add_event_detect(self.adventure_button_pin, GPIO.RISING, callback=self.__adventure_button_cb)
+        self.__add_event_detection(self.adventure_button_pin, callback=self.__adventure_button_cb)
+        self.__allow_dispensing_adventures()
 
     def __coin_cb(self, channel):
-        print "Got a coin, opening box 18"
-        if self.waiting_for_coin == 1:
-            self.waiting_for_coin = 0;
-            self.open_prize_box(18)
+        if self.waiting_for_coin == True:
+            print "coin slot triggered"
+            self.__coin_detected()
+            self.coin_detected = True
+
+    def __coin_counter_cb(self, channel):
+        if self.waiting_for_coin == True:
+            print "Coin Counter triggered"
+            self.__coin_detected()
+            self.coin_counted = True
+
+    def __coin_detected(self):
+        if (self.coin_pending == False):
+            self.coin_pending = True
+            self.coin_detected = False
+            self.coin_counted = False
+            t = threading.Timer(1.0, self.__done_waiting_for_coin)
+            t.start()
+
+    def __done_waiting_for_coin(self):
+        self.coin_detected = True
+        #Fake the coin detection for now, it's broken
+        if self.coin_detected == True and self.coin_counted == True:
+            print "Got a coin, Pick a box"
+            self.__deny_coins()
+            self.__set_accepted_coin(True)
         else:
             print "Not accepted"
+        self.coin_detected = False
+        self.coin_counted = False
+        self.coin_pending = False
 
     def __start_waiting_for_coin(self):
         print "waiting for coid at pin %s" % self.coin_input_pin
-        GPIO.add_event_detect(self.coin_input_pin, GPIO.FALLING, callback=self.__coin_cb)
-        self.waiting_for_coin = 1
-        
+        self.__add_event_detection(self.coin_input_pin, callback=self.__coin_cb)
+        self.__add_event_detection(self.coin_counter_input_pin, callback=self.__coin_counter_cb)
+        self.__wait_for_coin()
+
+    def __reset_box(self):
+        self.box_controller.close_boxes()
+        #self.__wait_for_coin()
+        #t = threading.Timer(1.0, self._wait_for_coin)
+        #t.start()
+
+    def __wait_for_coin(self):
+        self.waiting_for_coin = True
+        GPIO.output(self.coin_enable_pin, 1)
+
+    def __deny_coins(self):
+        self.waiting_for_coin = False
+        GPIO.output(self.coin_enable_pin, 0)
+
+    def __start_waiting_for_boxes(self):
+        self.__add_event_detection(self.box_select_pins[0], callback=self.__box_a_pressed)
+        self.__add_event_detection(self.box_select_pins[1], callback=self.__box_b_pressed)
+
+    def __box_a_pressed(self, channel):
+        print "Box button a pressed"
+        self.open_prize_box(1)
+
+    def __box_b_pressed(self, channel):
+        print "Box button b pressed"
+        self.open_prize_box(2)
+
+    def __set_accepted_coin(self, value):
+        self.accepted_a_coin = value;
+        try:
+            GPIO.output(self.coin_status_pin, value)
+        except RuntimeError:
+            print "Setting coin status"
+
+    def __add_event_detection(self, pin, callback):
+        try:
+            GPIO.setup(pin, GPIO.IN)
+            GPIO.remove_event_detect(pin)
+            GPIO.add_event_detect(pin, GPIO.FALLING, callback=callback)
+        except RuntimeError:
+            try:
+                GPIO.remove_event_detect(pin)
+                GPIO.add_event_detect(pin, GPIO.FALLING, callback=callback)
+            except RuntimeError:
+                pass
+
+            
 
     # Public --------------------------------------------
  
     def open_prize_box(self, box_number):
-        self.__open_box(box_number)
-        print "Retrieve the prize from box %s" % box_number
-        time.sleep(5)
-        self.__close_box(box_number)
+        print "Selected box %s" % box_number
+        if (self.accepted_a_coin == True):
+            self.__wait_for_coin()
+            self.box_controller.set_box(box_number)
+            self.box_controller.open_current_box()
+            print "Retrieve the prize from box %s" % box_number
+            t = threading.Timer(5.0, self.__reset_box)
+            t.start()
+            #self.box_controller.close_boxes()
+        self.__set_accepted_coin(False)
         
 
     def dispense_adventure(self):
-        print "Here's an adventure!"
+        self.printer.printAdventure("Here's an adventure!")
 
     def start(self):
         self.__start_waiting_for_coin()
+        self.__start_waiting_for_boxes()
+        self.__start_waiting_for_user()
 
-    def wait(self):
-        self.waiting_for_coin = 1
+
+class BinaryBoxController(object):
+    binary_output_pins = [3,5,7,11]
+    mux_enable_output_pins = [16, 18]
+
+    current_binary_output = [0,0,0,0]
+    lower_mux_disabled = 1
+    higher_mux_disabled = 1
+
+    currently_open = False
+
+    def __init__(self):
+        GPIO.setup(self.binary_output_pins, GPIO.OUT)
+        GPIO.setup(self.mux_enable_output_pins, GPIO.OUT)
+
+        self.__set_latch(self.binary_output_pins[0], 0)
+        self.__set_latch(self.binary_output_pins[1], 0)
+        self.__set_latch(self.binary_output_pins[2], 0)
+        self.__set_latch(self.binary_output_pins[3], 0)
+        self.close_boxes()
+
+    def set_box(self, number):
+        binary_num = '{0:05b}'.format(number);
+
+        if binary_num[0] == '1':
+            self.higher_mux_disabled = 0
+            self.lower_mux_disabled = 1
+        else:
+            self.higher_mux_disabled = 1
+            self.lower_mux_disabled = 0
+
+        self.current_binary_output = [
+            int(binary_num[4]),
+            int(binary_num[3]),
+            int(binary_num[2]),
+            int(binary_num[1])]
+
+    def open_current_box(self):
+        if self.currently_open:
+            self.close_boxes()
+
+        #Set the box number
+        self.__set_latch(self.binary_output_pins[0], self.current_binary_output[0])
+        self.__set_latch(self.binary_output_pins[1], self.current_binary_output[1])
+        self.__set_latch(self.binary_output_pins[2], self.current_binary_output[2])
+        self.__set_latch(self.binary_output_pins[3], self.current_binary_output[3])
+
+        #Enable the muxes
+        self.__set_latch(self.mux_enable_output_pins[0], self.lower_mux_disabled)
+        self.__set_latch(self.mux_enable_output_pins[1], self.higher_mux_disabled)
 
 
+    def close_boxes(self):
+        self.__set_latch(self.mux_enable_output_pins[0], 1)
+        self.__set_latch(self.mux_enable_output_pins[1], 1)
+
+
+    def __set_latch(self, pin, value):
+        print "Setting Latch %s to %s" % (pin, value)
+        try:
+            GPIO.output(pin, value)
+        except RuntimeError:
+            print "Error setting Latch"
+
+
+class Printer(object):
+    conn = cups.Connection()
+    printers = conn.getPrinters()
+    printer_name = printers.keys()[0]
+    tmpfilePath = "/home/pi/project/tmpadventure"
+
+    def __print(self):
+        self.conn.printFile(self.printer_name, self.tmpfilePath, "adventure", {})
+
+    def __create_file(self, text):
+        try:
+            os.remove(self.tmpfilePath)
+        except OSError:
+            pass
+        f = open(self.tmpfilePath, 'w')
+        f.write(text)
+        f.close()
+
+    def printAdventure(self, text):
+        self.__create_file(text)
+        self.__print()
+
+machine = VendingMachine()
+machine.start()
 
 """
   TODO
