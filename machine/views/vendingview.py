@@ -1,9 +1,9 @@
-from GUI import ScrollableView
+from GUI import View
 from GUI.StdColors import black, red
 from blob import Blob
 
 
-class VendingView(ScrollableView):
+class VendingView(View):
 
     def draw(self, canvas, update_rect):
         canvas.erase_rect(update_rect)

@@ -26,7 +26,6 @@ class VendingApp(Application):
                                   #mac_creator = "BLBE", mac_type = "BLOB", # These are optional
                                   )
         self.file_type = self.vending_type
-        self.vending_cursor = Cursor("cursors/arrow.tiff")
 
     def open_app(self):
         self.new_cmd()
@@ -36,8 +35,7 @@ class VendingApp(Application):
 
     def make_window(self, document):
         win = Window(size = (400, 400), document = document)
-        view = VendingView(model = document, extent = (1000, 1000), scrolling = 'hv',
-                        cursor = self.vending_cursor)
+        view = VendingView(model = document)
         win.place(view, left = 0, top = 0, right = 0, bottom = 0, sticky = 'nsew')
         win.show()
 
