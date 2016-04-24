@@ -37,8 +37,16 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
         elif self.path == '/api/adventures':
             data = json.dumps(adventures, separators=(',',':'))
             self.wfile.write(data)
+        elif self.path.startswith('/api/adventures/'):
+            # TODO find the actual adventure
+            data = json.dumps({"adventures":[adventures['adventures'][0]]}, separators=(',',':'))
+            self.wfile.write(data)
         elif self.path == '/api/gifts':
             data = json.dumps(gifts, separators=(',',':'))
+            self.wfile.write(data)
+        elif self.path.startswith('/api/gifts/'):
+            # TODO find the actual gift
+            data = json.dumps({"gifts":[gifts['gifts'][0]]}, separators=(',',':'))
             self.wfile.write(data)
 
     def do_POST(self):
