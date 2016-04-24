@@ -14,7 +14,7 @@
 
 from GUI import Application, Window, Cursor
 from GUI.Files import FileType
-from views.vendingview import VendingView
+from views.menuview import MenuView
 from documents.vendingdoc import VendingDoc
 
 
@@ -35,7 +35,7 @@ class VendingApp(Application):
 
     def make_window(self, document):
         win = Window(size = (400, 400), document = document)
-        view = VendingView(model = document)
+        view = MenuView(model = document)
         win.place(view, left = 0, top = 0, right = 0, bottom = 0, sticky = 'nsew')
         win.show()
 
