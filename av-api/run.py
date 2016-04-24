@@ -3,22 +3,32 @@ import BaseHTTPServer
 from SimpleHTTPServer import SimpleHTTPRequestHandler
 import json
 
-init = {}
-init['init'] = {
-    'id': 1,
-    'thing': 'a'
-}
-
 adventures = {}
 adventures['adventures'] = [
-    {'id': 2, 'title': 'a', 'desc': 'b'},
-    {'id': 3, 'title': 'c', 'desc': 'd'}
+    {'id': '2', 'title': 'a', 'desc': 'b'},
+    {'id': '3', 'title': 'c', 'desc': 'd'}
 ]
 
 gifts = {}
 gifts['gifts'] = [
     {'id': 4, 'title': 'a', 'desc': 'b'},
     {'id': 5, 'title': 'c', 'desc': 'd'}
+]
+
+init = {}
+init['init'] = {
+    'id': '1',
+    'thing': 'a',
+    'adventures': ['2','3'],
+    'gifts': ['4', '5']
+}
+init['adventures'] = [
+    {'id': '2', 'title': 'a', 'desc': 'b', 'init': '1'},
+    {'id': '3', 'title': 'c', 'desc': 'd', 'init': '1'}
+]
+init['gifts'] = [
+    {'id': '4', 'title': 'a', 'desc': 'b', 'init': '1'},
+    {'id': '5', 'title': 'c', 'desc': 'd', 'init': '1'}
 ]
 
 
