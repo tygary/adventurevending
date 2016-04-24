@@ -4,10 +4,14 @@ from GUI import Document
 
 class VendingDoc(Document):
 
+    adventures = None
+    gifts = None
     blobs = None
 
     def new_contents(self):
         self.blobs = []
+        self.adventures = []
+        self.gifts = []
 
     def read_contents(self, file):
         self.blobs = pickle.load(file)
