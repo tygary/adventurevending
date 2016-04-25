@@ -41,7 +41,6 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
         self.send_header('Access-Control-Allow-Origin', 'http://localhost:4200')
 
     def do_GET(self):
-        #if self.path == '/api/adventures':
         self._set_headers()
         self.end_headers()
         if self.path == '/api/init':
@@ -73,17 +72,15 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
         print self.data_string
 
     def do_OPTIONS(self):
-        # Send empty JSON object to appease ember
         self._set_headers()
+        # Send empty JSON object to appease ember
         self.send_header("Content-Length", 0)
+        # Ember will only make OPTIONS requests when asking to delete
         self.send_header("Access-Control-Allow-Methods", "DELETE")
         self.end_headers()
 
-        # self.wfile.write('{"DELETE":{},"PUT":{}}')
-
     def do_DELETE(self):
         self._set_headers()
-        # self.send_header("Content-Length", 0)
         self.end_headers()
 
         self.wfile.write('{}')
