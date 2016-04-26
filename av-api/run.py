@@ -11,25 +11,25 @@ adventures['adventures'] = [
 
 gifts = {}
 gifts['gifts'] = [
-    {'id': 4, 'title': 'a', 'desc': 'b'},
-    {'id': 5, 'title': 'c', 'desc': 'd'}
+    {'id': '4', 'title': 'a', 'desc': 'b'},
+    {'id': '5', 'title': 'c', 'desc': 'd'}
 ]
 
 init = {}
 init['init'] = {
     'id': '1',
     'thing': 'a',
-    'adventures': ['2','3'],
-    'gifts': ['4', '5']
+    # 'adventures': ['2','3'],
+    # 'gifts': ['4', '5']
 }
-init['adventures'] = [
-    {'id': '2', 'title': 'a', 'desc': 'b', 'init': '1'},
-    {'id': '3', 'title': 'c', 'desc': 'd', 'init': '1'}
-]
-init['gifts'] = [
-    {'id': '4', 'title': 'a', 'desc': 'b', 'init': '1'},
-    {'id': '5', 'title': 'c', 'desc': 'd', 'init': '1'}
-]
+# init['adventures'] = [
+#     {'id': '2', 'title': 'a', 'desc': 'b', 'init': '1'},
+#     {'id': '3', 'title': 'c', 'desc': 'd', 'init': '1'}
+# ]
+# init['gifts'] = [
+#     {'id': '4', 'title': 'a', 'desc': 'b', 'init': '1'},
+#     {'id': '5', 'title': 'c', 'desc': 'd', 'init': '1'}
+# ]
 
 
 
@@ -82,6 +82,17 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
     def do_DELETE(self):
         self._set_headers()
         self.end_headers()
+
+        # get id
+        params = self.path.split('/')
+        record_id = params[3]
+
+        if params[2] == 'adventures':
+            adventure_record = [x for x in adventures['adventures'] if x['id'] == record_id][0]
+            adventures['adventures'].remove(adventure_record)
+        elif params[2] == 'gifts':
+            gift_record = [x for x in gifts['gifts'] if x['id'] == record_id][0]
+            gifts['gifts'].remove(gift_record)
 
         self.wfile.write('{}')
 
