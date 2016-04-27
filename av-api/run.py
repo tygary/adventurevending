@@ -5,16 +5,13 @@ import json
 import unicodedata
 
 adventures = {}
-adventures['adventures'] = [
-    {'id': '2', 'title': 'a', 'desc': 'b'},
-    {'id': '3', 'title': 'c', 'desc': 'd'}
-]
+adventures['adventures'] = []
 
 gifts = {}
-gifts['gifts'] = [
-    {'id': '4', 'title': 'a', 'desc': 'b'},
-    {'id': '5', 'title': 'c', 'desc': 'd'}
-]
+gifts['gifts'] = []
+
+slots = {}
+slots['slots'] = []
 
 init = {}
 init['init'] = {
@@ -85,6 +82,9 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
             # TODO find the actual gift
             gift_data = json.dumps({"gifts":[gifts['gifts'][0]]}, separators=(',',':'))
             self.wfile.write(gift_data)
+        elif self.path == '/api/slots':
+            slots_data = json.dumps(slots, separators=(',',':'))
+            self.wfile.write(slots_data)
 
     def do_POST(self):
         self._set_headers()
@@ -98,6 +98,8 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
             adventures['adventures'].append(post_data['adventure'])
         elif post_data.has_key('gift'):
             gifts['gifts'].append(post_data['gift'])
+        elif post_data.has_key('slot'):
+            slots['slots'].append(post_data['slot'])
 
         self.wfile.write('{}')
 
@@ -124,6 +126,9 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
         elif params[2] == 'gifts':
             gift_record = [x for x in gifts['gifts'] if x['id'] == record_id][0]
             gifts['gifts'].remove(gift_record)
+        elif params[2] == 'slots':
+            slot_record = [x for x in slots['slots'] if x['id'] == record_id][0]
+            slots['slots'].remove(slot_record)
 
         self.wfile.write('{}')
 
