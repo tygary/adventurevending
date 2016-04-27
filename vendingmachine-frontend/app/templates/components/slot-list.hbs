@@ -1,0 +1,62 @@
+<h3>Slots</h3>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>Location</th>
+      <th>Description</th>
+      <th>Empty</th>
+      <th>Cost</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each attrs.model.slots as |slot|}}
+    <tr>
+      <td>{{slot.id}}</td>
+      <td>{{slot.location}}</td>
+      <td>{{slot.desc}}</td>
+      <td>{{slot.isEmpty}}</td>
+      <td>{{slot.cost}}</td>
+      {{!--
+      <td>
+        {{#link-to 'edit-slot' slot.id}}
+          <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+        {{/link-to}}
+      </td>
+      --}}
+      <td {{action "remove" slot.id}}>
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+      </td>
+    </tr>
+    {{/each}}
+    <tr>
+      <td>#</td>
+      <td>
+        {{input
+          type="number"
+          placeholder="#"
+          value=newSlot.location}}
+      </td>
+      <td>
+        {{input
+          type="text"
+          placeholder="Description"
+          value=newSlot.desc}}
+      </td>
+      <td>
+        {{input
+          type="checkbox"
+          checked=newSlot.isEmpty}}
+      </td>
+      <td>
+        {{input
+          type="number"
+          placeholder="1"
+          value=newSlot.cost}}
+      </td>
+      <td>
+        <span {{action "add"}} class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+      </td>
+    </tr>
+  </tbody>
+</table>
