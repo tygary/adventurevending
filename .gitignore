@@ -3,6 +3,5 @@ app/dist
 *.pyc
 vendingmachine-frontend/node_modules
 vendingmachine-frontend/bower_components
-vendingmachine-frontend/dist
 vendingmachine-frontend/tmp
 
