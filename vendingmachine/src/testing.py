@@ -3,17 +3,17 @@ import time
 import threading
 import cups
 import os
-
+import serial
 
 class VendingMachine(object):
     active_ouput_pins = []
     active_input_pins = [24]
-    adventure_button_pin = 8
-    coin_input_pin = 13
-    coin_counter_input_pin = 15
+    adventure_button_pin = 12
+    coin_input_pin = 16
+    coin_counter_input_pin = 18
     coin_enable_pin = 19
-    coin_status_pin = 12
-    box_select_pins = [18,22]
+    coin_status_pin = 26
+    box_select_pins = [22,24]
     waiting_for_coin = False
     accepted_a_coin = False
 
@@ -23,6 +23,7 @@ class VendingMachine(object):
 
     box_controller = None
     printer = None
+    lighting = None
 
     def __init__(self):
         GPIO.cleanup()
@@ -30,6 +31,7 @@ class VendingMachine(object):
         self.__init_pins()
         self.box_controller = BinaryBoxController()
         self.printer = Printer()
+        self.lighting = LightingController()
         self.__set_accepted_coin(False)
         
     # Private -------------------------------------------
@@ -91,7 +93,7 @@ class VendingMachine(object):
         self.coin_pending = False
 
     def __start_waiting_for_coin(self):
-        print "waiting for coid at pin %s" % self.coin_input_pin
+        print "waiting for coin at pin %s" % self.coin_input_pin
         self.__add_event_detection(self.coin_input_pin, callback=self.__coin_cb)
         self.__add_event_detection(self.coin_counter_input_pin, callback=self.__coin_counter_cb)
         self.__wait_for_coin()
@@ -117,13 +119,17 @@ class VendingMachine(object):
     def __box_a_pressed(self, channel):
         print "Box button a pressed"
         self.open_prize_box(1)
+        self.lighting.box_selected(1)
 
     def __box_b_pressed(self, channel):
         print "Box button b pressed"
         self.open_prize_box(2)
+        self.lighting.box_selected(2)
 
     def __set_accepted_coin(self, value):
         self.accepted_a_coin = value;
+        if value == True:
+            self.lighting.coin_received()
         try:
             GPIO.output(self.coin_status_pin, value)
         except RuntimeError:
@@ -151,6 +157,7 @@ class VendingMachine(object):
             self.__wait_for_coin()
             self.box_controller.set_box(box_number)
             self.box_controller.open_current_box()
+            self.lighting.dispense_prize(box_number)
             print "Retrieve the prize from box %s" % box_number
             t = threading.Timer(5.0, self.__reset_box)
             t.start()
@@ -159,7 +166,8 @@ class VendingMachine(object):
         
 
     def dispense_adventure(self):
-        self.printer.printAdventure("Here's an adventure!")
+        self.printer.printAdventure("Here's an adventure!\nHave fun ;)")
+        self.lighting.dispense_adventure()
 
     def start(self):
         self.__start_waiting_for_coin()
@@ -169,7 +177,7 @@ class VendingMachine(object):
 
 class BinaryBoxController(object):
     binary_output_pins = [3,5,7,11]
-    mux_enable_output_pins = [16, 18]
+    mux_enable_output_pins = [13,15]
 
     current_binary_output = [0,0,0,0]
     lower_mux_disabled = 1
@@ -252,6 +260,39 @@ class Printer(object):
     def printAdventure(self, text):
         self.__create_file(text)
         self.__print()
+
+
+"|1:12|"
+#Modes
+#1 Dispense Prize (box_number)
+#2 Coin input
+#3 Dispense Adventure
+#4 Select a box (box_number)
+
+class LightingController(object):
+    conn = serial.Serial("/dev/ttyAMA0")
+    conn.baudrate = 9600
+
+    def __send_command(self, mode, box_number=None):
+        command = ""
+        if (box_number):
+            command = "#%s:%s\n" % (mode, box_number)
+        else:
+            command = "#%s\n" % (mode)
+        self.conn.write(command)
+        print command
+
+    def dispense_prize(self, box_number):
+        self.__send_command(1, box_number)
+
+    def coin_received(self):
+        self.__send_command(2)
+
+    def dispense_adventure(self):
+        self.__send_command(3)
+
+    def box_selected(self, box_number):
+        self.__send_command(4, box_number)
 
 machine = VendingMachine()
 machine.start()
