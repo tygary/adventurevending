@@ -4,6 +4,8 @@ import threading
 import cups
 import os
 import serial
+import imp
+import random
 
 class VendingMachine(object):
     active_ouput_pins = []
@@ -24,6 +26,7 @@ class VendingMachine(object):
     box_controller = None
     printer = None
     lighting = None
+    server = None
 
     def __init__(self):
         GPIO.cleanup()
@@ -33,6 +36,8 @@ class VendingMachine(object):
         self.printer = Printer()
         self.lighting = LightingController()
         self.__set_accepted_coin(False)
+        self.server = imp.load_source("run", "/home/pi/adventurevending/av-api/run.py")
+
         
     # Private -------------------------------------------
 
@@ -166,7 +171,10 @@ class VendingMachine(object):
         
 
     def dispense_adventure(self):
-        self.printer.printAdventure("Here's an adventure!\nHave fun ;)")
+        arr = self.server.adventures["adventures"]
+        adventure = random.choice(arr)
+        text = "%s\n%s" % (adventure["title"], adventure["desc"])
+        self.printer.printAdventure(text)
         self.lighting.dispense_adventure()
 
     def start(self):
@@ -243,7 +251,7 @@ class Printer(object):
     conn = cups.Connection()
     printers = conn.getPrinters()
     printer_name = printers.keys()[0]
-    tmpfilePath = "/home/pi/project/tmpadventure"
+    tmpfilePath = "/home/pi/tmpadventure"
 
     def __print(self):
         self.conn.printFile(self.printer_name, self.tmpfilePath, "adventure", {})
@@ -279,8 +287,8 @@ class LightingController(object):
             command = "#%s:%s\n" % (mode, box_number)
         else:
             command = "#%s\n" % (mode)
-        self.conn.write(command)
-        print command
+        #self.conn.write(command)
+        #print command
 
     def dispense_prize(self, box_number):
         self.__send_command(1, box_number)
@@ -296,6 +304,7 @@ class LightingController(object):
 
 machine = VendingMachine()
 machine.start()
+
 
 """
   TODO

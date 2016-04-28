@@ -3,9 +3,12 @@ import BaseHTTPServer
 from SimpleHTTPServer import SimpleHTTPRequestHandler
 import json
 import unicodedata
+from threading import Thread
+import os
 
+tmpfilepath = "/home/pi/adventurestmp"
 adventures = {}
-adventures['adventures'] = []
+adventures['adventures'] = [{'id': '2', 'title': 'a', 'desc': 'b'}]
 
 gifts = {}
 gifts['gifts'] = []
@@ -33,6 +36,8 @@ init['init'] = {
 
 class VendingRequestHandler(SimpleHTTPRequestHandler):
 
+    
+
     def _set_headers(self):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', 'http://localhost:4200')
@@ -43,6 +48,15 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
             json.loads(json_text, object_hook=self._byteify),
             ignore_dicts=True
         )
+
+    def _onchange(self):
+        try:
+            os.remove(tmpfilepath)
+        except OSError:
+            pass
+        f = open(tmpfilepath, 'w')
+        f.write(json.dumps(adventures, separators=(',',':')))
+        f.close()
 
     def _byteify(self, data, ignore_dicts = False):
         # if this is a unicode string, return its string representation
@@ -102,6 +116,7 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
             slots['slots'].append(post_data['slot'])
 
         self.wfile.write('{}')
+        self._onchange()
 
     def do_OPTIONS(self):
         self._set_headers()
@@ -131,7 +146,10 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
             slots['slots'].remove(slot_record)
 
         self.wfile.write('{}')
+        self._onchange()
 
+with open(tmpfilepath) as data_file:
+    adventures = json.load(data_file)
 
 HandlerClass = VendingRequestHandler
 ServerClass  = BaseHTTPServer.HTTPServer
@@ -140,7 +158,7 @@ Protocol     = "HTTP/1.0"
 if sys.argv[1:]:
     port = int(sys.argv[1])
 else:
-    port = 8000
+    port = 8080
 server_address = ('127.0.0.1', port)
 
 HandlerClass.protocol_version = Protocol
@@ -148,5 +166,7 @@ httpd = ServerClass(server_address, HandlerClass)
 
 sa = httpd.socket.getsockname()
 print "Serving HTTP on", sa[0], "port", sa[1], "..."
-httpd.serve_forever()
-
+def start_server():
+    httpd.serve_forever()
+thread = Thread(target = start_server)
+thread.start()
