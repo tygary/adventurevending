@@ -24,7 +24,7 @@ define('av-frontend/adapters/adventure', ['exports', 'av-frontend/adapters/base'
 });
 define('av-frontend/adapters/base', ['exports', 'ember-data'], function (exports, _emberData) {
   exports['default'] = _emberData['default'].RESTAdapter.extend({
-    host: 'http://localhost:8000',
+    host: 'http://localhost:8080',
     namespace: 'api'
   });
 });
@@ -48,7 +48,7 @@ define('av-frontend/adapters/init', ['exports', 'ember', 'ember-data'], function
   exports['default'] = _emberData['default'].RESTAdapter.extend({
     queryRecord: function queryRecord(store, type, query) {
       return new _ember['default'].RSVP.Promise(function (resolve, reject) {
-        _ember['default'].$.getJSON('http://localhost:8000/api/init', query).then(function (data) {
+        _ember['default'].$.getJSON('http://localhost:8080/api/init', query).then(function (data) {
           _ember['default'].run(null, resolve, data);
         }, function (jqXHR) {
           jqXHR.then = null; // tame jQuery's ill mannered promises
