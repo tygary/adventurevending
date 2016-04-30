@@ -131,11 +131,21 @@ else:
 server_address = ('127.0.0.1', port)
 
 HandlerClass.protocol_version = Protocol
-httpd = ServerClass(server_address, HandlerClass)
 
-sa = httpd.socket.getsockname()
-print "Serving HTTP on", sa[0], "port", sa[1], "..."
-def start_server():
-    httpd.serve_forever()
-thread = Thread(target = start_server)
-thread.start()
+class ServerController():
+    httpd = None
+    thread = None
+
+    def start(self):
+        self.httpd = ServerClass(server_address, HandlerClass)
+        sa = self.httpd.socket.getsockname()
+        print "Serving HTTP on", sa[0], "port", sa[1], "..."
+        self.thread = Thread(target = self.httpd.serve_forever)
+        self.thread.start()
+
+    def stop(self):
+        print "Stopping Server"
+        self.httpd.server_close()
+        print "Server stopped, terminating thread"
+        self.thread.join()
+        print "Thread terminated"
