@@ -25,15 +25,6 @@ define('av-frontend/tests/adapters/gift.jshint', ['exports'], function (exports)
     assert.ok(true, 'adapters/gift.js should pass jshint.');
   });
 });
-define('av-frontend/tests/adapters/init.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint - adapters/init.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'adapters/init.js should pass jshint.');
-  });
-});
 define('av-frontend/tests/adapters/slot.jshint', ['exports'], function (exports) {
   'use strict';
 

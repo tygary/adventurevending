@@ -13,13 +13,6 @@ av_data['adventures'] = []
 av_data['gifts'] = []
 av_data['slots'] = []
 
-init = {}
-init['init'] = {
-    'id': '1',
-    'thing': 'a'
-}
-
-
 
 class VendingRequestHandler(SimpleHTTPRequestHandler):
 
@@ -66,10 +59,7 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
         self._set_headers()
         self.send_header('Content-type', 'application/json')
         self.end_headers()
-        if self.path == '/api/init':
-            init_data = json.dumps(init, separators=(',',':'))
-            self.wfile.write(init_data)
-        elif self.path == '/api/adventures':
+        if self.path == '/api/adventures':
             adventures_data = json.dumps(av_data['adventures'], separators=(',',':'))
             self.wfile.write('{"adventures":' + adventures_data + '}')
         elif self.path.startswith('/api/adventures/'):

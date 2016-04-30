@@ -44,20 +44,6 @@ define('av-frontend/adapters/gift', ['exports', 'av-frontend/adapters/base'], fu
     }
   });
 });
-define('av-frontend/adapters/init', ['exports', 'ember', 'ember-data'], function (exports, _ember, _emberData) {
-  exports['default'] = _emberData['default'].RESTAdapter.extend({
-    queryRecord: function queryRecord(store, type, query) {
-      return new _ember['default'].RSVP.Promise(function (resolve, reject) {
-        _ember['default'].$.getJSON('http://localhost:8080/api/init', query).then(function (data) {
-          _ember['default'].run(null, resolve, data);
-        }, function (jqXHR) {
-          jqXHR.then = null; // tame jQuery's ill mannered promises
-          _ember['default'].run(null, reject, jqXHR);
-        });
-      });
-    }
-  });
-});
 define('av-frontend/adapters/slot', ['exports', 'av-frontend/adapters/base'], function (exports, _avFrontendAdaptersBase) {
   exports['default'] = _avFrontendAdaptersBase['default'].extend({
     slotCounter: 0,
@@ -766,7 +752,6 @@ define('av-frontend/routes/index', ['exports', 'ember'], function (exports, _emb
 
     prefetch: function prefetch() {
       return _ember['default'].RSVP.hash({
-        init: this.store.queryRecord('init', {}),
         adventures: this.store.findAll('adventure', {}),
         gifts: this.store.findAll('gift', {}),
         slots: this.store.findAll('slot', {})
@@ -5971,7 +5956,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("av-frontend/app")["default"].create({"name":"av-frontend","version":"0.0.0+ff191a20"});
+  require("av-frontend/app")["default"].create({"name":"av-frontend","version":"0.0.0+b2386300"});
 }
 
 /* jshint ignore:end */
