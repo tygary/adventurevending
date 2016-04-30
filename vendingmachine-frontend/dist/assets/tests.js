@@ -156,24 +156,6 @@ define('av-frontend/tests/models/adventure.jshint', ['exports'], function (expor
     assert.ok(true, 'models/adventure.js should pass jshint.');
   });
 });
-define('av-frontend/tests/models/gift.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint - models/gift.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'models/gift.js should pass jshint.');
-  });
-});
-define('av-frontend/tests/models/init.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint - models/init.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'models/init.js should pass jshint.');
-  });
-});
 define('av-frontend/tests/models/slot.jshint', ['exports'], function (exports) {
   'use strict';
 

@@ -16,7 +16,6 @@ av_data['slots'] = []
 class VendingRequestHandler(SimpleHTTPRequestHandler):
 
 
-
     def _set_headers(self):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', 'http://localhost:4200')

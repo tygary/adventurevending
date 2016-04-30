@@ -4,7 +4,6 @@
     <tr>
       <th>id</th>
       <th>Location</th>
-      <th>Description</th>
       <th>Empty</th>
       <th>Cost</th>
     </tr>
@@ -14,7 +13,6 @@
     <tr>
       <td>{{slot.id}}</td>
       <td>{{slot.location}}</td>
-      <td>{{slot.desc}}</td>
       <td>{{slot.isEmpty}}</td>
       <td>{{slot.cost}}</td>
       {{!--
@@ -36,12 +34,6 @@
           type="number"
           placeholder="#"
           value=newSlot.location}}
-      </td>
-      <td>
-        {{input
-          type="text"
-          placeholder="Description"
-          value=newSlot.desc}}
       </td>
       <td>
         {{input

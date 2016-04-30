@@ -11,7 +11,6 @@ export default Ember.Component.extend({
   actions: {
     add() {
       let location = Number.parseInt(this.get('newSlot.location'), 10);
-      let desc = this.get('newSlot.desc');
       let isEmpty = this.get('newSlot.isEmpty') || false;
       let cost = Number.parseInt(this.get('newSlot.cost'), 10) || 0;
 
@@ -19,7 +18,7 @@ export default Ember.Component.extend({
         return;
       }
 
-      this.get('store').createRecord('slot', { location, desc, isEmpty, cost }).save();
+      this.get('store').createRecord('slot', { location, isEmpty, cost }).save();
 
       this.set('newSlot', {});
     },

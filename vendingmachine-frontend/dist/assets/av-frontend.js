@@ -303,7 +303,6 @@ define('av-frontend/components/slot-list', ['exports', 'ember'], function (expor
     actions: {
       add: function add() {
         var location = Number.parseInt(this.get('newSlot.location'), 10);
-        var desc = this.get('newSlot.desc');
         var isEmpty = this.get('newSlot.isEmpty') || false;
         var cost = Number.parseInt(this.get('newSlot.cost'), 10) || 0;
 
@@ -311,7 +310,7 @@ define('av-frontend/components/slot-list', ['exports', 'ember'], function (expor
           return;
         }
 
-        this.get('store').createRecord('slot', { location: location, desc: desc, isEmpty: isEmpty, cost: cost }).save();
+        this.get('store').createRecord('slot', { location: location, isEmpty: isEmpty, cost: cost }).save();
 
         this.set('newSlot', {});
       },
@@ -593,26 +592,11 @@ define('av-frontend/models/adventure', ['exports', 'ember-data'], function (expo
   });
 });
 // init: DS.belongsTo()
-define('av-frontend/models/gift', ['exports', 'ember-data'], function (exports, _emberData) {
-  exports['default'] = _emberData['default'].Model.extend({
-    title: _emberData['default'].attr('string'),
-    desc: _emberData['default'].attr('string')
-  });
-});
-// init: DS.belongsTo()
-define('av-frontend/models/init', ['exports', 'ember-data'], function (exports, _emberData) {
-  exports['default'] = _emberData['default'].Model.extend({
-    thing: _emberData['default'].attr('string')
-  });
-});
-// adventures: DS.hasMany('adventure', {async: true}),
-// gifts: DS.hasMany('gift', {async: true})
 define('av-frontend/models/slot', ['exports', 'ember-data'], function (exports, _emberData) {
   var attr = _emberData['default'].attr;
 
   exports['default'] = _emberData['default'].Model.extend({
     location: attr('number'),
-    desc: attr('string', { defaultValue: 'A gift' }),
     isEmpty: attr('boolean', { defaultValue: false }),
     cost: attr('number', { defaultValue: 1 })
   });
@@ -5037,11 +5021,11 @@ define("av-frontend/templates/components/slot-list", ["exports"], function (expo
           "loc": {
             "source": null,
             "start": {
-              "line": 13,
+              "line": 12,
               "column": 4
             },
             "end": {
-              "line": 31,
+              "line": 29,
               "column": 4
             }
           },
@@ -5056,12 +5040,6 @@ define("av-frontend/templates/components/slot-list", ["exports"], function (expo
           var el1 = dom.createTextNode("    ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("tr");
-          var el2 = dom.createTextNode("\n      ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("td");
-          var el3 = dom.createComment("");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n      ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("td");
@@ -5109,17 +5087,16 @@ define("av-frontend/templates/components/slot-list", ["exports"], function (expo
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var element0 = dom.childAt(fragment, [1]);
-          var element1 = dom.childAt(element0, [12]);
-          var morphs = new Array(6);
+          var element1 = dom.childAt(element0, [10]);
+          var morphs = new Array(5);
           morphs[0] = dom.createMorphAt(dom.childAt(element0, [1]), 0, 0);
           morphs[1] = dom.createMorphAt(dom.childAt(element0, [3]), 0, 0);
           morphs[2] = dom.createMorphAt(dom.childAt(element0, [5]), 0, 0);
           morphs[3] = dom.createMorphAt(dom.childAt(element0, [7]), 0, 0);
-          morphs[4] = dom.createMorphAt(dom.childAt(element0, [9]), 0, 0);
-          morphs[5] = dom.createElementMorph(element1);
+          morphs[4] = dom.createElementMorph(element1);
           return morphs;
         },
-        statements: [["content", "slot.id", ["loc", [null, [15, 10], [15, 21]]]], ["content", "slot.location", ["loc", [null, [16, 10], [16, 27]]]], ["content", "slot.desc", ["loc", [null, [17, 10], [17, 23]]]], ["content", "slot.isEmpty", ["loc", [null, [18, 10], [18, 26]]]], ["content", "slot.cost", ["loc", [null, [19, 10], [19, 23]]]], ["element", "action", ["remove", ["get", "slot.id", ["loc", [null, [27, 28], [27, 35]]]]], [], ["loc", [null, [27, 10], [27, 37]]]]],
+        statements: [["content", "slot.id", ["loc", [null, [14, 10], [14, 21]]]], ["content", "slot.location", ["loc", [null, [15, 10], [15, 27]]]], ["content", "slot.isEmpty", ["loc", [null, [16, 10], [16, 26]]]], ["content", "slot.cost", ["loc", [null, [17, 10], [17, 23]]]], ["element", "action", ["remove", ["get", "slot.id", ["loc", [null, [25, 28], [25, 35]]]]], [], ["loc", [null, [25, 10], [25, 37]]]]],
         locals: ["slot"],
         templates: []
       };
@@ -5138,7 +5115,7 @@ define("av-frontend/templates/components/slot-list", ["exports"], function (expo
             "column": 0
           },
           "end": {
-            "line": 62,
+            "line": 54,
             "column": 8
           }
         },
@@ -5174,12 +5151,6 @@ define("av-frontend/templates/components/slot-list", ["exports"], function (expo
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("th");
         var el5 = dom.createTextNode("Location");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("th");
-        var el5 = dom.createTextNode("Description");
         dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
@@ -5251,16 +5222,6 @@ define("av-frontend/templates/components/slot-list", ["exports"], function (expo
         var el4 = dom.createElement("td");
         var el5 = dom.createTextNode("\n        ");
         dom.appendChild(el4, el5);
-        var el5 = dom.createComment("");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("td");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
         var el5 = dom.createElement("span");
         dom.setAttribute(el5, "class", "glyphicon glyphicon-plus");
         dom.setAttribute(el5, "aria-hidden", "true");
@@ -5282,17 +5243,16 @@ define("av-frontend/templates/components/slot-list", ["exports"], function (expo
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var element2 = dom.childAt(fragment, [2, 3]);
         var element3 = dom.childAt(element2, [3]);
-        var element4 = dom.childAt(element3, [11, 1]);
-        var morphs = new Array(6);
+        var element4 = dom.childAt(element3, [9, 1]);
+        var morphs = new Array(5);
         morphs[0] = dom.createMorphAt(element2, 1, 1);
         morphs[1] = dom.createMorphAt(dom.childAt(element3, [3]), 1, 1);
         morphs[2] = dom.createMorphAt(dom.childAt(element3, [5]), 1, 1);
         morphs[3] = dom.createMorphAt(dom.childAt(element3, [7]), 1, 1);
-        morphs[4] = dom.createMorphAt(dom.childAt(element3, [9]), 1, 1);
-        morphs[5] = dom.createElementMorph(element4);
+        morphs[4] = dom.createElementMorph(element4);
         return morphs;
       },
-      statements: [["block", "each", [["get", "attrs.model.slots", ["loc", [null, [13, 12], [13, 29]]]]], [], 0, null, ["loc", [null, [13, 4], [31, 13]]]], ["inline", "input", [], ["type", "number", "placeholder", "#", "value", ["subexpr", "@mut", [["get", "newSlot.location", ["loc", [null, [38, 16], [38, 32]]]]], [], []]], ["loc", [null, [35, 8], [38, 34]]]], ["inline", "input", [], ["type", "text", "placeholder", "Description", "value", ["subexpr", "@mut", [["get", "newSlot.desc", ["loc", [null, [44, 16], [44, 28]]]]], [], []]], ["loc", [null, [41, 8], [44, 30]]]], ["inline", "input", [], ["type", "checkbox", "checked", ["subexpr", "@mut", [["get", "newSlot.isEmpty", ["loc", [null, [49, 18], [49, 33]]]]], [], []]], ["loc", [null, [47, 8], [49, 35]]]], ["inline", "input", [], ["type", "number", "placeholder", "1", "value", ["subexpr", "@mut", [["get", "newSlot.cost", ["loc", [null, [55, 16], [55, 28]]]]], [], []]], ["loc", [null, [52, 8], [55, 30]]]], ["element", "action", ["add"], [], ["loc", [null, [58, 14], [58, 30]]]]],
+      statements: [["block", "each", [["get", "attrs.model.slots", ["loc", [null, [12, 12], [12, 29]]]]], [], 0, null, ["loc", [null, [12, 4], [29, 13]]]], ["inline", "input", [], ["type", "number", "placeholder", "#", "value", ["subexpr", "@mut", [["get", "newSlot.location", ["loc", [null, [36, 16], [36, 32]]]]], [], []]], ["loc", [null, [33, 8], [36, 34]]]], ["inline", "input", [], ["type", "checkbox", "checked", ["subexpr", "@mut", [["get", "newSlot.isEmpty", ["loc", [null, [41, 18], [41, 33]]]]], [], []]], ["loc", [null, [39, 8], [41, 35]]]], ["inline", "input", [], ["type", "number", "placeholder", "1", "value", ["subexpr", "@mut", [["get", "newSlot.cost", ["loc", [null, [47, 16], [47, 28]]]]], [], []]], ["loc", [null, [44, 8], [47, 30]]]], ["element", "action", ["add"], [], ["loc", [null, [50, 14], [50, 30]]]]],
       locals: [],
       templates: [child0]
     };
