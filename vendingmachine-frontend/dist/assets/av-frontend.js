@@ -28,22 +28,6 @@ define('av-frontend/adapters/base', ['exports', 'ember-data'], function (exports
     namespace: 'api'
   });
 });
-define('av-frontend/adapters/gift', ['exports', 'av-frontend/adapters/base'], function (exports, _avFrontendAdaptersBase) {
-  exports['default'] = _avFrontendAdaptersBase['default'].extend({
-    giftCounter: 0,
-
-    generateIdForRecord: function generateIdForRecord(store) {
-      var giftCounter = this.get('giftCounter');
-
-      while (store.peekRecord('gift', giftCounter)) {
-        giftCounter++;
-      }
-
-      this.set('giftCounter', giftCounter);
-      return giftCounter;
-    }
-  });
-});
 define('av-frontend/adapters/slot', ['exports', 'av-frontend/adapters/base'], function (exports, _avFrontendAdaptersBase) {
   exports['default'] = _avFrontendAdaptersBase['default'].extend({
     slotCounter: 0,
@@ -307,37 +291,6 @@ define('av-frontend/components/ember-wormhole', ['exports', 'ember-wormhole/comp
     }
   });
 });
-define('av-frontend/components/gift-list', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Component.extend({
-    tagName: 'div',
-    classNames: ['col-md-6'],
-
-    store: _ember['default'].inject.service(),
-
-    newGift: {},
-
-    actions: {
-      add: function add() {
-        var title = this.get('newGift.title');
-        var desc = this.get('newGift.desc');
-
-        if (!title && !desc) {
-          return;
-        }
-
-        this.get('store').createRecord('gift', { title: title, desc: desc }).save();
-
-        this.set('newGift', {});
-      },
-      remove: function remove(id) {
-        var store = this.get('store');
-        var record = store.peekRecord('gift', id);
-        store.deleteRecord(record);
-        record.save();
-      }
-    }
-  });
-});
 define('av-frontend/components/slot-list', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({
     tagName: 'div',
@@ -365,43 +318,6 @@ define('av-frontend/components/slot-list', ['exports', 'ember'], function (expor
       remove: function remove(id) {
         var store = this.get('store');
         var record = store.peekRecord('slot', id);
-        store.deleteRecord(record);
-        record.save();
-      }
-    }
-  });
-});
-define('av-frontend/controllers/index', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Controller.extend({
-
-    store: _ember['default'].inject.service(),
-
-    newGift: {
-      // Defaults
-      // title: '',
-      // desc: ''
-    },
-
-    _addGift: function _addGift() {
-      var title = this.get('newGift.title');
-      var desc = this.get('newGift.desc');
-
-      if (title === '' || desc === '') {
-        return;
-      }
-
-      this.store.createRecord('gift', { title: title, desc: desc }).save();
-    },
-
-    actions: {
-      add: function add(type) {
-        if (type === 'gift') {
-          this._addGift();
-        }
-      },
-      remove: function remove(type, id) {
-        var store = this.get('store');
-        var record = store.peekRecord(type, id);
         store.deleteRecord(record);
         record.save();
       }
@@ -731,20 +647,6 @@ define('av-frontend/routes/edit-adventure', ['exports', 'ember'], function (expo
     }
   });
 });
-define('av-frontend/routes/edit-gift', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Route.extend({
-    prefetch: function prefetch(params) {
-      var id = params.gift_id;
-      var record = this.store.peekRecord('gift', id);
-
-      if (record === null) {
-        record = this.store.find('gift', id);
-      }
-
-      return record;
-    }
-  });
-});
 define('av-frontend/routes/index', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Route.extend({
 
@@ -753,7 +655,6 @@ define('av-frontend/routes/index', ['exports', 'ember'], function (exports, _emb
     prefetch: function prefetch() {
       return _ember['default'].RSVP.hash({
         adventures: this.store.findAll('adventure', {}),
-        gifts: this.store.findAll('gift', {}),
         slots: this.store.findAll('slot', {})
       });
     }
@@ -5126,284 +5027,6 @@ define("av-frontend/templates/components/form-element/vertical/textarea", ["expo
     };
   })());
 });
-define("av-frontend/templates/components/gift-list", ["exports"], function (exports) {
-  exports["default"] = Ember.HTMLBars.template((function () {
-    var child0 = (function () {
-      var child0 = (function () {
-        return {
-          meta: {
-            "fragmentReason": false,
-            "revision": "Ember@2.4.5",
-            "loc": {
-              "source": null,
-              "start": {
-                "line": 17,
-                "column": 8
-              },
-              "end": {
-                "line": 19,
-                "column": 8
-              }
-            },
-            "moduleName": "av-frontend/templates/components/gift-list.hbs"
-          },
-          isEmpty: false,
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("          ");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createElement("span");
-            dom.setAttribute(el1, "class", "glyphicon glyphicon-pencil");
-            dom.setAttribute(el1, "aria-hidden", "true");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createTextNode("\n");
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes() {
-            return [];
-          },
-          statements: [],
-          locals: [],
-          templates: []
-        };
-      })();
-      return {
-        meta: {
-          "fragmentReason": false,
-          "revision": "Ember@2.4.5",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 11,
-              "column": 4
-            },
-            "end": {
-              "line": 25,
-              "column": 4
-            }
-          },
-          "moduleName": "av-frontend/templates/components/gift-list.hbs"
-        },
-        isEmpty: false,
-        arity: 1,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("    ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createElement("tr");
-          var el2 = dom.createTextNode("\n      ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("td");
-          var el3 = dom.createComment("");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n      ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("td");
-          var el3 = dom.createComment("");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n      ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("td");
-          var el3 = dom.createComment("");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n      ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("td");
-          var el3 = dom.createTextNode("\n");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createComment("");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("      ");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n      ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("td");
-          var el3 = dom.createTextNode("\n        ");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createElement("span");
-          dom.setAttribute(el3, "class", "glyphicon glyphicon-remove");
-          dom.setAttribute(el3, "aria-hidden", "true");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("\n      ");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n    ");
-          dom.appendChild(el1, el2);
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element0 = dom.childAt(fragment, [1]);
-          var element1 = dom.childAt(element0, [9]);
-          var morphs = new Array(5);
-          morphs[0] = dom.createMorphAt(dom.childAt(element0, [1]), 0, 0);
-          morphs[1] = dom.createMorphAt(dom.childAt(element0, [3]), 0, 0);
-          morphs[2] = dom.createMorphAt(dom.childAt(element0, [5]), 0, 0);
-          morphs[3] = dom.createMorphAt(dom.childAt(element0, [7]), 1, 1);
-          morphs[4] = dom.createElementMorph(element1);
-          return morphs;
-        },
-        statements: [["content", "gift.id", ["loc", [null, [13, 10], [13, 21]]]], ["content", "gift.title", ["loc", [null, [14, 10], [14, 24]]]], ["content", "gift.desc", ["loc", [null, [15, 10], [15, 23]]]], ["block", "link-to", ["edit-gift", ["get", "gift.id", ["loc", [null, [17, 31], [17, 38]]]]], [], 0, null, ["loc", [null, [17, 8], [19, 20]]]], ["element", "action", ["remove", ["get", "gift.id", ["loc", [null, [21, 28], [21, 35]]]]], [], ["loc", [null, [21, 10], [21, 37]]]]],
-        locals: ["gift"],
-        templates: [child0]
-      };
-    })();
-    return {
-      meta: {
-        "fragmentReason": {
-          "name": "missing-wrapper",
-          "problems": ["multiple-nodes"]
-        },
-        "revision": "Ember@2.4.5",
-        "loc": {
-          "source": null,
-          "start": {
-            "line": 1,
-            "column": 0
-          },
-          "end": {
-            "line": 46,
-            "column": 8
-          }
-        },
-        "moduleName": "av-frontend/templates/components/gift-list.hbs"
-      },
-      isEmpty: false,
-      arity: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      buildFragment: function buildFragment(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createElement("h3");
-        var el2 = dom.createTextNode("Gifts");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("table");
-        dom.setAttribute(el1, "class", "table table-striped");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("thead");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("tr");
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("th");
-        var el5 = dom.createTextNode("id");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("th");
-        var el5 = dom.createTextNode("Title");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("th");
-        var el5 = dom.createTextNode("Description");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n    ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("tbody");
-        var el3 = dom.createTextNode("\n");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createComment("");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("tr");
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("td");
-        var el5 = dom.createTextNode("#");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("td");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createComment("");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("td");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createComment("");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("td");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("td");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("span");
-        dom.setAttribute(el5, "class", "glyphicon glyphicon-plus");
-        dom.setAttribute(el5, "aria-hidden", "true");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n    ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element2 = dom.childAt(fragment, [2, 3]);
-        var element3 = dom.childAt(element2, [3]);
-        var element4 = dom.childAt(element3, [9]);
-        var morphs = new Array(4);
-        morphs[0] = dom.createMorphAt(element2, 1, 1);
-        morphs[1] = dom.createMorphAt(dom.childAt(element3, [3]), 1, 1);
-        morphs[2] = dom.createMorphAt(dom.childAt(element3, [5]), 1, 1);
-        morphs[3] = dom.createElementMorph(element4);
-        return morphs;
-      },
-      statements: [["block", "each", [["get", "attrs.model.gifts", ["loc", [null, [11, 12], [11, 29]]]]], [], 0, null, ["loc", [null, [11, 4], [25, 13]]]], ["inline", "input", [], ["type", "text", "placeholder", "Title", "value", ["subexpr", "@mut", [["get", "newGift.title", ["loc", [null, [32, 16], [32, 29]]]]], [], []]], ["loc", [null, [29, 8], [32, 31]]]], ["inline", "input", [], ["type", "text", "placeholder", "Description", "value", ["subexpr", "@mut", [["get", "newGift.desc", ["loc", [null, [38, 16], [38, 28]]]]], [], []]], ["loc", [null, [35, 8], [38, 30]]]], ["element", "action", ["add"], [], ["loc", [null, [41, 10], [41, 26]]]]],
-      locals: [],
-      templates: [child0]
-    };
-  })());
-});
 define("av-frontend/templates/components/slot-list", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
     var child0 = (function () {
@@ -5771,102 +5394,6 @@ define("av-frontend/templates/edit-adventure", ["exports"], function (exports) {
     };
   })());
 });
-define("av-frontend/templates/edit-gift", ["exports"], function (exports) {
-  exports["default"] = Ember.HTMLBars.template((function () {
-    var child0 = (function () {
-      return {
-        meta: {
-          "fragmentReason": false,
-          "revision": "Ember@2.4.5",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 4,
-              "column": 0
-            },
-            "end": {
-              "line": 4,
-              "column": 27
-            }
-          },
-          "moduleName": "av-frontend/templates/edit-gift.hbs"
-        },
-        isEmpty: false,
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("Go back");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes() {
-          return [];
-        },
-        statements: [],
-        locals: [],
-        templates: []
-      };
-    })();
-    return {
-      meta: {
-        "fragmentReason": {
-          "name": "missing-wrapper",
-          "problems": ["multiple-nodes", "wrong-type"]
-        },
-        "revision": "Ember@2.4.5",
-        "loc": {
-          "source": null,
-          "start": {
-            "line": 1,
-            "column": 0
-          },
-          "end": {
-            "line": 4,
-            "column": 39
-          }
-        },
-        "moduleName": "av-frontend/templates/edit-gift.hbs"
-      },
-      isEmpty: false,
-      arity: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      buildFragment: function buildFragment(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createElement("input");
-        dom.setAttribute(el1, "type", "text");
-        dom.setAttribute(el1, "placeholder", "Title");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("input");
-        dom.setAttribute(el1, "type", "text");
-        dom.setAttribute(el1, "placeholder", "Description");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element0 = dom.childAt(fragment, [0]);
-        var element1 = dom.childAt(fragment, [2]);
-        var morphs = new Array(3);
-        morphs[0] = dom.createAttrMorph(element0, 'value');
-        morphs[1] = dom.createAttrMorph(element1, 'value');
-        morphs[2] = dom.createMorphAt(fragment, 4, 4, contextualElement);
-        dom.insertBoundary(fragment, null);
-        return morphs;
-      },
-      statements: [["attribute", "value", ["get", "model.title", ["loc", [null, [1, 47], [1, 58]]]]], ["attribute", "value", ["get", "model.desc", ["loc", [null, [2, 53], [2, 63]]]]], ["block", "link-to", ["index"], [], 0, null, ["loc", [null, [4, 0], [4, 39]]]]],
-      locals: [],
-      templates: [child0]
-    };
-  })());
-});
 define("av-frontend/templates/index", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
     return {
@@ -5882,7 +5409,7 @@ define("av-frontend/templates/index", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 7,
+            "line": 5,
             "column": 6
           }
         },
@@ -5900,9 +5427,7 @@ define("av-frontend/templates/index", ["exports"], function (exports) {
         dom.appendChild(el1, el2);
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n\n");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
+        var el2 = dom.createTextNode("\n\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
@@ -5915,10 +5440,10 @@ define("av-frontend/templates/index", ["exports"], function (exports) {
         var element0 = dom.childAt(fragment, [0]);
         var morphs = new Array(2);
         morphs[0] = dom.createMorphAt(element0, 1, 1);
-        morphs[1] = dom.createMorphAt(element0, 4, 4);
+        morphs[1] = dom.createMorphAt(element0, 3, 3);
         return morphs;
       },
-      statements: [["inline", "adventure-list", [], ["model", ["subexpr", "@mut", [["get", "model", ["loc", [null, [2, 25], [2, 30]]]]], [], []]], ["loc", [null, [2, 2], [2, 32]]]], ["inline", "slot-list", [], ["model", ["subexpr", "@mut", [["get", "model", ["loc", [null, [6, 20], [6, 25]]]]], [], []]], ["loc", [null, [6, 2], [6, 27]]]]],
+      statements: [["inline", "adventure-list", [], ["model", ["subexpr", "@mut", [["get", "model", ["loc", [null, [2, 25], [2, 30]]]]], [], []]], ["loc", [null, [2, 2], [2, 32]]]], ["inline", "slot-list", [], ["model", ["subexpr", "@mut", [["get", "model", ["loc", [null, [4, 20], [4, 25]]]]], [], []]], ["loc", [null, [4, 2], [4, 27]]]]],
       locals: [],
       templates: []
     };

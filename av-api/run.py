@@ -10,7 +10,6 @@ tmpfilepath = os.path.join(os.path.dirname(__file__), 'avdatatmp')
 
 av_data = {}
 av_data['adventures'] = []
-av_data['gifts'] = []
 av_data['slots'] = []
 
 
@@ -67,14 +66,6 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
             # adventure_data = json.dumps({"adventures":[adventures['adventures'][0]]}, separators=(',',':'))
             # self.wfile.write(adventure_data)
             self.wfile.write('{}')
-        elif self.path == '/api/gifts':
-            gifts_data = json.dumps(av_data['gifts'], separators=(',',':'))
-            self.wfile.write('{"gifts":' + gifts_data + '}')
-        elif self.path.startswith('/api/gifts/'):
-            # TODO find the actual gift
-            # gift_data = json.dumps({"gifts":[gifts['gifts'][0]]}, separators=(',',':'))
-            # self.wfile.write(gift_data)
-            self.wfile.write('{}')
         elif self.path == '/api/slots':
             slots_data = json.dumps(av_data['slots'], separators=(',',':'))
             self.wfile.write('{"slots":' + slots_data + '}')
@@ -89,8 +80,6 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
 
         if post_data.has_key('adventure'):
             av_data['adventures'].append(post_data['adventure'])
-        elif post_data.has_key('gift'):
-            av_data['gifts'].append(post_data['gift'])
         elif post_data.has_key('slot'):
             av_data['slots'].append(post_data['slot'])
 
@@ -117,9 +106,6 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
         if params[2] == 'adventures':
             adventure_record = [x for x in av_data['adventures'] if x['id'] == record_id][0]
             av_data['adventures'].remove(adventure_record)
-        elif params[2] == 'gifts':
-            gift_record = [x for x in av_data['gifts'] if x['id'] == record_id][0]
-            av_data['gifts'].remove(gift_record)
         elif params[2] == 'slots':
             slot_record = [x for x in av_data['slots'] if x['id'] == record_id][0]
             av_data['slots'].remove(slot_record)

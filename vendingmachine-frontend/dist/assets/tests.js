@@ -16,15 +16,6 @@ define('av-frontend/tests/adapters/base.jshint', ['exports'], function (exports)
     assert.ok(true, 'adapters/base.js should pass jshint.');
   });
 });
-define('av-frontend/tests/adapters/gift.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint - adapters/gift.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'adapters/gift.js should pass jshint.');
-  });
-});
 define('av-frontend/tests/adapters/slot.jshint', ['exports'], function (exports) {
   'use strict';
 
@@ -52,15 +43,6 @@ define('av-frontend/tests/components/adventure-list.jshint', ['exports'], functi
     assert.ok(true, 'components/adventure-list.js should pass jshint.');
   });
 });
-define('av-frontend/tests/components/gift-list.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint - components/gift-list.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'components/gift-list.js should pass jshint.');
-  });
-});
 define('av-frontend/tests/components/slot-list.jshint', ['exports'], function (exports) {
   'use strict';
 
@@ -68,15 +50,6 @@ define('av-frontend/tests/components/slot-list.jshint', ['exports'], function (e
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'components/slot-list.js should pass jshint.');
-  });
-});
-define('av-frontend/tests/controllers/index.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint - controllers/index.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'controllers/index.js should pass jshint.');
   });
 });
 define('av-frontend/tests/helpers/destroy-app', ['exports', 'ember'], function (exports, _ember) {
@@ -235,15 +208,6 @@ define('av-frontend/tests/routes/edit-adventure.jshint', ['exports'], function (
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'routes/edit-adventure.js should pass jshint.');
-  });
-});
-define('av-frontend/tests/routes/edit-gift.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint - routes/edit-gift.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'routes/edit-gift.js should pass jshint.');
   });
 });
 define('av-frontend/tests/routes/index.jshint', ['exports'], function (exports) {
