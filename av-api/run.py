@@ -6,37 +6,24 @@ import unicodedata
 from threading import Thread
 import os
 
-tmpfilepath = "/home/pi/adventurestmp"
-adventures = {}
-adventures['adventures'] = [{'id': '2', 'title': 'a', 'desc': 'b'}]
+tmpfilepath = os.path.join(os.path.dirname(__file__), 'avdatatmp')
 
-gifts = {}
-gifts['gifts'] = []
-
-slots = {}
-slots['slots'] = []
+av_data = {}
+av_data['adventures'] = []
+av_data['gifts'] = []
+av_data['slots'] = []
 
 init = {}
 init['init'] = {
     'id': '1',
-    'thing': 'a',
-    # 'adventures': ['2','3'],
-    # 'gifts': ['4', '5']
+    'thing': 'a'
 }
-# init['adventures'] = [
-#     {'id': '2', 'title': 'a', 'desc': 'b', 'init': '1'},
-#     {'id': '3', 'title': 'c', 'desc': 'd', 'init': '1'}
-# ]
-# init['gifts'] = [
-#     {'id': '4', 'title': 'a', 'desc': 'b', 'init': '1'},
-#     {'id': '5', 'title': 'c', 'desc': 'd', 'init': '1'}
-# ]
 
 
 
 class VendingRequestHandler(SimpleHTTPRequestHandler):
 
-    
+
 
     def _set_headers(self):
         self.send_response(200)
@@ -55,7 +42,7 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
         except OSError:
             pass
         f = open(tmpfilepath, 'w')
-        f.write(json.dumps(adventures, separators=(',',':')))
+        f.write(json.dumps(av_data, separators=(',',':')))
         f.close()
 
     def _byteify(self, data, ignore_dicts = False):
@@ -83,22 +70,24 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
             init_data = json.dumps(init, separators=(',',':'))
             self.wfile.write(init_data)
         elif self.path == '/api/adventures':
-            adventures_data = json.dumps(adventures, separators=(',',':'))
-            self.wfile.write(adventures_data)
+            adventures_data = json.dumps(av_data['adventures'], separators=(',',':'))
+            self.wfile.write('{"adventures":' + adventures_data + '}')
         elif self.path.startswith('/api/adventures/'):
             # TODO find the actual adventure
-            adventure_data = json.dumps({"adventures":[adventures['adventures'][0]]}, separators=(',',':'))
-            self.wfile.write(adventure_data)
+            # adventure_data = json.dumps({"adventures":[adventures['adventures'][0]]}, separators=(',',':'))
+            # self.wfile.write(adventure_data)
+            self.wfile.write('{}')
         elif self.path == '/api/gifts':
-            gifts_data = json.dumps(gifts, separators=(',',':'))
-            self.wfile.write(gifts_data)
+            gifts_data = json.dumps(av_data['gifts'], separators=(',',':'))
+            self.wfile.write('{"gifts":' + gifts_data + '}')
         elif self.path.startswith('/api/gifts/'):
             # TODO find the actual gift
-            gift_data = json.dumps({"gifts":[gifts['gifts'][0]]}, separators=(',',':'))
-            self.wfile.write(gift_data)
+            # gift_data = json.dumps({"gifts":[gifts['gifts'][0]]}, separators=(',',':'))
+            # self.wfile.write(gift_data)
+            self.wfile.write('{}')
         elif self.path == '/api/slots':
-            slots_data = json.dumps(slots, separators=(',',':'))
-            self.wfile.write(slots_data)
+            slots_data = json.dumps(av_data['slots'], separators=(',',':'))
+            self.wfile.write('{"slots":' + slots_data + '}')
 
     def do_POST(self):
         self._set_headers()
@@ -109,11 +98,11 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
         post_data = self._json_loads_byteified(data_string)
 
         if post_data.has_key('adventure'):
-            adventures['adventures'].append(post_data['adventure'])
+            av_data['adventures'].append(post_data['adventure'])
         elif post_data.has_key('gift'):
-            gifts['gifts'].append(post_data['gift'])
+            av_data['gifts'].append(post_data['gift'])
         elif post_data.has_key('slot'):
-            slots['slots'].append(post_data['slot'])
+            av_data['slots'].append(post_data['slot'])
 
         self.wfile.write('{}')
         self._onchange()
@@ -136,20 +125,25 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
         record_id = params[3]
 
         if params[2] == 'adventures':
-            adventure_record = [x for x in adventures['adventures'] if x['id'] == record_id][0]
-            adventures['adventures'].remove(adventure_record)
+            adventure_record = [x for x in av_data['adventures'] if x['id'] == record_id][0]
+            av_data['adventures'].remove(adventure_record)
         elif params[2] == 'gifts':
-            gift_record = [x for x in gifts['gifts'] if x['id'] == record_id][0]
-            gifts['gifts'].remove(gift_record)
+            gift_record = [x for x in av_data['gifts'] if x['id'] == record_id][0]
+            av_data['gifts'].remove(gift_record)
         elif params[2] == 'slots':
-            slot_record = [x for x in slots['slots'] if x['id'] == record_id][0]
-            slots['slots'].remove(slot_record)
+            slot_record = [x for x in av_data['slots'] if x['id'] == record_id][0]
+            av_data['slots'].remove(slot_record)
 
         self.wfile.write('{}')
         self._onchange()
 
-with open(tmpfilepath) as data_file:
-    adventures = json.load(data_file)
+
+try:
+    with open(tmpfilepath) as data_file:
+        av_data = json.load(data_file)
+except IOError:
+    pass
+
 
 HandlerClass = VendingRequestHandler
 ServerClass  = BaseHTTPServer.HTTPServer
