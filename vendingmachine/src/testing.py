@@ -6,6 +6,7 @@ import os
 import serial
 import imp
 import random
+from api.run import ServerController, av_data  
 
 class VendingMachine(object):
     active_ouput_pins = []
@@ -36,8 +37,7 @@ class VendingMachine(object):
         self.printer = Printer()
         self.lighting = LightingController()
         self.__set_accepted_coin(False)
-        self.server = imp.load_source("run", "/home/pi/adventurevending/av-api/run.py")
-
+        self.server = ServerController()
         
     # Private -------------------------------------------
 
@@ -171,7 +171,7 @@ class VendingMachine(object):
         
 
     def dispense_adventure(self):
-        arr = self.server.adventures["adventures"]
+        arr = self.server.av_data["adventures"]
         adventure = random.choice(arr)
         text = "%s\n%s" % (adventure["title"], adventure["desc"])
         self.printer.printAdventure(text)
@@ -181,6 +181,10 @@ class VendingMachine(object):
         self.__start_waiting_for_coin()
         self.__start_waiting_for_boxes()
         self.__start_waiting_for_user()
+        self.server.start()
+
+    def stop(self):
+        self.server.stop()
 
 
 class BinaryBoxController(object):
@@ -302,8 +306,8 @@ class LightingController(object):
     def box_selected(self, box_number):
         self.__send_command(4, box_number)
 
-machine = VendingMachine()
-machine.start()
+#machine = VendingMachine()
+# machine.start()
 
 
 """
