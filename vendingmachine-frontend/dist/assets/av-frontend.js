@@ -24,7 +24,7 @@ define('av-frontend/adapters/adventure', ['exports', 'av-frontend/adapters/base'
 });
 define('av-frontend/adapters/base', ['exports', 'ember-data'], function (exports, _emberData) {
   exports['default'] = _emberData['default'].RESTAdapter.extend({
-    host: 'http://localhost:8080',
+    host: 'http://127.0.0.1:8080',
     namespace: 'api'
   });
 });
@@ -5441,7 +5441,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("av-frontend/app")["default"].create({"name":"av-frontend","version":"0.0.0+b2386300"});
+  require("av-frontend/app")["default"].create({"name":"av-frontend","version":"0.0.0+9b5afb68"});
 }
 
 /* jshint ignore:end */

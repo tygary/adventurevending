@@ -6,17 +6,19 @@ import os
 import serial
 import imp
 import random
-from api.run import ServerController, av_data  
+import textwrap
+from fpdf import FPDF
+import api.run
 
 class VendingMachine(object):
     active_ouput_pins = []
-    active_input_pins = [24]
-    adventure_button_pin = 12
-    coin_input_pin = 16
-    coin_counter_input_pin = 18
+    active_input_pins = []
+    adventure_button_pin = 18
+    coin_input_pin = 21
+    coin_counter_input_pin = 12
     coin_enable_pin = 19
-    coin_status_pin = 26
-    box_select_pins = [22,24]
+    coin_status_pin = 29
+    box_select_pins = [24,26,32]
     waiting_for_coin = False
     accepted_a_coin = False
 
@@ -37,7 +39,7 @@ class VendingMachine(object):
         self.printer = Printer()
         self.lighting = LightingController()
         self.__set_accepted_coin(False)
-        self.server = ServerController()
+        self.server = api.run.ServerController()
         
     # Private -------------------------------------------
 
@@ -51,6 +53,7 @@ class VendingMachine(object):
 
     def __adventure_button_cb(self, pin):
         if self.waiting_to_give_adventure == True:
+            print "Dispensing Adventure"
             self.dispense_adventure()
             self.waiting_to_give_adventure = False
             t = threading.Timer(1.0, self.__allow_dispensing_adventures)
@@ -120,6 +123,8 @@ class VendingMachine(object):
     def __start_waiting_for_boxes(self):
         self.__add_event_detection(self.box_select_pins[0], callback=self.__box_a_pressed)
         self.__add_event_detection(self.box_select_pins[1], callback=self.__box_b_pressed)
+        self.__add_event_detection(self.box_select_pins[2], callback=self.__box_c_pressed)
+
 
     def __box_a_pressed(self, channel):
         print "Box button a pressed"
@@ -131,12 +136,17 @@ class VendingMachine(object):
         self.open_prize_box(2)
         self.lighting.box_selected(2)
 
+    def __box_c_pressed(self, channel):
+        print "Box button b pressed"
+        self.open_prize_box(3)
+        self.lighting.box_selected(3)
+
     def __set_accepted_coin(self, value):
         self.accepted_a_coin = value;
         if value == True:
             self.lighting.coin_received()
         try:
-            GPIO.output(self.coin_status_pin, value)
+            GPIO.output(self.coin_status_pin, value == False)
         except RuntimeError:
             print "Setting coin status"
 
@@ -171,10 +181,9 @@ class VendingMachine(object):
         
 
     def dispense_adventure(self):
-        arr = self.server.av_data["adventures"]
+        arr = api.run.av_data["adventures"]
         adventure = random.choice(arr)
-        text = "%s\n%s" % (adventure["title"], adventure["desc"])
-        self.printer.printAdventure(text)
+        self.printer.printAdventure(adventure)
         self.lighting.dispense_adventure()
 
     def start(self):
@@ -208,6 +217,8 @@ class BinaryBoxController(object):
         self.close_boxes()
 
     def set_box(self, number):
+        #Change the number to counting at 0 instead of 1
+        number = number - 1
         binary_num = '{0:05b}'.format(number);
 
         if binary_num[0] == '1':
@@ -250,28 +261,56 @@ class BinaryBoxController(object):
         except RuntimeError:
             print "Error setting Latch"
 
+class Adventure(FPDF):
+    def header(self):
+        self.image("/home/pi/adventurevending/vendingmachine/printing/icon.jpg", 38, 0, 30, 30)
+        self.ln(30)
+    def footer(self):
+        self.set_y(-15)
+        self.set_font('Arial', 'I', 8)
+        self.cell(0, 10, "Adventure Vending 2016", 0, 0, 'C')
 
 class Printer(object):
     conn = cups.Connection()
     printers = conn.getPrinters()
     printer_name = printers.keys()[0]
-    tmpfilePath = "/home/pi/tmpadventure"
+    tmpfilePath = "/home/pi/tmpadventure.pdf"
+    ready_to_print = True
 
     def __print(self):
+        self.conn.cancelAllJobs(self.printer_name)
         self.conn.printFile(self.printer_name, self.tmpfilePath, "adventure", {})
 
-    def __create_file(self, text):
+    def __create_file(self, adventure):
         try:
             os.remove(self.tmpfilePath)
         except OSError:
             pass
-        f = open(self.tmpfilePath, 'w')
-        f.write(text)
-        f.close()
+        title = adventure["title"].replace("\\n", "\n")
+        desc = adventure["desc"].replace("\\n", "\n")
+        
+        pdf = Adventure()
+        pdf.set_margins(left=18, top=0, right=0)
+        pdf.set_auto_page_break(False)
+        
+        pdf.add_page(orientation='p', format=(90,115))
+        pdf.set_font('Arial', 'B', 16)
+        pdf.multi_cell(0, 6, title, align='C')
+        pdf.ln()
+        pdf.set_font('Arial', '', 12)
+        pdf.multi_cell(0, 6, desc, align='C')
+        pdf.output(self.tmpfilePath, 'F')
 
-    def printAdventure(self, text):
-        self.__create_file(text)
-        self.__print()
+    def __ready_to_print(self):
+        self.ready_to_print = True
+
+    def printAdventure(self, adventure):
+        if self.ready_to_print:
+            self.__create_file(adventure)
+            self.__print()
+            self.ready_to_print = False
+            t = threading.Timer(1.0, self.__ready_to_print)
+            t.start()                                                            
 
 
 "|1:12|"
@@ -291,7 +330,7 @@ class LightingController(object):
             command = "#%s:%s\n" % (mode, box_number)
         else:
             command = "#%s\n" % (mode)
-        #self.conn.write(command)
+        self.conn.write(command)
         #print command
 
     def dispense_prize(self, box_number):

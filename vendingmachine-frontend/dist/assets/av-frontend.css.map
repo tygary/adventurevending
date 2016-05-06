@@ -2,7 +2,7 @@
 	"version": 3,
 	"file": "av-frontend.css",
 	"sources": [
-		"../../sass_compiler-input_base_path-FqTFKMGo.tmp/0/app/styles/app.scss"
+		"../../sass_compiler-input_base_path-0EMh5VEw.tmp/0/app/styles/app.scss"
 	],
 	"sourcesContent": [
 		"tr a {\n  display: block;\n  width: 100%;\n  height: 100%;\n}\n\ntd .glyphicon {\n  opacity: 0.2;\n  transition: opacity 500ms;\n}\n\ntd:hover .glyphicon {\n  opacity: 1;\n\n  &.glyphicon-remove {\n    color: red;\n  }\n  &.glyphicon-plus {\n    color: green;\n  }\n}"

@@ -18,7 +18,7 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
 
     def _set_headers(self):
         self.send_response(200)
-        self.send_header('Access-Control-Allow-Origin', 'http://localhost:4200')
+        self.send_header('Access-Control-Allow-Origin', 'http://127.0.0.1:4200')
         self.send_header('Access-Control-Allow-Headers', 'Content-type')
 
     def _json_loads_byteified(self, json_text):
