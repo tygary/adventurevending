@@ -10,26 +10,31 @@ import textwrap
 from fpdf import FPDF
 import api.run
 
+##-----------------------------------------------------------------------
+#   Vending Machine
+#
+#   Main class, use this to control the vending machine.
+#   Toggle the demo_mode flag to use for the burn
+##-----------------------------------------------------------------------
 class VendingMachine(object):
-    active_ouput_pins = []
-    active_input_pins = []
     adventure_button_pin = 18
-    coin_input_pin = 21
-    coin_counter_input_pin = 12
-    coin_enable_pin = 19
-    coin_status_pin = 29
-    box_select_pins = [24,26,32]
-    waiting_for_coin = False
-    accepted_a_coin = False
-
-    coin_detected = False
-    coin_counted = False
-    coin_pending = False
+    gift_button_pin = 16
+    adventure_type_pin = 22
+    box_select_pins_a = [24,26,32]
+    box_select_pins_b = [36,38,40]
+    out_of_service_pin = 23
+    price_pins = [33,35,37]
+    #Change this to False to use in the real vending machine
+    #Leave as True to use the demo box with three buttons
+    demo_mode = True
 
     box_controller = None
     printer = None
     lighting = None
     server = None
+    adventure_knob_a = None
+    adventure_knob_b = None
+    coin_machine = None
 
     def __init__(self):
         GPIO.cleanup()
@@ -38,18 +43,21 @@ class VendingMachine(object):
         self.box_controller = BinaryBoxController()
         self.printer = Printer()
         self.lighting = LightingController()
-        self.__set_accepted_coin(False)
+        self.adventure_knob_a = BinaryKnob(self.box_select_pins_a)
+        self.adventure_knob_b = BinaryKnob(self.box_select_pins_b)
+        self.coin_machine = CoinMachine(self.lighting, self.demo_mode)
         self.server = api.run.ServerController()
         
     # Private -------------------------------------------
 
     def __init_pins(self):
-        GPIO.setup(self.coin_status_pin, GPIO.OUT)
-        GPIO.setup(self.coin_enable_pin, GPIO.OUT)
-        GPIO.setup(self.coin_input_pin, GPIO.IN)
-        GPIO.setup(self.coin_counter_input_pin, GPIO.IN)
-        GPIO.setup(self.box_select_pins, GPIO.IN)
-        GPIO.setup(self.adventure_button_pin, GPIO.IN)
+        GPIO.setup(self.out_of_service_pin, GPIO.OUT)
+        GPIO.setup(self.price_pins, GPIO.OUT)
+        GPIO.setup(self.adventure_type_pin, GPIO.IN)
+        GPIO.output(self.out_of_service_pin, True)
+        GPIO.output(self.price_pins[0], True)
+        GPIO.output(self.price_pins[1], True)
+        GPIO.output(self.price_pins[2], True)
 
     def __adventure_button_cb(self, pin):
         if self.waiting_to_give_adventure == True:
@@ -64,9 +72,140 @@ class VendingMachine(object):
         
     def __start_waiting_for_user(self):
         print "waiting for user at pin %s" % self.adventure_button_pin
-        self.__add_event_detection(self.adventure_button_pin, callback=self.__adventure_button_cb)
+        add_event_detection(self.adventure_button_pin, callback=self.__adventure_button_cb)
+        add_event_detection(self.gift_button_pin, callback=self.__gift_button_pressed)
+        
         self.__allow_dispensing_adventures()
 
+    def __reset_box(self):
+        self.box_controller.close_boxes()
+
+    def __start_waiting_for_boxes(self):
+        if self.demo_mode == True:
+            add_event_detection(self.box_select_pins_a[0], callback=self.__box_a_pressed)
+            add_event_detection(self.box_select_pins_a[1], callback=self.__box_b_pressed)
+            add_event_detection(self.box_select_pins_a[2], callback=self.__box_c_pressed)
+
+
+    def __box_a_pressed(self, channel):
+        print "Box button a pressed"
+        self.open_prize_box(1)
+        self.lighting.box_selected(1)
+
+    def __box_b_pressed(self, channel):
+        print "Box button b pressed"
+        self.open_prize_box(2)
+        self.lighting.box_selected(2)
+
+    def __box_c_pressed(self, channel):
+        print "Box button b pressed"
+        self.open_prize_box(3)
+        self.lighting.box_selected(3)
+
+    def __gift_button_pressed(self, pin):
+        print "Gift Button Pressed"
+        selector_a = self.adventure_knob_a.get_value()
+        selector_b = self.adventure_knob_b.get_value()
+        #TODO Add some logic here deciding how these two knobs pick a box
+        self.open_prize_box(selector_a)
+        
+
+    # Public --------------------------------------------
+ 
+    def open_prize_box(self, box_number):
+        print "Selected box %s" % box_number
+        #For now, all boxes cost one. TODO: Hook this up with prices
+        box_cost = 1
+        if (self.coin_machine.current_value >= box_cost):
+            self.box_controller.set_box(box_number)
+            self.box_controller.open_current_box()
+            self.lighting.dispense_prize(box_number)
+            self.coin_machine.subtract_coins(box_cost)
+            if self.demo_mode == True:
+                self.coin_machine.clear_coins()
+            print "Retrieve the prize from box %s" % box_number
+            t = threading.Timer(5.0, self.__reset_box)
+            t.start()
+        
+
+    def dispense_adventure(self):
+        adventure_type = GPIO.input(self.adventure_type_pin)
+        #TODO: Use the adventure type to pick an adventure
+        arr = api.run.av_data["adventures"]
+        adventure = random.choice(arr)
+        self.printer.printAdventure(adventure)
+        self.lighting.dispense_adventure()
+
+    def start(self):
+        self.__start_waiting_for_boxes()
+        self.__start_waiting_for_user()
+        self.server.start()
+
+    def stop(self):
+        self.server.stop()
+
+
+def add_event_detection(pin, callback, bothdirections=False):
+    try:
+        GPIO.setup(pin, GPIO.IN)
+        GPIO.remove_event_detect(pin)
+        GPIO.add_event_detect(pin, GPIO.FALLING, callback=callback)
+        if bothdirections:
+            GPIO.add_event_detect(pin, GPIO.RISING, callback=callback)    
+    except RuntimeError:
+        try:
+            GPIO.remove_event_detect(pin)
+            GPIO.add_event_detect(pin, GPIO.FALLING, callback=callback)
+            if bothdirections:
+                GPIO.add_event_detect(pin, GPIO.RISING, callback=callback)  
+        except RuntimeError:
+            pass
+
+##-----------------------------------------------------------------------
+# Coin Machine
+##-----------------------------------------------------------------------
+class CoinMachine(object):
+    coin_input_pin = 21
+    coin_counter_input_pin = 12
+    coin_counter_pins = [29,31]
+
+    lighting = None
+    
+    waiting_for_coin = False
+    accepted_a_coin = False
+
+    coin_detected = False
+    coin_counted = False
+    coin_pending = False
+    demo_mode = False
+
+    current_value = 0
+
+    def __init__(self, lighting, demo_mode=False):
+        self.demo_mode = demo_mode
+        self.lighting = lighting
+        GPIO.setup(self.coin_counter_pins, GPIO.OUT)
+        GPIO.setup(self.coin_input_pin, GPIO.IN)
+        GPIO.setup(self.coin_counter_input_pin, GPIO.IN)
+        self.__set_accepted_coin(False)
+        self.start_waiting_for_coin()
+
+    # Public --------------------------------------------
+
+    def start_waiting_for_coin(self):
+        print "waiting for coin at pin %s" % self.coin_input_pin
+        add_event_detection(self.coin_input_pin, callback=self.__coin_cb)
+        add_event_detection(self.coin_counter_input_pin, callback=self.__coin_counter_cb)
+        self.waiting_for_coin = True
+
+    def clear_coins(self):
+        self.__set_coin_count(0)
+
+    def subtract_coins(self, num):
+        self.__set_coin_count(self.current_value - num)
+
+    # Private -------------------------------------------
+    
     def __coin_cb(self, channel):
         if self.waiting_for_coin == True:
             print "coin slot triggered"
@@ -92,7 +231,6 @@ class VendingMachine(object):
         #Fake the coin detection for now, it's broken
         if self.coin_detected == True and self.coin_counted == True:
             print "Got a coin, Pick a box"
-            self.__deny_coins()
             self.__set_accepted_coin(True)
         else:
             print "Not accepted"
@@ -100,102 +238,46 @@ class VendingMachine(object):
         self.coin_counted = False
         self.coin_pending = False
 
-    def __start_waiting_for_coin(self):
-        print "waiting for coin at pin %s" % self.coin_input_pin
-        self.__add_event_detection(self.coin_input_pin, callback=self.__coin_cb)
-        self.__add_event_detection(self.coin_counter_input_pin, callback=self.__coin_counter_cb)
-        self.__wait_for_coin()
-
-    def __reset_box(self):
-        self.box_controller.close_boxes()
-        #self.__wait_for_coin()
-        #t = threading.Timer(1.0, self._wait_for_coin)
-        #t.start()
-
     def __wait_for_coin(self):
         self.waiting_for_coin = True
-        GPIO.output(self.coin_enable_pin, 1)
-
-    def __deny_coins(self):
-        self.waiting_for_coin = False
-        GPIO.output(self.coin_enable_pin, 0)
-
-    def __start_waiting_for_boxes(self):
-        self.__add_event_detection(self.box_select_pins[0], callback=self.__box_a_pressed)
-        self.__add_event_detection(self.box_select_pins[1], callback=self.__box_b_pressed)
-        self.__add_event_detection(self.box_select_pins[2], callback=self.__box_c_pressed)
-
-
-    def __box_a_pressed(self, channel):
-        print "Box button a pressed"
-        self.open_prize_box(1)
-        self.lighting.box_selected(1)
-
-    def __box_b_pressed(self, channel):
-        print "Box button b pressed"
-        self.open_prize_box(2)
-        self.lighting.box_selected(2)
-
-    def __box_c_pressed(self, channel):
-        print "Box button b pressed"
-        self.open_prize_box(3)
-        self.lighting.box_selected(3)
 
     def __set_accepted_coin(self, value):
         self.accepted_a_coin = value;
         if value == True:
             self.lighting.coin_received()
         try:
-            GPIO.output(self.coin_status_pin, value == False)
+            if self.demo_mode == True:
+                #If it's demo mode, then we should only allow 1 credit
+                self.__set_coin_count(1)
+            else:
+                self.__set_coin_count(self.current_value + 1)
         except RuntimeError:
             print "Setting coin status"
 
-    def __add_event_detection(self, pin, callback):
-        try:
-            GPIO.setup(pin, GPIO.IN)
-            GPIO.remove_event_detect(pin)
-            GPIO.add_event_detect(pin, GPIO.FALLING, callback=callback)
-        except RuntimeError:
-            try:
-                GPIO.remove_event_detect(pin)
-                GPIO.add_event_detect(pin, GPIO.FALLING, callback=callback)
-            except RuntimeError:
-                pass
-
-            
-
-    # Public --------------------------------------------
- 
-    def open_prize_box(self, box_number):
-        print "Selected box %s" % box_number
-        if (self.accepted_a_coin == True):
-            self.__wait_for_coin()
-            self.box_controller.set_box(box_number)
-            self.box_controller.open_current_box()
-            self.lighting.dispense_prize(box_number)
-            print "Retrieve the prize from box %s" % box_number
-            t = threading.Timer(5.0, self.__reset_box)
-            t.start()
-            #self.box_controller.close_boxes()
-        self.__set_accepted_coin(False)
+    def __set_coin_count(self, count):
+        #Don't allow more than three credits
+        if count < 0:
+            count = 0
+        if count > 3:
+            count = 3
+        self.current_value = count
+        if count == 3:
+            GPIO.output(self.coin_counter_pins[0], True)
+            GPIO.output(self.coin_counter_pins[1], True)
+        elif count == 2:
+            GPIO.output(self.coin_counter_pins[0], False)
+            GPIO.output(self.coin_counter_pins[1], True)
+        elif count == 1:
+            GPIO.output(self.coin_counter_pins[0], True)
+            GPIO.output(self.coin_counter_pins[1], False)
+        else:
+            GPIO.output(self.coin_counter_pins[0], False)
+            GPIO.output(self.coin_counter_pins[1], False)
         
 
-    def dispense_adventure(self):
-        arr = api.run.av_data["adventures"]
-        adventure = random.choice(arr)
-        self.printer.printAdventure(adventure)
-        self.lighting.dispense_adventure()
-
-    def start(self):
-        self.__start_waiting_for_coin()
-        self.__start_waiting_for_boxes()
-        self.__start_waiting_for_user()
-        self.server.start()
-
-    def stop(self):
-        self.server.stop()
-
-
+##-----------------------------------------------------------------------
+#   Binary Box Controller
+##-----------------------------------------------------------------------
 class BinaryBoxController(object):
     binary_output_pins = [3,5,7,11]
     mux_enable_output_pins = [13,15]
@@ -261,6 +343,44 @@ class BinaryBoxController(object):
         except RuntimeError:
             print "Error setting Latch"
 
+##-----------------------------------------------------------------------
+#   Binary Knob
+#
+#   Controls one 3 bit binary knob with the given pins
+##-----------------------------------------------------------------------
+class BinaryKnob(object):
+    value = 0
+    pins = []
+    
+    def __init__(self, pins):
+        self.pins = pins
+        add_event_detection(self.pins[0], self.__handle_change, True)
+        add_event_detection(self.pins[1], self.__handle_change, True)
+        add_event_detection(self.pins[2], self.__handle_change, True)
+        self.__handle_change
+
+    def get_value(self):
+        self.__handle_change(1)
+        return self.value
+
+    def __handle_change(self, pin):
+        a = GPIO.input(self.pins[0])
+        b = GPIO.input(self.pins[1])
+        c = GPIO.input(self.pins[2])
+        self.value = 1
+        if a == True:
+            self.value += 1
+        if b == True:
+            self.value += 2
+        if c == True:
+            self.value += 4
+        print "Selected %s" % self.value
+       
+##-----------------------------------------------------------------------
+#   Adventure
+#
+#   Basic PDF format for making an adventure
+##-----------------------------------------------------------------------
 class Adventure(FPDF):
     def header(self):
         self.image("/home/pi/adventurevending/vendingmachine/printing/icon.jpg", 38, 0, 30, 30)
@@ -268,8 +388,14 @@ class Adventure(FPDF):
     def footer(self):
         self.set_y(-15)
         self.set_font('Arial', 'I', 8)
-        self.cell(0, 10, "Adventure Vending 2016", 0, 0, 'C')
+        self.multi_cell(0, 10, "Adventure Vending 2016\nwww.lamearts.org", 0, 0, 'C')
 
+##-----------------------------------------------------------------------
+#   Printer
+#
+#   Printer class for printing out adventures
+#   printer.printAdventure(text)
+##-----------------------------------------------------------------------
 class Printer(object):
     conn = cups.Connection()
     printers = conn.getPrinters()
@@ -312,14 +438,19 @@ class Printer(object):
             t = threading.Timer(1.0, self.__ready_to_print)
             t.start()                                                            
 
-
-"|1:12|"
-#Modes
-#1 Dispense Prize (box_number)
-#2 Coin input
-#3 Dispense Adventure
-#4 Select a box (box_number)
-
+##-----------------------------------------------------------------------
+#   Lighting Controller
+#
+#   Controller for communicating over serial with the lighting
+#   raspberry pi.
+#
+#   This is the format sent over serial: "|1:12|"
+#   Modes
+#   1 Dispense Prize (box_number)
+#   2 Coin input
+#   3 Dispense Adventure
+#   4 Select a box (box_number)
+##-----------------------------------------------------------------------
 class LightingController(object):
     conn = serial.Serial("/dev/ttyAMA0")
     conn.baudrate = 9600
@@ -345,20 +476,13 @@ class LightingController(object):
     def box_selected(self, box_number):
         self.__send_command(4, box_number)
 
-#machine = VendingMachine()
-# machine.start()
 
 
 """
   TODO
-Support 27 Boxes
 Support Using the Have a way to input an adventure and control which adventures you get
- - We need an easy way to input them into the machine
  - We need a Enable/Disable certain adventure  (scheduled)
  - Each adventure can only be dispensed a certain number of times
- - Build a small UI to control the adventures
-
-Control the Lighting
 
 Play Sounds
 
