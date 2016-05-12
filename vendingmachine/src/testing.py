@@ -36,6 +36,9 @@ class VendingMachine(object):
     adventure_knob_b = None
     coin_machine = None
 
+    adventure_count = 0
+    gift_count = 0
+    
     def __init__(self):
         GPIO.cleanup()
         GPIO.setmode(GPIO.BOARD)
@@ -120,10 +123,12 @@ class VendingMachine(object):
             self.box_controller.set_box(box_number)
             self.box_controller.open_current_box()
             self.lighting.dispense_prize(box_number)
+            self.gift_count = self.gift_count + 1
             self.coin_machine.subtract_coins(box_cost)
             if self.demo_mode == True:
                 self.coin_machine.clear_coins()
             print "Retrieve the prize from box %s" % box_number
+            print "Gift %s" % self.gift_count
             t = threading.Timer(5.0, self.__reset_box)
             t.start()
         
@@ -133,8 +138,10 @@ class VendingMachine(object):
         #TODO: Use the adventure type to pick an adventure
         arr = api.run.av_data["adventures"]
         adventure = random.choice(arr)
+        self.adventure_count = self.adventure_count + 1
         self.printer.printAdventure(adventure)
         self.lighting.dispense_adventure()
+        print "Adventure #%s" % self.adventure_count
 
     def start(self):
         self.__start_waiting_for_boxes()
@@ -187,7 +194,7 @@ class CoinMachine(object):
         GPIO.setup(self.coin_counter_pins, GPIO.OUT)
         GPIO.setup(self.coin_input_pin, GPIO.IN)
         GPIO.setup(self.coin_counter_input_pin, GPIO.IN)
-        self.__set_accepted_coin(False)
+        self.__set_coin_count(0)
         self.start_waiting_for_coin()
 
     # Public --------------------------------------------
@@ -241,18 +248,19 @@ class CoinMachine(object):
     def __wait_for_coin(self):
         self.waiting_for_coin = True
 
+
     def __set_accepted_coin(self, value):
         self.accepted_a_coin = value;
         if value == True:
             self.lighting.coin_received()
-        try:
-            if self.demo_mode == True:
-                #If it's demo mode, then we should only allow 1 credit
-                self.__set_coin_count(1)
-            else:
-                self.__set_coin_count(self.current_value + 1)
-        except RuntimeError:
-            print "Setting coin status"
+            try:
+                if self.demo_mode == True:
+                    #If it's demo mode, then we should only allow 1 credit
+                    self.__set_coin_count(1)
+                else:
+                    self.__set_coin_count(self.current_value + 1)
+            except RuntimeError:
+                print "Setting coin status"
 
     def __set_coin_count(self, count):
         #Don't allow more than three credits
@@ -388,7 +396,7 @@ class Adventure(FPDF):
     def footer(self):
         self.set_y(-15)
         self.set_font('Arial', 'I', 8)
-        self.multi_cell(0, 10, "Adventure Vending 2016\nwww.lamearts.org", 0, 0, 'C')
+        self.multi_cell(0, 5, "Adventure Vending 2016\nwww.lamearts.org", 0, 'C')
 
 ##-----------------------------------------------------------------------
 #   Printer
@@ -419,7 +427,7 @@ class Printer(object):
         pdf.set_margins(left=18, top=0, right=0)
         pdf.set_auto_page_break(False)
         
-        pdf.add_page(orientation='p', format=(90,115))
+        pdf.add_page(orientation='P', format=(90,115))
         pdf.set_font('Arial', 'B', 16)
         pdf.multi_cell(0, 6, title, align='C')
         pdf.ln()
