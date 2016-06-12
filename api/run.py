@@ -32,6 +32,7 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
     def _update_adventure(self, adventure, newadventure):
         adventure['title'] = newadventure['title']
         adventure['desc'] = newadventure['desc']
+        adventure['enabled'] = newadventure['enabled']
 
     def _onchange(self):
         try:

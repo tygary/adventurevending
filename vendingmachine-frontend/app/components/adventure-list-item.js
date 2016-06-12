@@ -17,10 +17,7 @@ export default Ember.Component.extend({
       this.set('isEditing', false);
     },
     save() {
-      this.get('store').findRecord('adventure', this.attrs.adventure.value.id).then(function(adventure) {
-        console.log(`title: ${adventure.get('title')}`);
-        console.log(`desc: ${adventure.get('desc')}`);
-
+      this.get('store').findRecord('adventure', this.attrs.adventure.value.id).then((adventure) => {
         adventure.save();
       });
 
