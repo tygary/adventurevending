@@ -1,30 +1,18 @@
-<h3>Adventures</h3>
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>id</th>
       <th>Title</th>
       <th>Description</th>
+      <th colspan="2">Actions</th>
     </tr>
   </thead>
   <tbody>
     {{#each attrs.model.adventures as |adventure|}}
-    <tr>
-      <td>{{adventure.id}}</td>
-      <td>{{adventure.title}}</td>
-      <td>{{adventure.desc}}</td>
-      <td>
-        {{#link-to 'edit-adventure' adventure.id}}
-          <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-        {{/link-to}}
-      </td>
-      <td {{action "remove" adventure.id}}>
-        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-      </td>
-    </tr>
+      {{adventure-list-item
+        adventure=(mut adventure)
+        remove=(action "remove" adventure.id)}}
     {{/each}}
     <tr>
-      <td>#</td>
       <td>
         {{input
           type="text"

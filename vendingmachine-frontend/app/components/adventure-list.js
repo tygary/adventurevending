@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   tagName: 'div',
-  classNames: ['col-md-6'],
+  classNames: ['adventure-list', 'col-md-10', 'col-md-offset-1'],
 
   store: Ember.inject.service(),
 

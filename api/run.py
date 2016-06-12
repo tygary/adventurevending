@@ -20,12 +20,18 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', 'http://127.0.0.1:4200')
         self.send_header('Access-Control-Allow-Headers', 'Content-type')
+        # tell ember it can delete, put, and post
+        self.send_header('Access-Control-Allow-Methods', 'OPTIONS,GET,DELETE,POST,PUT')
 
     def _json_loads_byteified(self, json_text):
         return self._byteify(
             json.loads(json_text, object_hook=self._byteify),
             ignore_dicts=True
         )
+
+    def _update_adventure(self, adventure, newadventure):
+        adventure['title'] = newadventure['title']
+        adventure['desc'] = newadventure['desc']
 
     def _onchange(self):
         try:
@@ -61,10 +67,16 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
             adventures_data = json.dumps(av_data['adventures'], separators=(',',':'))
             self.wfile.write('{"adventures":' + adventures_data + '}')
         elif self.path.startswith('/api/adventures/'):
-            # TODO find the actual adventure
-            # adventure_data = json.dumps({"adventures":[adventures['adventures'][0]]}, separators=(',',':'))
-            # self.wfile.write(adventure_data)
-            self.wfile.write('{}')
+            adventure_to_get = None
+            id_to_get = self.path[16:]
+
+            for adventure in av_data['adventures']:
+                if adventure['id'] == id_to_get:
+                    adventure_to_get = adventure
+                    break
+
+            if adventure_to_get != None:
+                self.wfile.write(json.dumps({"adventures":[adventure_to_get]}, separators=(',',':')))
         elif self.path == '/api/slots':
             slots_data = json.dumps(av_data['slots'], separators=(',',':'))
             self.wfile.write('{"slots":' + slots_data + '}')
@@ -85,12 +97,28 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
         self.wfile.write('{}')
         self._onchange()
 
+    def do_PUT(self):
+        self._set_headers()
+        self.send_header('Content-type', 'application/json')
+        self.end_headers()
+
+        data_string = self.rfile.read(int(self.headers['Content-Length']))
+        put_data = self._json_loads_byteified(data_string)
+
+        if self.path.startswith('/api/adventures/'):
+            id_to_update = self.path[16:]
+
+            for adventure in av_data['adventures']:
+                if adventure['id'] == id_to_update:
+                    self._update_adventure(adventure, put_data['adventure'])
+
+        self.wfile.write('{}')
+        self._onchange()
+
     def do_OPTIONS(self):
         self._set_headers()
         # Send empty JSON object to appease ember
         self.send_header("Content-Length", 0)
-        # Ember will only make OPTIONS requests when asking to delete
-        self.send_header("Access-Control-Allow-Methods", "DELETE,POST")
         self.end_headers()
 
     def do_DELETE(self):
