@@ -8,6 +8,14 @@ export default Ember.Component.extend({
 
   newAdventure: {},
 
+  currentSort: null,
+
+  init() {
+    this._super(...arguments);
+
+    this.set('adventures', this.attrs.adventures.value);
+  },
+
   actions: {
     add() {
       let title = this.get('newAdventure.title');
@@ -26,6 +34,17 @@ export default Ember.Component.extend({
       let record = store.peekRecord('adventure', id);
       store.deleteRecord(record);
       record.save();
+    },
+    sort(property, toReverse) {
+      this.set('currentSort', property);
+
+      let sortedAdventures = this.get('adventures').sortBy(property);
+
+      if (toReverse) {
+        sortedAdventures = sortedAdventures.reverse();
+      }
+
+      this.set('adventures', sortedAdventures);
     }
   }
 });

@@ -1,14 +1,14 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>Title</th>
-      <th>Description</th>
-      <th title="Whether or not the adventure should be printed">Enabled</th>
+      {{#column-head sort=(action "sort") sortBy="title" currentSort=currentSort}}Title{{/column-head}}
+      {{#column-head sort=(action "sort") sortBy="desc" currentSort=currentSort}}Description{{/column-head}}
+      {{#column-head sort=(action "sort") sortBy="enabled" currentSort=currentSort}}Enabled{{/column-head}}
       <th colspan="2">Actions</th>
     </tr>
   </thead>
   <tbody>
-    {{#each attrs.model.adventures as |adventure|}}
+    {{#each adventures as |adventure|}}
       {{adventure-list-item
         adventure=(mut adventure)
         remove=(action "remove" adventure.id)}}
