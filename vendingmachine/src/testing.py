@@ -7,7 +7,7 @@ import random
 import textwrap
 from vendingmachine.src.printer import Printer
 from vendingmachine.src.coinmachine import CoinMachine
-from vendingmachine.src.addeventdetection import addeventdetection
+from vendingmachine.src.addeventdetection import *
 import api.run
 
 ##-----------------------------------------------------------------------
