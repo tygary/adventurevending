@@ -7,6 +7,7 @@ import random
 import textwrap
 from vendingmachine.src.printer import Printer
 from vendingmachine.src.coinmachine import CoinMachine
+from vendingmachine.src.addeventdetection import addeventdetection
 import api.run
 
 ##-----------------------------------------------------------------------
@@ -149,23 +150,6 @@ class VendingMachine(object):
 
     def stop(self):
         self.server.stop()
-
-
-def add_event_detection(pin, callback, bothdirections=False):
-    try:
-        GPIO.setup(pin, GPIO.IN)
-        GPIO.remove_event_detect(pin)
-        GPIO.add_event_detect(pin, GPIO.FALLING, callback=callback)
-        if bothdirections:
-            GPIO.add_event_detect(pin, GPIO.RISING, callback=callback)
-    except RuntimeError:
-        try:
-            GPIO.remove_event_detect(pin)
-            GPIO.add_event_detect(pin, GPIO.FALLING, callback=callback)
-            if bothdirections:
-                GPIO.add_event_detect(pin, GPIO.RISING, callback=callback)
-        except RuntimeError:
-            pass
 
 
 ##-----------------------------------------------------------------------

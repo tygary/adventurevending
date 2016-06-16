@@ -1,4 +1,5 @@
 import RPi.GPIO as GPIO
+from vendingmachine.src.addeventdetection import addeventdetection
 
 ##-----------------------------------------------------------------------
 # Coin Machine
