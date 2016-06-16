@@ -1,8 +1,6 @@
 import RPi.GPIO as GPIO
 import time
 import threading
-import cups
-import os
 import serial
 import imp
 import random

@@ -1,3 +1,8 @@
+import cups
+import os
+from vendingmachine.src.testing import Adventure
+import threading
+
 ##-----------------------------------------------------------------------
 #   Printer
 #
