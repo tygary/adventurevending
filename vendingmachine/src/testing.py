@@ -7,6 +7,7 @@ import serial
 import imp
 import random
 import textwrap
+from vendingmachine.src.printer import Printer
 from fpdf import FPDF
 import api.run
 
@@ -38,7 +39,7 @@ class VendingMachine(object):
 
     adventure_count = 0
     gift_count = 0
-    
+
     def __init__(self):
         GPIO.cleanup()
         GPIO.setmode(GPIO.BOARD)
@@ -50,7 +51,7 @@ class VendingMachine(object):
         self.adventure_knob_b = BinaryKnob(self.box_select_pins_b)
         self.coin_machine = CoinMachine(self.lighting, self.demo_mode)
         self.server = api.run.ServerController()
-        
+
     # Private -------------------------------------------
 
     def __init_pins(self):
@@ -72,12 +73,12 @@ class VendingMachine(object):
 
     def __allow_dispensing_adventures(self):
         self.waiting_to_give_adventure = True
-        
+
     def __start_waiting_for_user(self):
         print "waiting for user at pin %s" % self.adventure_button_pin
         add_event_detection(self.adventure_button_pin, callback=self.__adventure_button_cb)
         add_event_detection(self.gift_button_pin, callback=self.__gift_button_pressed)
-        
+
         self.__allow_dispensing_adventures()
 
     def __reset_box(self):
@@ -111,10 +112,10 @@ class VendingMachine(object):
         selector_b = self.adventure_knob_b.get_value()
         #TODO Add some logic here deciding how these two knobs pick a box
         self.open_prize_box(selector_a)
-        
+
 
     # Public --------------------------------------------
- 
+
     def open_prize_box(self, box_number):
         print "Selected box %s" % box_number
         #For now, all boxes cost one. TODO: Hook this up with prices
@@ -131,7 +132,7 @@ class VendingMachine(object):
             print "Gift %s" % self.gift_count
             t = threading.Timer(5.0, self.__reset_box)
             t.start()
-        
+
 
     def dispense_adventure(self):
         adventure_type = GPIO.input(self.adventure_type_pin)
@@ -158,13 +159,13 @@ def add_event_detection(pin, callback, bothdirections=False):
         GPIO.remove_event_detect(pin)
         GPIO.add_event_detect(pin, GPIO.FALLING, callback=callback)
         if bothdirections:
-            GPIO.add_event_detect(pin, GPIO.RISING, callback=callback)    
+            GPIO.add_event_detect(pin, GPIO.RISING, callback=callback)
     except RuntimeError:
         try:
             GPIO.remove_event_detect(pin)
             GPIO.add_event_detect(pin, GPIO.FALLING, callback=callback)
             if bothdirections:
-                GPIO.add_event_detect(pin, GPIO.RISING, callback=callback)  
+                GPIO.add_event_detect(pin, GPIO.RISING, callback=callback)
         except RuntimeError:
             pass
 
@@ -177,7 +178,7 @@ class CoinMachine(object):
     coin_counter_pins = [29,31]
 
     lighting = None
-    
+
     waiting_for_coin = False
     accepted_a_coin = False
 
@@ -212,7 +213,7 @@ class CoinMachine(object):
         self.__set_coin_count(self.current_value - num)
 
     # Private -------------------------------------------
-    
+
     def __coin_cb(self, channel):
         if self.waiting_for_coin == True:
             print "coin slot triggered"
@@ -281,7 +282,7 @@ class CoinMachine(object):
         else:
             GPIO.output(self.coin_counter_pins[0], False)
             GPIO.output(self.coin_counter_pins[1], False)
-        
+
 
 ##-----------------------------------------------------------------------
 #   Binary Box Controller
@@ -359,7 +360,7 @@ class BinaryBoxController(object):
 class BinaryKnob(object):
     value = 0
     pins = []
-    
+
     def __init__(self, pins):
         self.pins = pins
         add_event_detection(self.pins[0], self.__handle_change, True)
@@ -383,7 +384,7 @@ class BinaryKnob(object):
         if c == True:
             self.value += 4
         print "Selected %s" % self.value
-       
+
 ##-----------------------------------------------------------------------
 #   Adventure
 #
@@ -398,53 +399,6 @@ class Adventure(FPDF):
         self.set_font('Arial', 'I', 8)
         self.multi_cell(0, 5, "Adventure Vending 2016\nwww.lamearts.org", 0, 'C')
 
-##-----------------------------------------------------------------------
-#   Printer
-#
-#   Printer class for printing out adventures
-#   printer.printAdventure(text)
-##-----------------------------------------------------------------------
-class Printer(object):
-    conn = cups.Connection()
-    printers = conn.getPrinters()
-    printer_name = printers.keys()[0]
-    tmpfilePath = "/home/pi/tmpadventure.pdf"
-    ready_to_print = True
-
-    def __print(self):
-        self.conn.cancelAllJobs(self.printer_name)
-        self.conn.printFile(self.printer_name, self.tmpfilePath, "adventure", {})
-
-    def __create_file(self, adventure):
-        try:
-            os.remove(self.tmpfilePath)
-        except OSError:
-            pass
-        title = adventure["title"].replace("\\n", "\n")
-        desc = adventure["desc"].replace("\\n", "\n")
-        
-        pdf = Adventure()
-        pdf.set_margins(left=18, top=0, right=0)
-        pdf.set_auto_page_break(False)
-        
-        pdf.add_page(orientation='P', format=(90,115))
-        pdf.set_font('Arial', 'B', 16)
-        pdf.multi_cell(0, 6, title, align='C')
-        pdf.ln()
-        pdf.set_font('Arial', '', 12)
-        pdf.multi_cell(0, 6, desc, align='C')
-        pdf.output(self.tmpfilePath, 'F')
-
-    def __ready_to_print(self):
-        self.ready_to_print = True
-
-    def printAdventure(self, adventure):
-        if self.ready_to_print:
-            self.__create_file(adventure)
-            self.__print()
-            self.ready_to_print = False
-            t = threading.Timer(1.0, self.__ready_to_print)
-            t.start()                                                            
 
 ##-----------------------------------------------------------------------
 #   Lighting Controller
