@@ -6,7 +6,6 @@ import imp
 import random
 import textwrap
 from vendingmachine.src.printer import Printer
-from fpdf import FPDF
 import api.run
 
 ##-----------------------------------------------------------------------
