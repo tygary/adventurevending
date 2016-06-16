@@ -1,6 +1,6 @@
 import cups
 import os
-from vendingmachine.src.testing import Adventure
+from vendingmachine.src.adventure import Adventure
 import threading
 
 ##-----------------------------------------------------------------------
