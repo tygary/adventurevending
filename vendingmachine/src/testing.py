@@ -132,12 +132,20 @@ class VendingMachine(object):
             t = threading.Timer(5.0, self.__reset_box)
             t.start()
 
+    def get_adventure(self):
+        adventures = api.run.av_data["adventures"]
+        enabled_adventures = []
+
+        for adventure in adventures:
+            if (not 'enabled' in adventure) or adventure['enabled'] == True:
+                enabled_adventures.append(adventure)
+
+        return random.choice(enabled_adventures)
 
     def dispense_adventure(self):
         adventure_type = GPIO.input(self.adventure_type_pin)
         #TODO: Use the adventure type to pick an adventure
-        arr = api.run.av_data["adventures"]
-        adventure = random.choice(arr)
+        adventure = self.get_adventure()
         self.adventure_count = self.adventure_count + 1
         self.printer.printAdventure(adventure)
         self.lighting.dispense_adventure()
