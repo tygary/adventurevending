@@ -149,7 +149,7 @@ class VendingMachine(object):
         #TODO: Use the adventure type to pick an adventure
         adventure = self.get_adventure()
         self.adventure_count = self.adventure_count + 1
-        # self.printer.printAdventure(adventure)
+        self.printer.printAdventure(adventure)
         self.lighting.dispense_adventure()
         print "Adventure #%s" % self.adventure_count
 
