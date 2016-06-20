@@ -14,6 +14,11 @@ export default Ember.Component.extend({
     this._super(...arguments);
 
     this.set('adventures', this.attrs.adventures.value);
+    this.set('viewConfig', new Ember.Object());
+
+    this.set('viewConfig.showTitle', true);
+    this.set('viewConfig.showDescription', true);
+    this.set('viewConfig.showEnabled', true);
   },
 
   actions: {
@@ -45,6 +50,9 @@ export default Ember.Component.extend({
       }
 
       this.set('adventures', sortedAdventures);
+    },
+    toggleProperty(property) {
+      this.toggleProperty(property);
     }
   }
 });

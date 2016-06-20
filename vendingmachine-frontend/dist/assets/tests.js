@@ -52,6 +52,15 @@ define('av-frontend/tests/components/adventure-list.jshint', ['exports'], functi
     assert.ok(true, 'components/adventure-list.js should pass jshint.');
   });
 });
+define('av-frontend/tests/components/bootstrap/bootstrap-dropdown.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint - components/bootstrap/bootstrap-dropdown.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'components/bootstrap/bootstrap-dropdown.js should pass jshint.');
+  });
+});
 define('av-frontend/tests/components/column-head.jshint', ['exports'], function (exports) {
   'use strict';
 

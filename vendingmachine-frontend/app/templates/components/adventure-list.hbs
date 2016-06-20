@@ -1,9 +1,20 @@
+{{bootstrap.bootstrap-dropdown
+  toggleTitle=(action toggleProperty "viewConfig.showTitle")
+  toggleDescription=(action toggleProperty "viewConfig.showDescription")
+  toggleEnabled=(action toggleProperty "viewConfig.showEnabled")}}
+
 <table class="table table-striped">
   <thead>
     <tr>
-      {{#column-head sort=(action "sort") sortBy="title" currentSort=currentSort}}Title{{/column-head}}
-      {{#column-head sort=(action "sort") sortBy="desc" currentSort=currentSort}}Description{{/column-head}}
-      {{#column-head sort=(action "sort") sortBy="enabled" currentSort=currentSort}}Enabled{{/column-head}}
+      {{#if viewConfig.showTitle}}
+        {{#column-head sort=(action "sort") sortBy="title" currentSort=currentSort}}Title{{/column-head}}
+      {{/if}}
+      {{#if viewConfig.showDescription}}
+        {{#column-head sort=(action "sort") sortBy="desc" currentSort=currentSort}}Description{{/column-head}}
+      {{/if}}
+      {{#if viewConfig.showEnabled}}
+        {{#column-head sort=(action "sort") sortBy="enabled" currentSort=currentSort}}Enabled{{/column-head}}
+      {{/if}}
       <th colspan="2">Actions</th>
     </tr>
   </thead>
@@ -11,23 +22,30 @@
     {{#each adventures as |adventure|}}
       {{adventure-list-item
         adventure=(mut adventure)
+        viewConfig=viewConfig
         remove=(action "remove" adventure.id)}}
     {{/each}}
     <tr>
-      <td>
-        {{input
-          type="text"
-          placeholder="Title"
-          value=newAdventure.title}}
-      </td>
-      <td>
-        {{input
-          type="text"
-          placeholder="Description"
-          value=newAdventure.desc}}
-      </td>
-      <td colspan="2"></td>
-      <td>
+      {{#if viewConfig.showTitle}}
+        <td>
+          {{input
+            type="text"
+            placeholder="Title"
+            value=newAdventure.title}}
+        </td>
+      {{/if}}
+      {{#if viewConfig.showDescription}}
+        <td>
+          {{input
+            type="text"
+            placeholder="Description"
+            value=newAdventure.desc}}
+        </td>
+      {{/if}}
+      {{#if viewConfig.showEnabled}}
+        <td></td>
+      {{/if}}
+      <td colspan="2">
         <span {{action "add"}} class="glyphicon glyphicon-plus" aria-hidden="true"></span>
       </td>
     </tr>

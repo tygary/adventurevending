@@ -36,4 +36,7 @@
     display: inline-block;
     width: 14px; }
 
+.bootstrap-dropdown .dropdown-menu {
+  display: block; }
+
 /*# sourceMappingURL=av-frontend.css.map */
