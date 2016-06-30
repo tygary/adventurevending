@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 import threading
 from vendingmachine.src.addeventdetection import *
+from logger.logger import Logger
 
 ##-----------------------------------------------------------------------
 # Coin Machine
@@ -22,7 +23,10 @@ class CoinMachine(object):
 
     current_value = 0
 
+    logger = None
+
     def __init__(self, lighting, demo_mode=False):
+        self.logger = Logger()
         self.demo_mode = demo_mode
         self.lighting = lighting
         GPIO.setup(self.coin_counter_pins, GPIO.OUT)
@@ -34,7 +38,7 @@ class CoinMachine(object):
     # Public --------------------------------------------
 
     def start_waiting_for_coin(self):
-        print "waiting for coin at pin %s" % self.coin_input_pin
+        self.logger.log("waiting for coin at pin %s" % self.coin_input_pin)
         add_event_detection(self.coin_input_pin, callback=self.__coin_cb)
         add_event_detection(self.coin_counter_input_pin, callback=self.__coin_counter_cb)
         self.waiting_for_coin = True
@@ -49,7 +53,7 @@ class CoinMachine(object):
 
     def __coin_cb(self, channel):
         if self.waiting_for_coin == True:
-            print "coin slot triggered"
+            self.logger.log("coin slot triggered")
             self.__coin_detected()
             self.coin_detected = True
 
@@ -71,10 +75,10 @@ class CoinMachine(object):
         self.coin_detected = True
         #Fake the coin detection for now, it's broken
         if self.coin_detected == True and self.coin_counted == True:
-            print "Got a coin, Pick a box"
+            self.logger.log("Got a coin, Pick a box")
             self.__set_accepted_coin(True)
         else:
-            print "Not accepted"
+            self.logger.log("Not accepted")
         self.coin_detected = False
         self.coin_counted = False
         self.coin_pending = False
@@ -94,7 +98,7 @@ class CoinMachine(object):
                 else:
                     self.__set_coin_count(self.current_value + 1)
             except RuntimeError:
-                print "Setting coin status"
+                self.logger.log("Setting coin status")
 
     def __set_coin_count(self, count):
         #Don't allow more than three credits

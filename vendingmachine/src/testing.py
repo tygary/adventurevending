@@ -10,7 +10,7 @@ from vendingmachine.src.lightingcontroller import LightingController
 from vendingmachine.src.binaryboxcontroller import BinaryBoxController
 from vendingmachine.src.binaryknob import BinaryKnob
 from vendingmachine.src.addeventdetection import *
-from vendingmachine.logger.logger import Logger
+from logger.logger import Logger
 import api.run
 
 ##-----------------------------------------------------------------------

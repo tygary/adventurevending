@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 from vendingmachine.src.addeventdetection import *
+from logger.logger import Logger
 
 ##-----------------------------------------------------------------------
 #   Binary Knob
@@ -9,8 +10,10 @@ from vendingmachine.src.addeventdetection import *
 class BinaryKnob(object):
     value = 0
     pins = []
+    logger = None
 
     def __init__(self, pins):
+        self.logger = Logger()
         self.pins = pins
         add_event_detection(self.pins[0], self.__handle_change, True)
         add_event_detection(self.pins[1], self.__handle_change, True)
@@ -32,4 +35,4 @@ class BinaryKnob(object):
             self.value += 2
         if c == True:
             self.value += 4
-        print "Selected %s" % self.value
+        self.logger.log("Selected %s" % self.value)

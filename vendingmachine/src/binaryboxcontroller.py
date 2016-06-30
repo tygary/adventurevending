@@ -1,4 +1,5 @@
 import RPi.GPIO as GPIO
+from logger.logger import Logger
 
 ##-----------------------------------------------------------------------
 #   Binary Box Controller
@@ -13,10 +14,13 @@ class BinaryBoxController(object):
 
     currently_open = False
 
+    logger = None
+
     def __init__(self):
         GPIO.setup(self.binary_output_pins, GPIO.OUT)
         GPIO.setup(self.mux_enable_output_pins, GPIO.OUT)
 
+        self.logger = Logger()
         self.__set_latch(self.binary_output_pins[0], 0)
         self.__set_latch(self.binary_output_pins[1], 0)
         self.__set_latch(self.binary_output_pins[2], 0)
@@ -62,8 +66,8 @@ class BinaryBoxController(object):
 
 
     def __set_latch(self, pin, value):
-        print "Setting Latch %s to %s" % (pin, value)
+        self.logger.log("Setting Latch %s to %s" % (pin, value))
         try:
             GPIO.output(pin, value)
         except RuntimeError:
-            print "Error setting Latch"
+            self.logger.log("Error setting Latch")

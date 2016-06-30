@@ -5,6 +5,7 @@ import json
 import unicodedata
 from threading import Thread
 import os
+from logger.logger import Logger
 
 tmpfilepath = os.path.join(os.path.dirname(__file__), 'avdatatmp')
 
@@ -164,17 +165,20 @@ HandlerClass.protocol_version = Protocol
 class ServerController():
     httpd = None
     thread = None
+    logger = None
 
     def start(self):
+        self.logger = Logger()
         self.httpd = ServerClass(server_address, HandlerClass)
         sa = self.httpd.socket.getsockname()
-        print "Serving HTTP on", sa[0], "port", sa[1], "..."
+        # print"Serving HTTP on", sa[0], "port", sa[1], "..."
+        self.logger.log("Serving HTTP on %s port %s" % (sa[0], sa[1]))
         self.thread = Thread(target = self.httpd.serve_forever)
         self.thread.start()
 
     def stop(self):
-        print "Stopping Server"
+        self.logger.log("Stopping Server")
         self.httpd.server_close()
-        print "Server stopped, terminating thread"
+        self.logger.log("Server stopped, terminating thread")
         self.thread.join()
-        print "Thread terminated"
+        self.logger.log("Thread terminated")
