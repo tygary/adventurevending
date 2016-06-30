@@ -10,6 +10,7 @@ from vendingmachine.src.lightingcontroller import LightingController
 from vendingmachine.src.binaryboxcontroller import BinaryBoxController
 from vendingmachine.src.binaryknob import BinaryKnob
 from vendingmachine.src.addeventdetection import *
+from vendingmachine.logger.logger import Logger
 import api.run
 
 ##-----------------------------------------------------------------------
@@ -37,6 +38,7 @@ class VendingMachine(object):
     adventure_knob_a = None
     adventure_knob_b = None
     coin_machine = None
+    logger = None
 
     adventure_count = 0
     gift_count = 0
@@ -52,6 +54,7 @@ class VendingMachine(object):
         self.adventure_knob_b = BinaryKnob(self.box_select_pins_b)
         self.coin_machine = CoinMachine(self.lighting, self.demo_mode)
         self.server = api.run.ServerController()
+        self.logger = Logger()
 
     # Private -------------------------------------------
 
@@ -66,7 +69,8 @@ class VendingMachine(object):
 
     def __adventure_button_cb(self, pin):
         if self.waiting_to_give_adventure == True:
-            print "Dispensing Adventure"
+            # print "Dispensing Adventure"
+            self.logger.log("Dispensing Adventure")
             self.dispense_adventure()
             self.waiting_to_give_adventure = False
             t = threading.Timer(1.0, self.__allow_dispensing_adventures)
@@ -76,7 +80,8 @@ class VendingMachine(object):
         self.waiting_to_give_adventure = True
 
     def __start_waiting_for_user(self):
-        print "waiting for user at pin %s" % self.adventure_button_pin
+        # print "waiting for user at pin %s" % self.adventure_button_pin
+        self.logger.log("waiting for user at pin %s" % self.adventure_button_pin)
         add_event_detection(self.adventure_button_pin, callback=self.__adventure_button_cb)
         add_event_detection(self.gift_button_pin, callback=self.__gift_button_pressed)
 
@@ -93,22 +98,26 @@ class VendingMachine(object):
 
 
     def __box_a_pressed(self, channel):
-        print "Box button a pressed"
+        # print "Box button a pressed"
+        self.logger.log("Box button a pressed")
         self.open_prize_box(1)
         self.lighting.box_selected(1)
 
     def __box_b_pressed(self, channel):
-        print "Box button b pressed"
+        # print "Box button b pressed"
+        self.logger.log("Box button b pressed")
         self.open_prize_box(2)
         self.lighting.box_selected(2)
 
     def __box_c_pressed(self, channel):
-        print "Box button b pressed"
+        # print "Box button b pressed"
+        self.logger.log("Box button b pressed")
         self.open_prize_box(3)
         self.lighting.box_selected(3)
 
     def __gift_button_pressed(self, pin):
-        print "Gift Button Pressed"
+        # print "Gift Button Pressed"
+        self.logger.log("Gift Button Pressed")
         selector_a = self.adventure_knob_a.get_value()
         selector_b = self.adventure_knob_b.get_value()
         #TODO Add some logic here deciding how these two knobs pick a box
@@ -118,7 +127,8 @@ class VendingMachine(object):
     # Public --------------------------------------------
 
     def open_prize_box(self, box_number):
-        print "Selected box %s" % box_number
+        # print "Selected box %s" % box_number
+        self.logger.log("Selected box %s" % box_number)
         #For now, all boxes cost one. TODO: Hook this up with prices
         box_cost = 1
         if (self.coin_machine.current_value >= box_cost):
@@ -129,8 +139,10 @@ class VendingMachine(object):
             self.coin_machine.subtract_coins(box_cost)
             if self.demo_mode == True:
                 self.coin_machine.clear_coins()
-            print "Retrieve the prize from box %s" % box_number
-            print "Gift %s" % self.gift_count
+            # print "Retrieve the prize from box %s" % box_number
+            # print "Gift %s" % self.gift_count
+            self.logger.log("Retrieve the prize from box %s" % box_number)
+            self.logger.log("Gift %s" % self.gift_count)
             t = threading.Timer(5.0, self.__reset_box)
             t.start()
 
@@ -151,7 +163,8 @@ class VendingMachine(object):
         self.adventure_count = self.adventure_count + 1
         self.printer.printAdventure(adventure)
         self.lighting.dispense_adventure()
-        print "Adventure #%s" % self.adventure_count
+        # print "Adventure #%s" % self.adventure_count
+        self.logger.log("Adventure #%s" % self.adventure_count)
 
     def start(self):
         self.__start_waiting_for_boxes()
