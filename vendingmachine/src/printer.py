@@ -2,6 +2,7 @@ import cups
 import os
 from vendingmachine.src.adventure import Adventure
 import threading
+from logger.logger import Logger
 
 ##-----------------------------------------------------------------------
 #   Printer
@@ -16,14 +17,23 @@ class Printer(object):
     tmpfilePath = "/home/pi/tmpadventure.pdf"
     ready_to_print = True
 
+    logger = None
+
+    def __init__(self):
+        self.logger = Logger()
+
     def __print(self):
+        self.logger.log("Printer: printing using %s" % self.printer_name)
         self.conn.cancelAllJobs(self.printer_name)
         self.conn.printFile(self.printer_name, self.tmpfilePath, "adventure", {})
 
     def __create_file(self, adventure):
+        self.logger.log("Printer: creating pdf")
         try:
             os.remove(self.tmpfilePath)
+            self.logger.log("  Success")
         except OSError:
+            self.logger.log("  Failure")
             pass
         title = adventure["title"].replace("\\n", "\n")
         desc = adventure["desc"].replace("\\n", "\n")
@@ -41,9 +51,11 @@ class Printer(object):
         pdf.output(self.tmpfilePath, 'F')
 
     def __ready_to_print(self):
+        self.logger.log("Printer: setting ready to print from %s to True" % self.ready_to_print)
         self.ready_to_print = True
 
     def printAdventure(self, adventure):
+        self.logger.log("Printer: trying to print adventure with id %s and ready status %s" % (adventure['id'], self.ready_to_print))
         if self.ready_to_print:
             self.__create_file(adventure)
             self.__print()
