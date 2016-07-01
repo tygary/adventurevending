@@ -159,7 +159,7 @@ class VendingMachine(object):
         adventure = self.get_adventure()
         self.adventure_count = self.adventure_count + 1
         if self.print_adventures == True:
-            self.logger.log("  Printing adventure: %s" % adventure.id)
+            self.logger.log("  Printing adventure: %s" % adventure['id'])
             self.printer.printAdventure(adventure)
         self.lighting.dispense_adventure()
 
