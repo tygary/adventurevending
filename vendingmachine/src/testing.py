@@ -31,6 +31,8 @@ class VendingMachine(object):
     #Leave as True to use the demo box with three buttons
     demo_mode = True
 
+    print_adventures = True
+
     box_controller = None
     printer = None
     lighting = None
@@ -59,6 +61,7 @@ class VendingMachine(object):
     # Private -------------------------------------------
 
     def __init_pins(self):
+        self.logger.log("Machine: initializing pins")
         GPIO.setup(self.out_of_service_pin, GPIO.OUT)
         GPIO.setup(self.price_pins, GPIO.OUT)
         GPIO.setup(self.adventure_type_pin, GPIO.IN)
@@ -68,8 +71,9 @@ class VendingMachine(object):
         GPIO.output(self.price_pins[2], True)
 
     def __adventure_button_cb(self, pin):
+        self.logger.log("Machine: adventure button pressed with waiting status: %s" % self.waiting_to_give_adventure)
         if self.waiting_to_give_adventure == True:
-            self.logger.log("Dispensing Adventure")
+            self.logger.log("  Dispensing Adventure")
             self.dispense_adventure()
             self.waiting_to_give_adventure = False
             t = threading.Timer(1.0, self.__allow_dispensing_adventures)
@@ -79,7 +83,7 @@ class VendingMachine(object):
         self.waiting_to_give_adventure = True
 
     def __start_waiting_for_user(self):
-        self.logger.log("waiting for user at pin %s" % self.adventure_button_pin)
+        self.logger.log("Machine: waiting for user at pin %s" % self.adventure_button_pin)
         add_event_detection(self.adventure_button_pin, callback=self.__adventure_button_cb)
         add_event_detection(self.gift_button_pin, callback=self.__gift_button_pressed)
 
@@ -89,6 +93,7 @@ class VendingMachine(object):
         self.box_controller.close_boxes()
 
     def __start_waiting_for_boxes(self):
+        self.logger.log("Machine: waiting for boxes with demo mode: %s" % self.demo_mode)
         if self.demo_mode == True:
             add_event_detection(self.box_select_pins_a[0], callback=self.__box_a_pressed)
             add_event_detection(self.box_select_pins_a[1], callback=self.__box_b_pressed)
@@ -96,35 +101,37 @@ class VendingMachine(object):
 
 
     def __box_a_pressed(self, channel):
-        self.logger.log("Box button a pressed")
+        self.logger.log("Machine: box button a pressed")
         self.open_prize_box(1)
         self.lighting.box_selected(1)
 
     def __box_b_pressed(self, channel):
-        self.logger.log("Box button b pressed")
+        self.logger.log("Machine: box button b pressed")
         self.open_prize_box(2)
         self.lighting.box_selected(2)
 
     def __box_c_pressed(self, channel):
-        self.logger.log("Box button b pressed")
+        self.logger.log("Machine: box button b pressed")
         self.open_prize_box(3)
         self.lighting.box_selected(3)
 
     def __gift_button_pressed(self, pin):
-        self.logger.log("Gift Button Pressed")
+        self.logger.log("Machine: gift Button Pressed")
         selector_a = self.adventure_knob_a.get_value()
         selector_b = self.adventure_knob_b.get_value()
         #TODO Add some logic here deciding how these two knobs pick a box
+        self.logger.log("  opening box at %s" % selector_a)
         self.open_prize_box(selector_a)
 
 
     # Public --------------------------------------------
 
     def open_prize_box(self, box_number):
-        self.logger.log("Selected box %s" % box_number)
+        self.logger.log("Machine: selected box %s with credits: %s" % (box_number, self.coin_machine.current_value)
         #For now, all boxes cost one. TODO: Hook this up with prices
         box_cost = 1
         if (self.coin_machine.current_value >= box_cost):
+            self.logger.log("  Signalling to open box %s" % box_number)
             self.box_controller.set_box(box_number)
             self.box_controller.open_current_box()
             self.lighting.dispense_prize(box_number)
@@ -132,8 +139,6 @@ class VendingMachine(object):
             self.coin_machine.subtract_coins(box_cost)
             if self.demo_mode == True:
                 self.coin_machine.clear_coins()
-            self.logger.log("Retrieve the prize from box %s" % box_number)
-            self.logger.log("Gift %s" % self.gift_count)
             t = threading.Timer(5.0, self.__reset_box)
             t.start()
 
@@ -148,18 +153,22 @@ class VendingMachine(object):
         return random.choice(enabled_adventures)
 
     def dispense_adventure(self):
+        self.logger.log("Machine: preparing to dispense adventure with printing set to: %s" % self.print_adventures)
         adventure_type = GPIO.input(self.adventure_type_pin)
         #TODO: Use the adventure type to pick an adventure
         adventure = self.get_adventure()
         self.adventure_count = self.adventure_count + 1
-        self.printer.printAdventure(adventure)
+        if self.print_adventures == True:
+            self.logger.log("  Printing adventure: %s" % adventure.id)
+            self.printer.printAdventure(adventure)
         self.lighting.dispense_adventure()
-        self.logger.log("Adventure #%s" % self.adventure_count)
 
     def start(self):
+        self.logger.log("Machine: starting")
         self.__start_waiting_for_boxes()
         self.__start_waiting_for_user()
         self.server.start()
 
     def stop(self):
+        self.logger.log("Machine: stopping")
         self.server.stop()
