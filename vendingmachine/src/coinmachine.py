@@ -9,7 +9,7 @@ from logger.logger import Logger
 class CoinMachine(object):
     coin_input_pin = 21
     coin_counter_input_pin = 12
-    coin_counter_pins = [29,31]
+    coin_counter_pins = [29, 31]
 
     lighting = None
 
@@ -55,19 +55,19 @@ class CoinMachine(object):
 
     def __coin_cb(self, channel):
         self.logger.log("Coin: coin cb with waiting status: %s" % self.waiting_for_coin)
-        if self.waiting_for_coin == True:
+        if self.waiting_for_coin is True:
             self.__coin_detected()
             self.coin_detected = True
 
     def __coin_counter_cb(self, channel):
         self.logger.log("Coin: coin counter cb with waiting status: %s" % self.waiting_for_coin)
-        if self.waiting_for_coin == True:
+        if self.waiting_for_coin is True:
             self.__coin_detected()
             self.coin_counted = True
 
     def __coin_detected(self):
         self.logger.log("Coin: coin detected with pending status: %s" % self.coin_pending)
-        if (self.coin_pending == False):
+        if self.coin_pending is False:
             self.coin_pending = True
             self.coin_detected = False
             self.coin_counted = False
@@ -78,7 +78,7 @@ class CoinMachine(object):
         self.logger.log("Coin: done waiting with pending status")
         self.coin_detected = True
         #Fake the coin detection for now, it's broken
-        if self.coin_detected == True and self.coin_counted == True:
+        if self.coin_detected is True and self.coin_counted is True:
             self.logger.log("  Got a coin, pick a box")
             self.__set_accepted_coin(True)
         else:
@@ -94,11 +94,11 @@ class CoinMachine(object):
 
     def __set_accepted_coin(self, value):
         self.logger.log("Coin: accepting coin with value %s" % value)
-        self.accepted_a_coin = value;
-        if value == True:
+        self.accepted_a_coin = value
+        if value is True:
             self.lighting.coin_received()
             try:
-                if self.demo_mode == True:
+                if self.demo_mode is True:
                     #If it's demo mode, then we should only allow 1 credit
                     self.__set_coin_count(1)
                 else:
@@ -107,7 +107,7 @@ class CoinMachine(object):
                 self.logger.log("  error set_accepted_coin")
 
     def __set_coin_count(self, count):
-        self.logger.log("Coin: attempting to set count to %s from %s" % (count,self.current_value))
+        self.logger.log("Coin: attempting to set count to %s from %s" % (count, self.current_value))
         #Don't allow more than three credits
         if count < 0:
             self.logger.log("  count below min, setting to min")
