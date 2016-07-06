@@ -2,7 +2,6 @@ import sys
 import BaseHTTPServer
 from SimpleHTTPServer import SimpleHTTPRequestHandler
 import json
-# import unicodedata
 from threading import Thread
 import os
 from logger.logger import Logger
