@@ -43,16 +43,16 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
         except OSError:
             pass
         f = open(tmpfilepath, 'w')
-        f.write(json.dumps(av_data, separators=(',',':')))
+        f.write(json.dumps(av_data, separators=(',', ':')))
         f.close()
 
-    def _byteify(self, data, ignore_dicts = False):
+    def _byteify(self, data, ignore_dicts=False):
         # if this is a unicode string, return its string representation
         if isinstance(data, unicode):
             return data.encode('utf-8')
         # if this is a list of values, return list of byteified values
         if isinstance(data, list):
-            return [ self._byteify(item, ignore_dicts=True) for item in data ]
+            return [self._byteify(item, ignore_dicts=True) for item in data]
         # if this is a dictionary, return dictionary of byteified keys and values
         # but only if we haven't already byteified it
         if isinstance(data, dict) and not ignore_dicts:
@@ -69,7 +69,7 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
         self.end_headers()
         if self.path == '/api/adventures':
             logger.log("  returning adventures")
-            adventures_data = json.dumps(av_data['adventures'], separators=(',',':'))
+            adventures_data = json.dumps(av_data['adventures'], separators=(',', ':'))
             logger.log(adventures_data)
             self.wfile.write('{"adventures":' + adventures_data + '}')
         elif self.path.startswith('/api/adventures/'):
@@ -84,11 +84,11 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
 
             if adventure_to_get != None:
                 logger.log("  found adventure and returning")
-                self.wfile.write(json.dumps({"adventures":[adventure_to_get]}, separators=(',',':')))
+                self.wfile.write(json.dumps({"adventures":[adventure_to_get]}, separators=(',', ':')))
             else:
                 logger.log("  no adventure found by id: %s" % id_to_get)
         elif self.path == '/api/slots':
-            slots_data = json.dumps(av_data['slots'], separators=(',',':'))
+            slots_data = json.dumps(av_data['slots'], separators=(',', ':'))
             self.wfile.write('{"slots":' + slots_data + '}')
 
     def do_POST(self):
@@ -159,8 +159,8 @@ except IOError:
 
 
 HandlerClass = VendingRequestHandler
-ServerClass  = BaseHTTPServer.HTTPServer
-Protocol     = "HTTP/1.0"
+ServerClass = BaseHTTPServer.HTTPServer
+Protocol = "HTTP/1.0"
 
 if sys.argv[1:]:
     port = int(sys.argv[1])
@@ -170,7 +170,7 @@ server_address = ('127.0.0.1', port)
 
 HandlerClass.protocol_version = Protocol
 
-class ServerController():
+class ServerController(object):
     httpd = None
     thread = None
 
@@ -179,7 +179,7 @@ class ServerController():
         sa = self.httpd.socket.getsockname()
         # print"Serving HTTP on", sa[0], "port", sa[1], "..."
         logger.log("Serving HTTP on %s port %s" % (sa[0], sa[1]))
-        self.thread = Thread(target = self.httpd.serve_forever)
+        self.thread = Thread(target=self.httpd.serve_forever)
         self.thread.start()
 
     def stop(self):
