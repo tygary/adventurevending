@@ -6455,7 +6455,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("av-frontend/app")["default"].create({"name":"av-frontend","version":"0.0.0+9bb8ef06"});
+  require("av-frontend/app")["default"].create({"name":"av-frontend","version":"0.0.0+69ca6b34"});
 }
 
 /* jshint ignore:end */

@@ -1,3 +1,6 @@
-import api.run
+from api.run import ServerController
 
-api.run.ServerController().start()
+server = ServerController()
+server.start()
+
+print "Server started, enter 'server.stop()' before exiting"

@@ -2,7 +2,7 @@ import sys
 import BaseHTTPServer
 from SimpleHTTPServer import SimpleHTTPRequestHandler
 import json
-import unicodedata
+# import unicodedata
 from threading import Thread
 import os
 from logger.logger import Logger
@@ -12,6 +12,8 @@ tmpfilepath = os.path.join(os.path.dirname(__file__), 'avdatatmp')
 av_data = {}
 av_data['adventures'] = []
 av_data['slots'] = []
+
+logger = Logger()
 
 
 class VendingRequestHandler(SimpleHTTPRequestHandler):
@@ -66,11 +68,14 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
         self.send_header('Content-type', 'application/json')
         self.end_headers()
         if self.path == '/api/adventures':
+            logger.log("  returning adventures")
             adventures_data = json.dumps(av_data['adventures'], separators=(',',':'))
+            logger.log(adventures_data)
             self.wfile.write('{"adventures":' + adventures_data + '}')
         elif self.path.startswith('/api/adventures/'):
             adventure_to_get = None
             id_to_get = self.path[16:]
+            logger.log("  returning adventure with id: %s" % id_to_get)
 
             for adventure in av_data['adventures']:
                 if adventure['id'] == id_to_get:
@@ -78,7 +83,10 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
                     break
 
             if adventure_to_get != None:
+                logger.log("  found adventure and returning")
                 self.wfile.write(json.dumps({"adventures":[adventure_to_get]}, separators=(',',':')))
+            else:
+                logger.log("  no adventure found by id: %s" % id_to_get)
         elif self.path == '/api/slots':
             slots_data = json.dumps(av_data['slots'], separators=(',',':'))
             self.wfile.write('{"slots":' + slots_data + '}')
@@ -165,20 +173,18 @@ HandlerClass.protocol_version = Protocol
 class ServerController():
     httpd = None
     thread = None
-    logger = None
 
     def start(self):
-        self.logger = Logger()
         self.httpd = ServerClass(server_address, HandlerClass)
         sa = self.httpd.socket.getsockname()
         # print"Serving HTTP on", sa[0], "port", sa[1], "..."
-        self.logger.log("Serving HTTP on %s port %s" % (sa[0], sa[1]))
+        logger.log("Serving HTTP on %s port %s" % (sa[0], sa[1]))
         self.thread = Thread(target = self.httpd.serve_forever)
         self.thread.start()
 
     def stop(self):
-        self.logger.log("Stopping Server")
+        logger.log("Stopping Server")
         self.httpd.server_close()
-        self.logger.log("Server stopped, terminating thread")
+        logger.log("Server stopped, terminating thread")
         self.thread.join()
-        self.logger.log("Thread terminated")
+        logger.log("Thread terminated")
