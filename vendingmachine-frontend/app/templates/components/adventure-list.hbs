@@ -1,10 +1,20 @@
 <p>
 Use control + F to search
 </p>
+
+{{!--
 {{bootstrap.bootstrap-dropdown
   toggleTitle=(action toggleProperty "viewConfig.showTitle")
   toggleDescription=(action toggleProperty "viewConfig.showDescription")
   toggleEnabled=(action toggleProperty "viewConfig.showEnabled")}}
+--}}
+
+<div class="btn-group">
+  <button class="btn btn-secondary" {{action toggleProperty 'viewConfig.showTitle'}}>Toggle Title</button>
+  <button class="btn btn-secondary" {{action toggleProperty 'viewConfig.showDescription'}}>Toggle Description</button>
+  <button class="btn btn-secondary" {{action toggleProperty 'viewConfig.showLocation'}}>Toggle Location</button>
+  <button class="btn btn-secondary" {{action toggleProperty 'viewConfig.showEnabled'}}>Toggle Enabled</button>
+</div>
 
 <table class="table table-striped">
   <thead>
@@ -14,6 +24,9 @@ Use control + F to search
       {{/if}}
       {{#if viewConfig.showDescription}}
         {{#column-head sort=(action "sort") sortBy="desc" currentSort=currentSort}}Description{{/column-head}}
+      {{/if}}
+      {{#if viewConfig.showLocation}}
+        {{#column-head sort=(action "sort") sortBy="loc" currentSort=currentSort}}Location{{/column-head}}
       {{/if}}
       {{#if viewConfig.showEnabled}}
         {{#column-head sort=(action "sort") sortBy="enabled" currentSort=currentSort}}Enabled{{/column-head}}
@@ -43,6 +56,14 @@ Use control + F to search
             type="text"
             placeholder="Description"
             value=newAdventure.desc}}
+        </td>
+      {{/if}}
+      {{#if viewConfig.showLocation}}
+        <td>
+          {{input
+            type="text"
+            placeholder="Location"
+            value=newAdventure.loc}}
         </td>
       {{/if}}
       {{#if viewConfig.showEnabled}}

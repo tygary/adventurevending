@@ -15,6 +15,14 @@
         value=attrs.adventure.desc}}
     </td>
   {{/if}}
+  {{#if attrs.viewConfig.showLocation}}
+    <td>
+      {{input
+        type="text"
+        placeholder="Location"
+        value=attrs.adventure.loc}}
+    </td>
+  {{/if}}
   {{#if attrs.viewConfig.showEnabled}}
     <td>
       {{input
@@ -34,6 +42,9 @@
   {{/if}}
   {{#if attrs.viewConfig.showDescription}}
     <td>{{attrs.adventure.desc}}</td>
+  {{/if}}
+  {{#if attrs.viewConfig.showLocation}}
+    <td>{{attrs.adventure.loc}}</td>
   {{/if}}
   {{#if attrs.viewConfig.showEnabled}}
     <td>
