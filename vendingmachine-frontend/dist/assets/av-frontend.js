@@ -107,6 +107,7 @@ define('av-frontend/components/adventure-list', ['exports', 'ember'], function (
       this.set('viewConfig.showTitle', true);
       this.set('viewConfig.showDescription', true);
       this.set('viewConfig.showLocation', true);
+      this.set('viewConfig.showType', true);
       this.set('viewConfig.showEnabled', true);
     },
 
@@ -115,12 +116,13 @@ define('av-frontend/components/adventure-list', ['exports', 'ember'], function (
         var title = this.get('newAdventure.title');
         var desc = this.get('newAdventure.desc');
         var loc = this.get('newAdventure.loc');
+        var type = this.get('newAdventure.type');
 
         if (!title && !desc) {
           return;
         }
 
-        this.get('store').createRecord('adventure', { title: title, desc: desc, loc: loc }).save();
+        this.get('store').createRecord('adventure', { title: title, desc: desc, loc: loc, type: type }).save();
 
         this.set('newAdventure', {});
       },
@@ -694,6 +696,7 @@ define('av-frontend/models/adventure', ['exports', 'ember-data'], function (expo
     title: _emberData['default'].attr('string'),
     desc: _emberData['default'].attr('string'),
     loc: _emberData['default'].attr('string'),
+    type: _emberData['default'].attr('string'),
     enabled: _emberData['default'].attr('boolean', { defaultValue: true })
     // init: DS.belongsTo()
   });
@@ -973,7 +976,7 @@ define("av-frontend/templates/components/adventure-list-item", ["exports"], func
                 "column": 2
               },
               "end": {
-                "line": 32,
+                "line": 33,
                 "column": 2
               }
             },
@@ -1004,7 +1007,55 @@ define("av-frontend/templates/components/adventure-list-item", ["exports"], func
             morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
             return morphs;
           },
-          statements: [["inline", "input", [], ["type", "checkbox", "checked", ["subexpr", "@mut", [["get", "attrs.adventure.enabled", ["loc", [null, [30, 16], [30, 39]]]]], [], []]], ["loc", [null, [28, 6], [30, 41]]]]],
+          statements: [["inline", "input", [], ["type", "text", "placeholder", "Type", "value", ["subexpr", "@mut", [["get", "attrs.adventure.type", ["loc", [null, [31, 14], [31, 34]]]]], [], []]], ["loc", [null, [28, 6], [31, 36]]]]],
+          locals: [],
+          templates: []
+        };
+      })();
+      var child4 = (function () {
+        return {
+          meta: {
+            "fragmentReason": false,
+            "revision": "Ember@2.4.6",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 34,
+                "column": 2
+              },
+              "end": {
+                "line": 40,
+                "column": 2
+              }
+            },
+            "moduleName": "av-frontend/templates/components/adventure-list-item.hbs"
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("td");
+            var el2 = dom.createTextNode("\n      ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n    ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+            return morphs;
+          },
+          statements: [["inline", "input", [], ["type", "checkbox", "checked", ["subexpr", "@mut", [["get", "attrs.adventure.enabled", ["loc", [null, [38, 16], [38, 39]]]]], [], []]], ["loc", [null, [36, 6], [38, 41]]]]],
           locals: [],
           templates: []
         };
@@ -1023,7 +1074,7 @@ define("av-frontend/templates/components/adventure-list-item", ["exports"], func
               "column": 0
             },
             "end": {
-              "line": 39,
+              "line": 47,
               "column": 0
             }
           },
@@ -1035,6 +1086,8 @@ define("av-frontend/templates/components/adventure-list-item", ["exports"], func
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
@@ -1074,21 +1127,22 @@ define("av-frontend/templates/components/adventure-list-item", ["exports"], func
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element3 = dom.childAt(fragment, [5]);
-          var element4 = dom.childAt(fragment, [7]);
-          var morphs = new Array(6);
+          var element3 = dom.childAt(fragment, [6]);
+          var element4 = dom.childAt(fragment, [8]);
+          var morphs = new Array(7);
           morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
           morphs[1] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           morphs[2] = dom.createMorphAt(fragment, 2, 2, contextualElement);
           morphs[3] = dom.createMorphAt(fragment, 3, 3, contextualElement);
-          morphs[4] = dom.createElementMorph(element3);
-          morphs[5] = dom.createElementMorph(element4);
+          morphs[4] = dom.createMorphAt(fragment, 4, 4, contextualElement);
+          morphs[5] = dom.createElementMorph(element3);
+          morphs[6] = dom.createElementMorph(element4);
           dom.insertBoundary(fragment, 0);
           return morphs;
         },
-        statements: [["block", "if", [["get", "attrs.viewConfig.showTitle", ["loc", [null, [2, 8], [2, 34]]]]], [], 0, null, ["loc", [null, [2, 2], [9, 9]]]], ["block", "if", [["get", "attrs.viewConfig.showDescription", ["loc", [null, [10, 8], [10, 40]]]]], [], 1, null, ["loc", [null, [10, 2], [17, 9]]]], ["block", "if", [["get", "attrs.viewConfig.showLocation", ["loc", [null, [18, 8], [18, 37]]]]], [], 2, null, ["loc", [null, [18, 2], [25, 9]]]], ["block", "if", [["get", "attrs.viewConfig.showEnabled", ["loc", [null, [26, 8], [26, 36]]]]], [], 3, null, ["loc", [null, [26, 2], [32, 9]]]], ["element", "action", ["save"], [], ["loc", [null, [33, 6], [33, 23]]]], ["element", "action", ["disableIsEditing"], [], ["loc", [null, [36, 6], [36, 35]]]]],
+        statements: [["block", "if", [["get", "attrs.viewConfig.showTitle", ["loc", [null, [2, 8], [2, 34]]]]], [], 0, null, ["loc", [null, [2, 2], [9, 9]]]], ["block", "if", [["get", "attrs.viewConfig.showDescription", ["loc", [null, [10, 8], [10, 40]]]]], [], 1, null, ["loc", [null, [10, 2], [17, 9]]]], ["block", "if", [["get", "attrs.viewConfig.showLocation", ["loc", [null, [18, 8], [18, 37]]]]], [], 2, null, ["loc", [null, [18, 2], [25, 9]]]], ["block", "if", [["get", "attrs.viewConfig.showType", ["loc", [null, [26, 8], [26, 33]]]]], [], 3, null, ["loc", [null, [26, 2], [33, 9]]]], ["block", "if", [["get", "attrs.viewConfig.showEnabled", ["loc", [null, [34, 8], [34, 36]]]]], [], 4, null, ["loc", [null, [34, 2], [40, 9]]]], ["element", "action", ["save"], [], ["loc", [null, [41, 6], [41, 23]]]], ["element", "action", ["disableIsEditing"], [], ["loc", [null, [44, 6], [44, 35]]]]],
         locals: [],
-        templates: [child0, child1, child2, child3]
+        templates: [child0, child1, child2, child3, child4]
       };
     })();
     var child1 = (function () {
@@ -1100,11 +1154,11 @@ define("av-frontend/templates/components/adventure-list-item", ["exports"], func
             "loc": {
               "source": null,
               "start": {
-                "line": 40,
+                "line": 48,
                 "column": 2
               },
               "end": {
-                "line": 42,
+                "line": 50,
                 "column": 2
               }
             },
@@ -1131,7 +1185,7 @@ define("av-frontend/templates/components/adventure-list-item", ["exports"], func
             morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
             return morphs;
           },
-          statements: [["content", "attrs.adventure.title", ["loc", [null, [41, 8], [41, 33]]]]],
+          statements: [["content", "attrs.adventure.title", ["loc", [null, [49, 8], [49, 33]]]]],
           locals: [],
           templates: []
         };
@@ -1144,11 +1198,11 @@ define("av-frontend/templates/components/adventure-list-item", ["exports"], func
             "loc": {
               "source": null,
               "start": {
-                "line": 43,
+                "line": 51,
                 "column": 2
               },
               "end": {
-                "line": 45,
+                "line": 53,
                 "column": 2
               }
             },
@@ -1175,7 +1229,7 @@ define("av-frontend/templates/components/adventure-list-item", ["exports"], func
             morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
             return morphs;
           },
-          statements: [["content", "attrs.adventure.desc", ["loc", [null, [44, 8], [44, 32]]]]],
+          statements: [["content", "attrs.adventure.desc", ["loc", [null, [52, 8], [52, 32]]]]],
           locals: [],
           templates: []
         };
@@ -1188,11 +1242,11 @@ define("av-frontend/templates/components/adventure-list-item", ["exports"], func
             "loc": {
               "source": null,
               "start": {
-                "line": 46,
+                "line": 54,
                 "column": 2
               },
               "end": {
-                "line": 48,
+                "line": 56,
                 "column": 2
               }
             },
@@ -1219,7 +1273,7 @@ define("av-frontend/templates/components/adventure-list-item", ["exports"], func
             morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
             return morphs;
           },
-          statements: [["content", "attrs.adventure.loc", ["loc", [null, [47, 8], [47, 31]]]]],
+          statements: [["content", "attrs.adventure.loc", ["loc", [null, [55, 8], [55, 31]]]]],
           locals: [],
           templates: []
         };
@@ -1232,11 +1286,55 @@ define("av-frontend/templates/components/adventure-list-item", ["exports"], func
             "loc": {
               "source": null,
               "start": {
-                "line": 49,
+                "line": 57,
                 "column": 2
               },
               "end": {
-                "line": 53,
+                "line": 59,
+                "column": 2
+              }
+            },
+            "moduleName": "av-frontend/templates/components/adventure-list-item.hbs"
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("td");
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
+            return morphs;
+          },
+          statements: [["content", "attrs.adventure.type", ["loc", [null, [58, 8], [58, 32]]]]],
+          locals: [],
+          templates: []
+        };
+      })();
+      var child4 = (function () {
+        return {
+          meta: {
+            "fragmentReason": false,
+            "revision": "Ember@2.4.6",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 60,
+                "column": 2
+              },
+              "end": {
+                "line": 64,
                 "column": 2
               }
             },
@@ -1273,7 +1371,7 @@ define("av-frontend/templates/components/adventure-list-item", ["exports"], func
             morphs[0] = dom.createAttrMorph(element0, 'checked');
             return morphs;
           },
-          statements: [["attribute", "checked", ["get", "attrs.adventure.enabled", ["loc", [null, [51, 48], [51, 71]]]]]],
+          statements: [["attribute", "checked", ["get", "attrs.adventure.enabled", ["loc", [null, [62, 48], [62, 71]]]]]],
           locals: [],
           templates: []
         };
@@ -1285,11 +1383,11 @@ define("av-frontend/templates/components/adventure-list-item", ["exports"], func
           "loc": {
             "source": null,
             "start": {
-              "line": 39,
+              "line": 47,
               "column": 0
             },
             "end": {
-              "line": 60,
+              "line": 71,
               "column": 0
             }
           },
@@ -1301,6 +1399,8 @@ define("av-frontend/templates/components/adventure-list-item", ["exports"], func
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
@@ -1340,21 +1440,22 @@ define("av-frontend/templates/components/adventure-list-item", ["exports"], func
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element1 = dom.childAt(fragment, [5]);
-          var element2 = dom.childAt(fragment, [7]);
-          var morphs = new Array(6);
+          var element1 = dom.childAt(fragment, [6]);
+          var element2 = dom.childAt(fragment, [8]);
+          var morphs = new Array(7);
           morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
           morphs[1] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           morphs[2] = dom.createMorphAt(fragment, 2, 2, contextualElement);
           morphs[3] = dom.createMorphAt(fragment, 3, 3, contextualElement);
-          morphs[4] = dom.createElementMorph(element1);
-          morphs[5] = dom.createElementMorph(element2);
+          morphs[4] = dom.createMorphAt(fragment, 4, 4, contextualElement);
+          morphs[5] = dom.createElementMorph(element1);
+          morphs[6] = dom.createElementMorph(element2);
           dom.insertBoundary(fragment, 0);
           return morphs;
         },
-        statements: [["block", "if", [["get", "attrs.viewConfig.showTitle", ["loc", [null, [40, 8], [40, 34]]]]], [], 0, null, ["loc", [null, [40, 2], [42, 9]]]], ["block", "if", [["get", "attrs.viewConfig.showDescription", ["loc", [null, [43, 8], [43, 40]]]]], [], 1, null, ["loc", [null, [43, 2], [45, 9]]]], ["block", "if", [["get", "attrs.viewConfig.showLocation", ["loc", [null, [46, 8], [46, 37]]]]], [], 2, null, ["loc", [null, [46, 2], [48, 9]]]], ["block", "if", [["get", "attrs.viewConfig.showEnabled", ["loc", [null, [49, 8], [49, 36]]]]], [], 3, null, ["loc", [null, [49, 2], [53, 9]]]], ["element", "action", ["enableIsEditing"], [], ["loc", [null, [54, 6], [54, 34]]]], ["element", "action", [["get", "attrs.remove", ["loc", [null, [57, 15], [57, 27]]]], ["get", "attrs.adventure.id", ["loc", [null, [57, 28], [57, 46]]]]], [], ["loc", [null, [57, 6], [57, 48]]]]],
+        statements: [["block", "if", [["get", "attrs.viewConfig.showTitle", ["loc", [null, [48, 8], [48, 34]]]]], [], 0, null, ["loc", [null, [48, 2], [50, 9]]]], ["block", "if", [["get", "attrs.viewConfig.showDescription", ["loc", [null, [51, 8], [51, 40]]]]], [], 1, null, ["loc", [null, [51, 2], [53, 9]]]], ["block", "if", [["get", "attrs.viewConfig.showLocation", ["loc", [null, [54, 8], [54, 37]]]]], [], 2, null, ["loc", [null, [54, 2], [56, 9]]]], ["block", "if", [["get", "attrs.viewConfig.showType", ["loc", [null, [57, 8], [57, 33]]]]], [], 3, null, ["loc", [null, [57, 2], [59, 9]]]], ["block", "if", [["get", "attrs.viewConfig.showEnabled", ["loc", [null, [60, 8], [60, 36]]]]], [], 4, null, ["loc", [null, [60, 2], [64, 9]]]], ["element", "action", ["enableIsEditing"], [], ["loc", [null, [65, 6], [65, 34]]]], ["element", "action", [["get", "attrs.remove", ["loc", [null, [68, 15], [68, 27]]]], ["get", "attrs.adventure.id", ["loc", [null, [68, 28], [68, 46]]]]], [], ["loc", [null, [68, 6], [68, 48]]]]],
         locals: [],
-        templates: [child0, child1, child2, child3]
+        templates: [child0, child1, child2, child3, child4]
       };
     })();
     return {
@@ -1371,7 +1472,7 @@ define("av-frontend/templates/components/adventure-list-item", ["exports"], func
             "column": 0
           },
           "end": {
-            "line": 60,
+            "line": 71,
             "column": 7
           }
         },
@@ -1394,7 +1495,7 @@ define("av-frontend/templates/components/adventure-list-item", ["exports"], func
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "if", [["get", "isEditing", ["loc", [null, [1, 6], [1, 15]]]]], [], 0, 1, ["loc", [null, [1, 0], [60, 7]]]]],
+      statements: [["block", "if", [["get", "isEditing", ["loc", [null, [1, 6], [1, 15]]]]], [], 0, 1, ["loc", [null, [1, 0], [71, 7]]]]],
       locals: [],
       templates: [child0, child1]
     };
@@ -1411,11 +1512,11 @@ define("av-frontend/templates/components/adventure-list", ["exports"], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 23,
+                "line": 24,
                 "column": 8
               },
               "end": {
-                "line": 23,
+                "line": 24,
                 "column": 89
               }
             },
@@ -1446,11 +1547,11 @@ define("av-frontend/templates/components/adventure-list", ["exports"], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 22,
+              "line": 23,
               "column": 6
             },
             "end": {
-              "line": 24,
+              "line": 25,
               "column": 6
             }
           },
@@ -1475,7 +1576,7 @@ define("av-frontend/templates/components/adventure-list", ["exports"], function 
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["block", "column-head", [], ["sort", ["subexpr", "action", ["sort"], [], ["loc", [null, [23, 28], [23, 43]]]], "sortBy", "title", "currentSort", ["subexpr", "@mut", [["get", "currentSort", ["loc", [null, [23, 71], [23, 82]]]]], [], []]], 0, null, ["loc", [null, [23, 8], [23, 105]]]]],
+        statements: [["block", "column-head", [], ["sort", ["subexpr", "action", ["sort"], [], ["loc", [null, [24, 28], [24, 43]]]], "sortBy", "title", "currentSort", ["subexpr", "@mut", [["get", "currentSort", ["loc", [null, [24, 71], [24, 82]]]]], [], []]], 0, null, ["loc", [null, [24, 8], [24, 105]]]]],
         locals: [],
         templates: [child0]
       };
@@ -1489,11 +1590,11 @@ define("av-frontend/templates/components/adventure-list", ["exports"], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 26,
+                "line": 27,
                 "column": 8
               },
               "end": {
-                "line": 26,
+                "line": 27,
                 "column": 94
               }
             },
@@ -1524,11 +1625,11 @@ define("av-frontend/templates/components/adventure-list", ["exports"], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 25,
+              "line": 26,
               "column": 6
             },
             "end": {
-              "line": 27,
+              "line": 28,
               "column": 6
             }
           },
@@ -1553,7 +1654,7 @@ define("av-frontend/templates/components/adventure-list", ["exports"], function 
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["block", "column-head", [], ["sort", ["subexpr", "action", ["sort"], [], ["loc", [null, [26, 28], [26, 43]]]], "sortBy", "desc", "currentSort", ["subexpr", "@mut", [["get", "currentSort", ["loc", [null, [26, 70], [26, 81]]]]], [], []]], 0, null, ["loc", [null, [26, 8], [26, 110]]]]],
+        statements: [["block", "column-head", [], ["sort", ["subexpr", "action", ["sort"], [], ["loc", [null, [27, 28], [27, 43]]]], "sortBy", "desc", "currentSort", ["subexpr", "@mut", [["get", "currentSort", ["loc", [null, [27, 70], [27, 81]]]]], [], []]], 0, null, ["loc", [null, [27, 8], [27, 110]]]]],
         locals: [],
         templates: [child0]
       };
@@ -1567,11 +1668,11 @@ define("av-frontend/templates/components/adventure-list", ["exports"], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 29,
+                "line": 30,
                 "column": 8
               },
               "end": {
-                "line": 29,
+                "line": 30,
                 "column": 90
               }
             },
@@ -1602,11 +1703,11 @@ define("av-frontend/templates/components/adventure-list", ["exports"], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 28,
+              "line": 29,
               "column": 6
             },
             "end": {
-              "line": 30,
+              "line": 31,
               "column": 6
             }
           },
@@ -1631,7 +1732,7 @@ define("av-frontend/templates/components/adventure-list", ["exports"], function 
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["block", "column-head", [], ["sort", ["subexpr", "action", ["sort"], [], ["loc", [null, [29, 28], [29, 43]]]], "sortBy", "loc", "currentSort", ["subexpr", "@mut", [["get", "currentSort", ["loc", [null, [29, 69], [29, 80]]]]], [], []]], 0, null, ["loc", [null, [29, 8], [29, 106]]]]],
+        statements: [["block", "column-head", [], ["sort", ["subexpr", "action", ["sort"], [], ["loc", [null, [30, 28], [30, 43]]]], "sortBy", "loc", "currentSort", ["subexpr", "@mut", [["get", "currentSort", ["loc", [null, [30, 69], [30, 80]]]]], [], []]], 0, null, ["loc", [null, [30, 8], [30, 106]]]]],
         locals: [],
         templates: [child0]
       };
@@ -1645,11 +1746,89 @@ define("av-frontend/templates/components/adventure-list", ["exports"], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 32,
+                "line": 33,
                 "column": 8
               },
               "end": {
-                "line": 32,
+                "line": 33,
+                "column": 87
+              }
+            },
+            "moduleName": "av-frontend/templates/components/adventure-list.hbs"
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("Type");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes() {
+            return [];
+          },
+          statements: [],
+          locals: [],
+          templates: []
+        };
+      })();
+      return {
+        meta: {
+          "fragmentReason": false,
+          "revision": "Ember@2.4.6",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 32,
+              "column": 6
+            },
+            "end": {
+              "line": 34,
+              "column": 6
+            }
+          },
+          "moduleName": "av-frontend/templates/components/adventure-list.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("        ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [["block", "column-head", [], ["sort", ["subexpr", "action", ["sort"], [], ["loc", [null, [33, 28], [33, 43]]]], "sortBy", "type", "currentSort", ["subexpr", "@mut", [["get", "currentSort", ["loc", [null, [33, 70], [33, 81]]]]], [], []]], 0, null, ["loc", [null, [33, 8], [33, 103]]]]],
+        locals: [],
+        templates: [child0]
+      };
+    })();
+    var child4 = (function () {
+      var child0 = (function () {
+        return {
+          meta: {
+            "fragmentReason": false,
+            "revision": "Ember@2.4.6",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 36,
+                "column": 8
+              },
+              "end": {
+                "line": 36,
                 "column": 93
               }
             },
@@ -1680,11 +1859,11 @@ define("av-frontend/templates/components/adventure-list", ["exports"], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 31,
+              "line": 35,
               "column": 6
             },
             "end": {
-              "line": 33,
+              "line": 37,
               "column": 6
             }
           },
@@ -1709,12 +1888,12 @@ define("av-frontend/templates/components/adventure-list", ["exports"], function 
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["block", "column-head", [], ["sort", ["subexpr", "action", ["sort"], [], ["loc", [null, [32, 28], [32, 43]]]], "sortBy", "enabled", "currentSort", ["subexpr", "@mut", [["get", "currentSort", ["loc", [null, [32, 73], [32, 84]]]]], [], []]], 0, null, ["loc", [null, [32, 8], [32, 109]]]]],
+        statements: [["block", "column-head", [], ["sort", ["subexpr", "action", ["sort"], [], ["loc", [null, [36, 28], [36, 43]]]], "sortBy", "enabled", "currentSort", ["subexpr", "@mut", [["get", "currentSort", ["loc", [null, [36, 73], [36, 84]]]]], [], []]], 0, null, ["loc", [null, [36, 8], [36, 109]]]]],
         locals: [],
         templates: [child0]
       };
     })();
-    var child4 = (function () {
+    var child5 = (function () {
       return {
         meta: {
           "fragmentReason": false,
@@ -1722,11 +1901,11 @@ define("av-frontend/templates/components/adventure-list", ["exports"], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 38,
+              "line": 42,
               "column": 4
             },
             "end": {
-              "line": 43,
+              "line": 47,
               "column": 4
             }
           },
@@ -1751,56 +1930,8 @@ define("av-frontend/templates/components/adventure-list", ["exports"], function 
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "adventure-list-item", [], ["adventure", ["subexpr", "mut", [["get", "adventure", ["loc", [null, [40, 23], [40, 32]]]]], [], ["loc", [null, [40, 18], [40, 33]]]], "viewConfig", ["subexpr", "@mut", [["get", "viewConfig", ["loc", [null, [41, 19], [41, 29]]]]], [], []], "remove", ["subexpr", "action", ["remove", ["get", "adventure.id", ["loc", [null, [42, 32], [42, 44]]]]], [], ["loc", [null, [42, 15], [42, 45]]]]], ["loc", [null, [39, 6], [42, 47]]]]],
+        statements: [["inline", "adventure-list-item", [], ["adventure", ["subexpr", "mut", [["get", "adventure", ["loc", [null, [44, 23], [44, 32]]]]], [], ["loc", [null, [44, 18], [44, 33]]]], "viewConfig", ["subexpr", "@mut", [["get", "viewConfig", ["loc", [null, [45, 19], [45, 29]]]]], [], []], "remove", ["subexpr", "action", ["remove", ["get", "adventure.id", ["loc", [null, [46, 32], [46, 44]]]]], [], ["loc", [null, [46, 15], [46, 45]]]]], ["loc", [null, [43, 6], [46, 47]]]]],
         locals: ["adventure"],
-        templates: []
-      };
-    })();
-    var child5 = (function () {
-      return {
-        meta: {
-          "fragmentReason": false,
-          "revision": "Ember@2.4.6",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 45,
-              "column": 6
-            },
-            "end": {
-              "line": 52,
-              "column": 6
-            }
-          },
-          "moduleName": "av-frontend/templates/components/adventure-list.hbs"
-        },
-        isEmpty: false,
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("        ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createElement("td");
-          var el2 = dom.createTextNode("\n          ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createComment("");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n        ");
-          dom.appendChild(el1, el2);
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
-          return morphs;
-        },
-        statements: [["inline", "input", [], ["type", "text", "placeholder", "Title", "value", ["subexpr", "@mut", [["get", "newAdventure.title", ["loc", [null, [50, 18], [50, 36]]]]], [], []]], ["loc", [null, [47, 10], [50, 38]]]]],
-        locals: [],
         templates: []
       };
     })();
@@ -1812,11 +1943,11 @@ define("av-frontend/templates/components/adventure-list", ["exports"], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 53,
+              "line": 49,
               "column": 6
             },
             "end": {
-              "line": 60,
+              "line": 56,
               "column": 6
             }
           },
@@ -1847,7 +1978,7 @@ define("av-frontend/templates/components/adventure-list", ["exports"], function 
           morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
           return morphs;
         },
-        statements: [["inline", "input", [], ["type", "text", "placeholder", "Description", "value", ["subexpr", "@mut", [["get", "newAdventure.desc", ["loc", [null, [58, 18], [58, 35]]]]], [], []]], ["loc", [null, [55, 10], [58, 37]]]]],
+        statements: [["inline", "input", [], ["type", "text", "placeholder", "Title", "value", ["subexpr", "@mut", [["get", "newAdventure.title", ["loc", [null, [54, 18], [54, 36]]]]], [], []]], ["loc", [null, [51, 10], [54, 38]]]]],
         locals: [],
         templates: []
       };
@@ -1860,11 +1991,11 @@ define("av-frontend/templates/components/adventure-list", ["exports"], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 61,
+              "line": 57,
               "column": 6
             },
             "end": {
-              "line": 68,
+              "line": 64,
               "column": 6
             }
           },
@@ -1895,7 +2026,7 @@ define("av-frontend/templates/components/adventure-list", ["exports"], function 
           morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
           return morphs;
         },
-        statements: [["inline", "input", [], ["type", "text", "placeholder", "Location", "value", ["subexpr", "@mut", [["get", "newAdventure.loc", ["loc", [null, [66, 18], [66, 34]]]]], [], []]], ["loc", [null, [63, 10], [66, 36]]]]],
+        statements: [["inline", "input", [], ["type", "text", "placeholder", "Description", "value", ["subexpr", "@mut", [["get", "newAdventure.desc", ["loc", [null, [62, 18], [62, 35]]]]], [], []]], ["loc", [null, [59, 10], [62, 37]]]]],
         locals: [],
         templates: []
       };
@@ -1908,11 +2039,107 @@ define("av-frontend/templates/components/adventure-list", ["exports"], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 69,
+              "line": 65,
               "column": 6
             },
             "end": {
-              "line": 71,
+              "line": 72,
+              "column": 6
+            }
+          },
+          "moduleName": "av-frontend/templates/components/adventure-list.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("        ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("td");
+          var el2 = dom.createTextNode("\n          ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n        ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+          return morphs;
+        },
+        statements: [["inline", "input", [], ["type", "text", "placeholder", "Location", "value", ["subexpr", "@mut", [["get", "newAdventure.loc", ["loc", [null, [70, 18], [70, 34]]]]], [], []]], ["loc", [null, [67, 10], [70, 36]]]]],
+        locals: [],
+        templates: []
+      };
+    })();
+    var child9 = (function () {
+      return {
+        meta: {
+          "fragmentReason": false,
+          "revision": "Ember@2.4.6",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 73,
+              "column": 6
+            },
+            "end": {
+              "line": 80,
+              "column": 6
+            }
+          },
+          "moduleName": "av-frontend/templates/components/adventure-list.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("        ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("td");
+          var el2 = dom.createTextNode("\n          ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n        ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+          return morphs;
+        },
+        statements: [["inline", "input", [], ["type", "text", "placeholder", "Type", "value", ["subexpr", "@mut", [["get", "newAdventure.type", ["loc", [null, [78, 18], [78, 35]]]]], [], []]], ["loc", [null, [75, 10], [78, 37]]]]],
+        locals: [],
+        templates: []
+      };
+    })();
+    var child10 = (function () {
+      return {
+        meta: {
+          "fragmentReason": false,
+          "revision": "Ember@2.4.6",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 81,
+              "column": 6
+            },
+            "end": {
+              "line": 83,
               "column": 6
             }
           },
@@ -1954,7 +2181,7 @@ define("av-frontend/templates/components/adventure-list", ["exports"], function 
             "column": 0
           },
           "end": {
-            "line": 77,
+            "line": 89,
             "column": 8
           }
         },
@@ -2001,6 +2228,13 @@ define("av-frontend/templates/components/adventure-list", ["exports"], function 
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("button");
         dom.setAttribute(el2, "class", "btn btn-secondary");
+        var el3 = dom.createTextNode("Toggle Type");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("button");
+        dom.setAttribute(el2, "class", "btn btn-secondary");
         var el3 = dom.createTextNode("Toggle Enabled");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
@@ -2018,6 +2252,8 @@ define("av-frontend/templates/components/adventure-list", ["exports"], function 
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("tr");
         var el4 = dom.createTextNode("\n");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
@@ -2060,6 +2296,8 @@ define("av-frontend/templates/components/adventure-list", ["exports"], function 
         dom.appendChild(el3, el4);
         var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("td");
@@ -2090,31 +2328,35 @@ define("av-frontend/templates/components/adventure-list", ["exports"], function 
         var element2 = dom.childAt(element0, [3]);
         var element3 = dom.childAt(element0, [5]);
         var element4 = dom.childAt(element0, [7]);
-        var element5 = dom.childAt(fragment, [5]);
-        var element6 = dom.childAt(element5, [1, 1]);
-        var element7 = dom.childAt(element5, [3]);
-        var element8 = dom.childAt(element7, [3]);
-        var element9 = dom.childAt(element8, [6, 1]);
-        var morphs = new Array(14);
+        var element5 = dom.childAt(element0, [9]);
+        var element6 = dom.childAt(fragment, [5]);
+        var element7 = dom.childAt(element6, [1, 1]);
+        var element8 = dom.childAt(element6, [3]);
+        var element9 = dom.childAt(element8, [3]);
+        var element10 = dom.childAt(element9, [7, 1]);
+        var morphs = new Array(17);
         morphs[0] = dom.createElementMorph(element1);
         morphs[1] = dom.createElementMorph(element2);
         morphs[2] = dom.createElementMorph(element3);
         morphs[3] = dom.createElementMorph(element4);
-        morphs[4] = dom.createMorphAt(element6, 1, 1);
-        morphs[5] = dom.createMorphAt(element6, 2, 2);
-        morphs[6] = dom.createMorphAt(element6, 3, 3);
-        morphs[7] = dom.createMorphAt(element6, 4, 4);
-        morphs[8] = dom.createMorphAt(element7, 1, 1);
-        morphs[9] = dom.createMorphAt(element8, 1, 1);
-        morphs[10] = dom.createMorphAt(element8, 2, 2);
-        morphs[11] = dom.createMorphAt(element8, 3, 3);
-        morphs[12] = dom.createMorphAt(element8, 4, 4);
-        morphs[13] = dom.createElementMorph(element9);
+        morphs[4] = dom.createElementMorph(element5);
+        morphs[5] = dom.createMorphAt(element7, 1, 1);
+        morphs[6] = dom.createMorphAt(element7, 2, 2);
+        morphs[7] = dom.createMorphAt(element7, 3, 3);
+        morphs[8] = dom.createMorphAt(element7, 4, 4);
+        morphs[9] = dom.createMorphAt(element7, 5, 5);
+        morphs[10] = dom.createMorphAt(element8, 1, 1);
+        morphs[11] = dom.createMorphAt(element9, 1, 1);
+        morphs[12] = dom.createMorphAt(element9, 2, 2);
+        morphs[13] = dom.createMorphAt(element9, 3, 3);
+        morphs[14] = dom.createMorphAt(element9, 4, 4);
+        morphs[15] = dom.createMorphAt(element9, 5, 5);
+        morphs[16] = dom.createElementMorph(element10);
         return morphs;
       },
-      statements: [["element", "action", [["get", "toggleProperty", ["loc", [null, [13, 45], [13, 59]]]], "viewConfig.showTitle"], [], ["loc", [null, [13, 36], [13, 84]]]], ["element", "action", [["get", "toggleProperty", ["loc", [null, [14, 45], [14, 59]]]], "viewConfig.showDescription"], [], ["loc", [null, [14, 36], [14, 90]]]], ["element", "action", [["get", "toggleProperty", ["loc", [null, [15, 45], [15, 59]]]], "viewConfig.showLocation"], [], ["loc", [null, [15, 36], [15, 87]]]], ["element", "action", [["get", "toggleProperty", ["loc", [null, [16, 45], [16, 59]]]], "viewConfig.showEnabled"], [], ["loc", [null, [16, 36], [16, 86]]]], ["block", "if", [["get", "viewConfig.showTitle", ["loc", [null, [22, 12], [22, 32]]]]], [], 0, null, ["loc", [null, [22, 6], [24, 13]]]], ["block", "if", [["get", "viewConfig.showDescription", ["loc", [null, [25, 12], [25, 38]]]]], [], 1, null, ["loc", [null, [25, 6], [27, 13]]]], ["block", "if", [["get", "viewConfig.showLocation", ["loc", [null, [28, 12], [28, 35]]]]], [], 2, null, ["loc", [null, [28, 6], [30, 13]]]], ["block", "if", [["get", "viewConfig.showEnabled", ["loc", [null, [31, 12], [31, 34]]]]], [], 3, null, ["loc", [null, [31, 6], [33, 13]]]], ["block", "each", [["get", "adventures", ["loc", [null, [38, 12], [38, 22]]]]], [], 4, null, ["loc", [null, [38, 4], [43, 13]]]], ["block", "if", [["get", "viewConfig.showTitle", ["loc", [null, [45, 12], [45, 32]]]]], [], 5, null, ["loc", [null, [45, 6], [52, 13]]]], ["block", "if", [["get", "viewConfig.showDescription", ["loc", [null, [53, 12], [53, 38]]]]], [], 6, null, ["loc", [null, [53, 6], [60, 13]]]], ["block", "if", [["get", "viewConfig.showLocation", ["loc", [null, [61, 12], [61, 35]]]]], [], 7, null, ["loc", [null, [61, 6], [68, 13]]]], ["block", "if", [["get", "viewConfig.showEnabled", ["loc", [null, [69, 12], [69, 34]]]]], [], 8, null, ["loc", [null, [69, 6], [71, 13]]]], ["element", "action", ["add"], [], ["loc", [null, [73, 14], [73, 30]]]]],
+      statements: [["element", "action", [["get", "toggleProperty", ["loc", [null, [13, 45], [13, 59]]]], "viewConfig.showTitle"], [], ["loc", [null, [13, 36], [13, 84]]]], ["element", "action", [["get", "toggleProperty", ["loc", [null, [14, 45], [14, 59]]]], "viewConfig.showDescription"], [], ["loc", [null, [14, 36], [14, 90]]]], ["element", "action", [["get", "toggleProperty", ["loc", [null, [15, 45], [15, 59]]]], "viewConfig.showLocation"], [], ["loc", [null, [15, 36], [15, 87]]]], ["element", "action", [["get", "toggleProperty", ["loc", [null, [16, 45], [16, 59]]]], "viewConfig.showType"], [], ["loc", [null, [16, 36], [16, 83]]]], ["element", "action", [["get", "toggleProperty", ["loc", [null, [17, 45], [17, 59]]]], "viewConfig.showEnabled"], [], ["loc", [null, [17, 36], [17, 86]]]], ["block", "if", [["get", "viewConfig.showTitle", ["loc", [null, [23, 12], [23, 32]]]]], [], 0, null, ["loc", [null, [23, 6], [25, 13]]]], ["block", "if", [["get", "viewConfig.showDescription", ["loc", [null, [26, 12], [26, 38]]]]], [], 1, null, ["loc", [null, [26, 6], [28, 13]]]], ["block", "if", [["get", "viewConfig.showLocation", ["loc", [null, [29, 12], [29, 35]]]]], [], 2, null, ["loc", [null, [29, 6], [31, 13]]]], ["block", "if", [["get", "viewConfig.showType", ["loc", [null, [32, 12], [32, 31]]]]], [], 3, null, ["loc", [null, [32, 6], [34, 13]]]], ["block", "if", [["get", "viewConfig.showEnabled", ["loc", [null, [35, 12], [35, 34]]]]], [], 4, null, ["loc", [null, [35, 6], [37, 13]]]], ["block", "each", [["get", "adventures", ["loc", [null, [42, 12], [42, 22]]]]], [], 5, null, ["loc", [null, [42, 4], [47, 13]]]], ["block", "if", [["get", "viewConfig.showTitle", ["loc", [null, [49, 12], [49, 32]]]]], [], 6, null, ["loc", [null, [49, 6], [56, 13]]]], ["block", "if", [["get", "viewConfig.showDescription", ["loc", [null, [57, 12], [57, 38]]]]], [], 7, null, ["loc", [null, [57, 6], [64, 13]]]], ["block", "if", [["get", "viewConfig.showLocation", ["loc", [null, [65, 12], [65, 35]]]]], [], 8, null, ["loc", [null, [65, 6], [72, 13]]]], ["block", "if", [["get", "viewConfig.showType", ["loc", [null, [73, 12], [73, 31]]]]], [], 9, null, ["loc", [null, [73, 6], [80, 13]]]], ["block", "if", [["get", "viewConfig.showEnabled", ["loc", [null, [81, 12], [81, 34]]]]], [], 10, null, ["loc", [null, [81, 6], [83, 13]]]], ["element", "action", ["add"], [], ["loc", [null, [85, 14], [85, 30]]]]],
       locals: [],
-      templates: [child0, child1, child2, child3, child4, child5, child6, child7, child8]
+      templates: [child0, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10]
     };
   })());
 });
@@ -6734,7 +6976,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("av-frontend/app")["default"].create({"name":"av-frontend","version":"0.0.0+f51ac17c"});
+  require("av-frontend/app")["default"].create({"name":"av-frontend","version":"0.0.0+8f95d70b"});
 }
 
 /* jshint ignore:end */

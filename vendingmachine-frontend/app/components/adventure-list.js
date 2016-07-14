@@ -19,6 +19,7 @@ export default Ember.Component.extend({
     this.set('viewConfig.showTitle', true);
     this.set('viewConfig.showDescription', true);
     this.set('viewConfig.showLocation', true);
+    this.set('viewConfig.showType', true);
     this.set('viewConfig.showEnabled', true);
   },
 
@@ -27,12 +28,13 @@ export default Ember.Component.extend({
       let title = this.get('newAdventure.title');
       let desc = this.get('newAdventure.desc');
       let loc = this.get('newAdventure.loc');
+      let type = this.get('newAdventure.type');
 
       if (!title && !desc) {
         return;
       }
 
-      this.get('store').createRecord('adventure', { title, desc, loc }).save();
+      this.get('store').createRecord('adventure', { title, desc, loc, type }).save();
 
       this.set('newAdventure', {});
     },

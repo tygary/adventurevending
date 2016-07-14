@@ -13,6 +13,7 @@ Use control + F to search
   <button class="btn btn-secondary" {{action toggleProperty 'viewConfig.showTitle'}}>Toggle Title</button>
   <button class="btn btn-secondary" {{action toggleProperty 'viewConfig.showDescription'}}>Toggle Description</button>
   <button class="btn btn-secondary" {{action toggleProperty 'viewConfig.showLocation'}}>Toggle Location</button>
+  <button class="btn btn-secondary" {{action toggleProperty 'viewConfig.showType'}}>Toggle Type</button>
   <button class="btn btn-secondary" {{action toggleProperty 'viewConfig.showEnabled'}}>Toggle Enabled</button>
 </div>
 
@@ -27,6 +28,9 @@ Use control + F to search
       {{/if}}
       {{#if viewConfig.showLocation}}
         {{#column-head sort=(action "sort") sortBy="loc" currentSort=currentSort}}Location{{/column-head}}
+      {{/if}}
+      {{#if viewConfig.showType}}
+        {{#column-head sort=(action "sort") sortBy="type" currentSort=currentSort}}Type{{/column-head}}
       {{/if}}
       {{#if viewConfig.showEnabled}}
         {{#column-head sort=(action "sort") sortBy="enabled" currentSort=currentSort}}Enabled{{/column-head}}
@@ -64,6 +68,14 @@ Use control + F to search
             type="text"
             placeholder="Location"
             value=newAdventure.loc}}
+        </td>
+      {{/if}}
+      {{#if viewConfig.showType}}
+        <td>
+          {{input
+            type="text"
+            placeholder="Type"
+            value=newAdventure.type}}
         </td>
       {{/if}}
       {{#if viewConfig.showEnabled}}
