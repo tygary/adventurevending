@@ -48,6 +48,7 @@ class VendingMachine(object):
     def __init__(self):
         GPIO.cleanup()
         GPIO.setmode(GPIO.BOARD)
+        self.logger = Logger()
         self.__init_pins()
         self.box_controller = BinaryBoxController()
         self.printer = Printer()
@@ -56,7 +57,6 @@ class VendingMachine(object):
         self.adventure_knob_b = BinaryKnob(self.box_select_pins_b)
         self.coin_machine = CoinMachine(self.lighting, self.demo_mode)
         self.server = api.run.ServerController()
-        self.logger = Logger()
 
     # Private -------------------------------------------
 
@@ -127,7 +127,7 @@ class VendingMachine(object):
     # Public --------------------------------------------
 
     def open_prize_box(self, box_number):
-        self.logger.log("Machine: selected box %s with credits: %s" % (box_number, self.coin_machine.current_value)
+        self.logger.log("Machine: selected box %s with credits: %s" % (box_number, self.coin_machine.current_value))
         #For now, all boxes cost one. TODO: Hook this up with prices
         box_cost = 1
         if (self.coin_machine.current_value >= box_cost):
