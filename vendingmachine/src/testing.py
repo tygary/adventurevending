@@ -4,6 +4,7 @@ import threading
 import imp
 import random
 import textwrap
+import ..lights
 from vendingmachine.src.printer import Printer
 from vendingmachine.src.coinmachine import CoinMachine
 from vendingmachine.src.lightingcontroller import LightingController
@@ -133,6 +134,7 @@ class VendingMachine(object):
         if (self.coin_machine.current_value >= box_cost):
             self.logger.log("  Signalling to open box %s" % box_number)
             self.box_controller.set_box(box_number)
+            lights.LightSystemManager.open_box()
             self.box_controller.open_current_box()
             self.lighting.dispense_prize(box_number)
             self.gift_count = self.gift_count + 1
