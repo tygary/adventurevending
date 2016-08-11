@@ -1,6 +1,5 @@
 av-api/avdatatmp
 .idea
-app/dist
 *.pyc
 vendingmachine-frontend/node_modules
 vendingmachine-frontend/bower_components

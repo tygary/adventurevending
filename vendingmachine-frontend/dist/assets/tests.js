@@ -34,6 +34,15 @@ define('av-frontend/tests/app.jshint', ['exports'], function (exports) {
     assert.ok(true, 'app.js should pass jshint.');
   });
 });
+define('av-frontend/tests/components/adventure-list-item.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint - components/adventure-list-item.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'components/adventure-list-item.js should pass jshint.');
+  });
+});
 define('av-frontend/tests/components/adventure-list.jshint', ['exports'], function (exports) {
   'use strict';
 
@@ -41,6 +50,24 @@ define('av-frontend/tests/components/adventure-list.jshint', ['exports'], functi
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'components/adventure-list.js should pass jshint.');
+  });
+});
+define('av-frontend/tests/components/bootstrap/bootstrap-dropdown.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint - components/bootstrap/bootstrap-dropdown.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'components/bootstrap/bootstrap-dropdown.js should pass jshint.');
+  });
+});
+define('av-frontend/tests/components/column-head.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint - components/column-head.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'components/column-head.js should pass jshint.');
   });
 });
 define('av-frontend/tests/components/slot-list.jshint', ['exports'], function (exports) {
