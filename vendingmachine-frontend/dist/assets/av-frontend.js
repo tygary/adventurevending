@@ -7,20 +7,7 @@
 /* jshint ignore:end */
 
 define('av-frontend/adapters/adventure', ['exports', 'av-frontend/adapters/base'], function (exports, _avFrontendAdaptersBase) {
-  exports['default'] = _avFrontendAdaptersBase['default'].extend({
-    adventureCounter: 0,
-
-    generateIdForRecord: function generateIdForRecord(store) {
-      var adventureCounter = this.get('adventureCounter');
-
-      while (store.peekRecord('adventure', adventureCounter)) {
-        adventureCounter++;
-      }
-
-      this.set('adventureCounter', adventureCounter);
-      return adventureCounter;
-    }
-  });
+  exports['default'] = _avFrontendAdaptersBase['default'].extend({});
 });
 define('av-frontend/adapters/base', ['exports', 'ember-data'], function (exports, _emberData) {
   exports['default'] = _emberData['default'].RESTAdapter.extend({
@@ -69,6 +56,12 @@ define('av-frontend/components/adventure-list-item', ['exports', 'ember'], funct
     store: _ember['default'].inject.service(),
 
     isEditing: false,
+
+    init: function init() {
+      this._super.apply(this, arguments);
+
+      this.set('adventure.type', this.get('adventure.event_type.label'));
+    },
 
     actions: {
       enableIsEditing: function enableIsEditing() {
@@ -429,6 +422,23 @@ define('av-frontend/components/slot-list', ['exports', 'ember'], function (expor
     }
   });
 });
+define('av-frontend/controllers/index', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Controller.extend({
+    queryParams: ['page'],
+    page: 0,
+
+    actions: {
+      prevPage: function prevPage() {
+        if (this.get('page') !== 0) {
+          this.decrementProperty('page');
+        }
+      },
+      nextPage: function nextPage() {
+        this.incrementProperty('page');
+      }
+    }
+  });
+});
 define('av-frontend/helpers/is-equal', ['exports', 'ember-bootstrap/helpers/is-equal'], function (exports, _emberBootstrapHelpersIsEqual) {
   Object.defineProperty(exports, 'default', {
     enumerable: true,
@@ -691,14 +701,14 @@ define('av-frontend/instance-initializers/prefetch', ['exports', 'ember-prefetch
     }
   });
 });
-define('av-frontend/models/adventure', ['exports', 'ember-data'], function (exports, _emberData) {
+define('av-frontend/models/adventure', ['exports', 'ember', 'ember-data'], function (exports, _ember, _emberData) {
   exports['default'] = _emberData['default'].Model.extend({
     title: _emberData['default'].attr('string'),
     desc: _emberData['default'].attr('string'),
     loc: _emberData['default'].attr('string'),
     type: _emberData['default'].attr('string'),
+    event_type: _emberData['default'].attr(),
     enabled: _emberData['default'].attr('boolean', { defaultValue: true })
-    // init: DS.belongsTo()
   });
 });
 define('av-frontend/models/slot', ['exports', 'ember-data'], function (exports, _emberData) {
@@ -743,11 +753,18 @@ define('av-frontend/routes/edit-adventure', ['exports', 'ember'], function (expo
 define('av-frontend/routes/index', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Route.extend({
 
+    queryParams: {
+      page: {
+        refreshModel: true
+      }
+    },
+
     store: _ember['default'].inject.service(),
 
-    prefetch: function prefetch() {
+    prefetch: function prefetch(params) {
+
       return _ember['default'].RSVP.hash({
-        adventures: this.store.findAll('adventure', {})
+        adventures: this.store.query('adventure', params.queryParams)
       });
     }
   });
@@ -6900,7 +6917,8 @@ define("av-frontend/templates/index", ["exports"], function (exports) {
     return {
       meta: {
         "fragmentReason": {
-          "name": "triple-curlies"
+          "name": "missing-wrapper",
+          "problems": ["multiple-nodes"]
         },
         "revision": "Ember@2.4.6",
         "loc": {
@@ -6910,7 +6928,7 @@ define("av-frontend/templates/index", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 7,
+            "line": 10,
             "column": 6
           }
         },
@@ -6922,6 +6940,18 @@ define("av-frontend/templates/index", ["exports"], function (exports) {
       hasRendered: false,
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("button");
+        var el2 = dom.createTextNode("back");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("button");
+        var el2 = dom.createTextNode("next");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
         var el1 = dom.createElement("div");
         dom.setAttribute(el1, "class", "row");
         var el2 = dom.createTextNode("\n  ");
@@ -6934,11 +6964,15 @@ define("av-frontend/templates/index", ["exports"], function (exports) {
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(1);
-        morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]), 1, 1);
+        var element0 = dom.childAt(fragment, [0]);
+        var element1 = dom.childAt(fragment, [2]);
+        var morphs = new Array(3);
+        morphs[0] = dom.createElementMorph(element0);
+        morphs[1] = dom.createElementMorph(element1);
+        morphs[2] = dom.createMorphAt(dom.childAt(fragment, [4]), 1, 1);
         return morphs;
       },
-      statements: [["inline", "adventure-list", [], ["adventures", ["subexpr", "@mut", [["get", "model.adventures", ["loc", [null, [2, 30], [2, 46]]]]], [], []]], ["loc", [null, [2, 2], [2, 48]]]]],
+      statements: [["element", "action", ["prevPage"], [], ["loc", [null, [1, 8], [1, 29]]]], ["element", "action", ["nextPage"], [], ["loc", [null, [2, 8], [2, 29]]]], ["inline", "adventure-list", [], ["adventures", ["subexpr", "@mut", [["get", "model.adventures", ["loc", [null, [5, 30], [5, 46]]]]], [], []]], ["loc", [null, [5, 2], [5, 48]]]]],
       locals: [],
       templates: []
     };
@@ -6976,7 +7010,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("av-frontend/app")["default"].create({"name":"av-frontend","version":"0.0.0+8f95d70b"});
+  require("av-frontend/app")["default"].create({"name":"av-frontend","version":"0.0.0+b0516945"});
 }
 
 /* jshint ignore:end */

@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import DS from 'ember-data';
 
 export default DS.Model.extend({
@@ -5,6 +6,6 @@ export default DS.Model.extend({
   desc: DS.attr('string'),
   loc: DS.attr('string'),
   type: DS.attr('string'),
+  event_type: DS.attr(),
   enabled: DS.attr('boolean', { defaultValue: true })
-  // init: DS.belongsTo()
 });

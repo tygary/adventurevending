@@ -79,6 +79,15 @@ define('av-frontend/tests/components/slot-list.jshint', ['exports'], function (e
     assert.ok(true, 'components/slot-list.js should pass jshint.');
   });
 });
+define('av-frontend/tests/controllers/index.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint - controllers/index.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'controllers/index.js should pass jshint.');
+  });
+});
 define('av-frontend/tests/helpers/destroy-app', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = destroyApp;
 
@@ -180,7 +189,7 @@ define('av-frontend/tests/models/adventure.jshint', ['exports'], function (expor
   QUnit.module('JSHint - models/adventure.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'models/adventure.js should pass jshint.');
+    assert.ok(false, 'models/adventure.js should pass jshint.\nmodels/adventure.js: line 1, col 8, \'Ember\' is defined but never used.\n\n1 error');
   });
 });
 define('av-frontend/tests/models/slot.jshint', ['exports'], function (exports) {

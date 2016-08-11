@@ -2,11 +2,18 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
 
+  queryParams: {
+    page: {
+      refreshModel: true
+    }
+  },
+
   store: Ember.inject.service(),
 
-  prefetch() {
+  prefetch(params) {
+
     return Ember.RSVP.hash({
-      adventures: this.store.findAll('adventure', {}),
+      adventures: this.store.query('adventure', params.queryParams),
       // slots: this.store.findAll('slot', {})
     });
   }

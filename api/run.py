@@ -9,8 +9,8 @@ from logger.logger import Logger
 tmpfilepath = os.path.join(os.path.dirname(__file__), 'avdatatmp')
 
 av_data = {}
-av_data['adventures'] = []
-av_data['slots'] = []
+# av_data['adventures'] = []
+# av_data['slots'] = []
 
 logger = Logger()
 
@@ -68,18 +68,23 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
         self.end_headers()
         if self.path == '/api/adventures':
             logger.log("  returning adventures")
-            adventures_data = json.dumps(av_data['adventures'], separators=(',', ':'))
+            adventures_data = json.dumps(av_data.values()[0:10])
             logger.log(adventures_data)
             self.wfile.write('{"adventures":' + adventures_data + '}')
+        elif self.path.startswith('/api/adventures?'):
+            page_to_get = int(self.path[21:])
+            logger.log("  returning adventures with paging %s" % page_to_get)
+            start_index = 10 * page_to_get
+            end_index = start_index + 10
+            paged_adventures_data = json.dumps(av_data.values()[start_index:end_index])
+            logger.log(paged_adventures_data)
+            self.wfile.write('{"adventures":' + paged_adventures_data + '}')
         elif self.path.startswith('/api/adventures/'):
             adventure_to_get = None
             id_to_get = self.path[16:]
             logger.log("  returning adventure with id: %s" % id_to_get)
 
-            for adventure in av_data['adventures']:
-                if adventure['id'] == id_to_get:
-                    adventure_to_get = adventure
-                    break
+            adventure_to_get = av_data[id_to_get]
 
             if adventure_to_get != None:
                 logger.log("  found adventure and returning")

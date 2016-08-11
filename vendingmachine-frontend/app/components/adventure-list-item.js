@@ -9,6 +9,12 @@ export default Ember.Component.extend({
 
   isEditing: false,
 
+  init() {
+    this._super(...arguments);
+
+    this.set('adventure.type', this.get('adventure.event_type.label'));
+  },
+
   actions: {
     enableIsEditing() {
       this.set('isEditing', true);
