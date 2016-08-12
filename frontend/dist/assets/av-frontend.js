@@ -6622,8 +6622,8 @@ define("av-frontend/templates/index", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 10,
-            "column": 6
+            "line": 11,
+            "column": 0
           }
         },
         "moduleName": "av-frontend/templates/index.hbs"
@@ -6634,14 +6634,31 @@ define("av-frontend/templates/index", ["exports"], function (exports) {
       hasRendered: false,
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createElement("button");
-        var el2 = dom.createTextNode("back");
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1, "class", "btn-toolbar");
+        dom.setAttribute(el1, "role", "toolbar");
+        var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("button");
-        var el2 = dom.createTextNode("next");
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2, "class", "btn-group");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("button");
+        dom.setAttribute(el3, "class", "btn");
+        var el4 = dom.createTextNode("back");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("button");
+        dom.setAttribute(el3, "class", "btn");
+        var el4 = dom.createTextNode("next");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n\n");
@@ -6652,21 +6669,24 @@ define("av-frontend/templates/index", ["exports"], function (exports) {
         dom.appendChild(el1, el2);
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n\n");
+        var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element0 = dom.childAt(fragment, [0]);
-        var element1 = dom.childAt(fragment, [2]);
+        var element0 = dom.childAt(fragment, [0, 1]);
+        var element1 = dom.childAt(element0, [1]);
+        var element2 = dom.childAt(element0, [3]);
         var morphs = new Array(3);
-        morphs[0] = dom.createElementMorph(element0);
-        morphs[1] = dom.createElementMorph(element1);
-        morphs[2] = dom.createMorphAt(dom.childAt(fragment, [4]), 1, 1);
+        morphs[0] = dom.createElementMorph(element1);
+        morphs[1] = dom.createElementMorph(element2);
+        morphs[2] = dom.createMorphAt(dom.childAt(fragment, [2]), 1, 1);
         return morphs;
       },
-      statements: [["element", "action", ["prevPage"], [], ["loc", [null, [1, 8], [1, 29]]]], ["element", "action", ["nextPage"], [], ["loc", [null, [2, 8], [2, 29]]]], ["inline", "adventure-list", [], ["adventures", ["subexpr", "@mut", [["get", "model.adventures", ["loc", [null, [5, 30], [5, 46]]]]], [], []]], ["loc", [null, [5, 2], [5, 48]]]]],
+      statements: [["element", "action", ["prevPage"], [], ["loc", [null, [3, 24], [3, 45]]]], ["element", "action", ["nextPage"], [], ["loc", [null, [4, 24], [4, 45]]]], ["inline", "adventure-list", [], ["adventures", ["subexpr", "@mut", [["get", "model.adventures", ["loc", [null, [9, 30], [9, 46]]]]], [], []]], ["loc", [null, [9, 2], [9, 48]]]]],
       locals: [],
       templates: []
     };
@@ -6704,7 +6724,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("av-frontend/app")["default"].create({"name":"av-frontend","version":"0.0.0+179f4447"});
+  require("av-frontend/app")["default"].create({"name":"av-frontend","version":"0.0.0+0dedb5ea"});
 }
 
 /* jshint ignore:end */

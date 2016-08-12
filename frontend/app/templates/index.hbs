@@ -1,10 +1,10 @@
-<button {{action "prevPage"}}>back</button>
-<button {{action "nextPage"}}>next</button>
+<div class="btn-toolbar" role="toolbar">
+  <div class="btn-group">
+    <button class="btn" {{action "prevPage"}}>back</button>
+    <button class="btn" {{action "nextPage"}}>next</button>
+  </div>
+</div>
 
 <div class="row">
   {{adventure-list adventures=model.adventures}}
-
-  {{!--
-  {{slot-list model=model}}
-  --}}
 </div>
