@@ -16,15 +16,6 @@ define('av-frontend/tests/adapters/base.jshint', ['exports'], function (exports)
     assert.ok(true, 'adapters/base.js should pass jshint.');
   });
 });
-define('av-frontend/tests/adapters/slot.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint - adapters/slot.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'adapters/slot.js should pass jshint.');
-  });
-});
 define('av-frontend/tests/app.jshint', ['exports'], function (exports) {
   'use strict';
 
@@ -68,15 +59,6 @@ define('av-frontend/tests/components/column-head.jshint', ['exports'], function 
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'components/column-head.js should pass jshint.');
-  });
-});
-define('av-frontend/tests/components/slot-list.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint - components/slot-list.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'components/slot-list.js should pass jshint.');
   });
 });
 define('av-frontend/tests/controllers/index.jshint', ['exports'], function (exports) {
@@ -189,16 +171,7 @@ define('av-frontend/tests/models/adventure.jshint', ['exports'], function (expor
   QUnit.module('JSHint - models/adventure.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'models/adventure.js should pass jshint.\nmodels/adventure.js: line 1, col 8, \'Ember\' is defined but never used.\n\n1 error');
-  });
-});
-define('av-frontend/tests/models/slot.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint - models/slot.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'models/slot.js should pass jshint.');
+    assert.ok(true, 'models/adventure.js should pass jshint.');
   });
 });
 define('av-frontend/tests/resolver.jshint', ['exports'], function (exports) {

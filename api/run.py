@@ -9,8 +9,6 @@ from logger.logger import Logger
 tmpfilepath = os.path.join(os.path.dirname(__file__), 'avdatatmp')
 
 av_data = {}
-# av_data['adventures'] = []
-# av_data['slots'] = []
 
 logger = Logger()
 
@@ -91,9 +89,6 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
                 self.wfile.write(json.dumps({"adventures":[adventure_to_get]}, separators=(',', ':')))
             else:
                 logger.log("  no adventure found by id: %s" % id_to_get)
-        elif self.path == '/api/slots':
-            slots_data = json.dumps(av_data['slots'], separators=(',', ':'))
-            self.wfile.write('{"slots":' + slots_data + '}')
 
     def do_POST(self):
         self._set_headers()
@@ -105,8 +100,6 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
 
         if post_data.has_key('adventure'):
             av_data['adventures'].append(post_data['adventure'])
-        elif post_data.has_key('slot'):
-            av_data['slots'].append(post_data['slot'])
 
         self.wfile.write('{}')
         self._onchange()
@@ -147,9 +140,6 @@ class VendingRequestHandler(SimpleHTTPRequestHandler):
         if params[2] == 'adventures':
             adventure_record = [x for x in av_data['adventures'] if x['id'] == record_id][0]
             av_data['adventures'].remove(adventure_record)
-        elif params[2] == 'slots':
-            slot_record = [x for x in av_data['slots'] if x['id'] == record_id][0]
-            av_data['slots'].remove(slot_record)
 
         self.wfile.write('{}')
         self._onchange()

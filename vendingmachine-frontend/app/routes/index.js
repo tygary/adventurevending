@@ -13,8 +13,7 @@ export default Ember.Route.extend({
   prefetch(params) {
 
     return Ember.RSVP.hash({
-      adventures: this.store.query('adventure', params.queryParams),
-      // slots: this.store.findAll('slot', {})
+      adventures: this.store.query('adventure', params.queryParams)
     });
   }
 });

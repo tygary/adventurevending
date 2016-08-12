@@ -7,7 +7,6 @@ const Router = Ember.Router.extend({
 
 Router.map(function() {
   this.route('edit-adventure', { path: '/edit-adventure/:adventure_id' });
-  this.route('edit-gift', { path: '/edit-gift/:gift_id' });
 });
 
 export default Router;

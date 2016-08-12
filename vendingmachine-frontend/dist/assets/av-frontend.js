@@ -15,22 +15,6 @@ define('av-frontend/adapters/base', ['exports', 'ember-data'], function (exports
     namespace: 'api'
   });
 });
-define('av-frontend/adapters/slot', ['exports', 'av-frontend/adapters/base'], function (exports, _avFrontendAdaptersBase) {
-  exports['default'] = _avFrontendAdaptersBase['default'].extend({
-    slotCounter: 0,
-
-    generateIdForRecord: function generateIdForRecord(store) {
-      var slotCounter = this.get('slotCounter');
-
-      while (store.peekRecord('slot', slotCounter)) {
-        slotCounter++;
-      }
-
-      this.set('slotCounter', slotCounter);
-      return slotCounter;
-    }
-  });
-});
 define('av-frontend/app', ['exports', 'ember', 'av-frontend/resolver', 'ember-load-initializers', 'av-frontend/config/environment'], function (exports, _ember, _avFrontendResolver, _emberLoadInitializers, _avFrontendConfigEnvironment) {
 
   var App = undefined;
@@ -390,38 +374,6 @@ define('av-frontend/components/ember-wormhole', ['exports', 'ember-wormhole/comp
     }
   });
 });
-define('av-frontend/components/slot-list', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Component.extend({
-    tagName: 'div',
-    classNames: ['col-md-6'],
-
-    store: _ember['default'].inject.service(),
-
-    newSlot: {},
-
-    actions: {
-      add: function add() {
-        var location = Number.parseInt(this.get('newSlot.location'), 10);
-        var isEmpty = this.get('newSlot.isEmpty') || false;
-        var cost = Number.parseInt(this.get('newSlot.cost'), 10) || 0;
-
-        if (!location) {
-          return;
-        }
-
-        this.get('store').createRecord('slot', { location: location, isEmpty: isEmpty, cost: cost }).save();
-
-        this.set('newSlot', {});
-      },
-      remove: function remove(id) {
-        var store = this.get('store');
-        var record = store.peekRecord('slot', id);
-        store.deleteRecord(record);
-        record.save();
-      }
-    }
-  });
-});
 define('av-frontend/controllers/index', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Controller.extend({
     queryParams: ['page'],
@@ -701,7 +653,7 @@ define('av-frontend/instance-initializers/prefetch', ['exports', 'ember-prefetch
     }
   });
 });
-define('av-frontend/models/adventure', ['exports', 'ember', 'ember-data'], function (exports, _ember, _emberData) {
+define('av-frontend/models/adventure', ['exports', 'ember-data'], function (exports, _emberData) {
   exports['default'] = _emberData['default'].Model.extend({
     title: _emberData['default'].attr('string'),
     desc: _emberData['default'].attr('string'),
@@ -709,15 +661,6 @@ define('av-frontend/models/adventure', ['exports', 'ember', 'ember-data'], funct
     type: _emberData['default'].attr('string'),
     event_type: _emberData['default'].attr(),
     enabled: _emberData['default'].attr('boolean', { defaultValue: true })
-  });
-});
-define('av-frontend/models/slot', ['exports', 'ember-data'], function (exports, _emberData) {
-  var attr = _emberData['default'].attr;
-
-  exports['default'] = _emberData['default'].Model.extend({
-    location: attr('number'),
-    isEmpty: attr('boolean', { defaultValue: false }),
-    cost: attr('number', { defaultValue: 1 })
   });
 });
 define('av-frontend/resolver', ['exports', 'ember-resolver'], function (exports, _emberResolver) {
@@ -731,7 +674,6 @@ define('av-frontend/router', ['exports', 'ember', 'av-frontend/config/environmen
 
   Router.map(function () {
     this.route('edit-adventure', { path: '/edit-adventure/:adventure_id' });
-    this.route('edit-gift', { path: '/edit-gift/:gift_id' });
   });
 
   exports['default'] = Router;
@@ -769,7 +711,6 @@ define('av-frontend/routes/index', ['exports', 'ember'], function (exports, _emb
     }
   });
 });
-// slots: this.store.findAll('slot', {})
 define('av-frontend/services/ajax', ['exports', 'ember-ajax/services/ajax'], function (exports, _emberAjaxServicesAjax) {
   Object.defineProperty(exports, 'default', {
     enumerable: true,
@@ -6665,253 +6606,6 @@ define("av-frontend/templates/components/form-element/vertical/textarea", ["expo
     };
   })());
 });
-define("av-frontend/templates/components/slot-list", ["exports"], function (exports) {
-  exports["default"] = Ember.HTMLBars.template((function () {
-    var child0 = (function () {
-      return {
-        meta: {
-          "fragmentReason": false,
-          "revision": "Ember@2.4.6",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 12,
-              "column": 4
-            },
-            "end": {
-              "line": 29,
-              "column": 4
-            }
-          },
-          "moduleName": "av-frontend/templates/components/slot-list.hbs"
-        },
-        isEmpty: false,
-        arity: 1,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("    ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createElement("tr");
-          var el2 = dom.createTextNode("\n      ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("td");
-          var el3 = dom.createComment("");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n      ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("td");
-          var el3 = dom.createComment("");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n      ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("td");
-          var el3 = dom.createComment("");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n      ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("td");
-          var el3 = dom.createComment("");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("      ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("td");
-          var el3 = dom.createTextNode("\n        ");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createElement("span");
-          dom.setAttribute(el3, "class", "glyphicon glyphicon-remove");
-          dom.setAttribute(el3, "aria-hidden", "true");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("\n      ");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n    ");
-          dom.appendChild(el1, el2);
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element0 = dom.childAt(fragment, [1]);
-          var element1 = dom.childAt(element0, [10]);
-          var morphs = new Array(5);
-          morphs[0] = dom.createMorphAt(dom.childAt(element0, [1]), 0, 0);
-          morphs[1] = dom.createMorphAt(dom.childAt(element0, [3]), 0, 0);
-          morphs[2] = dom.createMorphAt(dom.childAt(element0, [5]), 0, 0);
-          morphs[3] = dom.createMorphAt(dom.childAt(element0, [7]), 0, 0);
-          morphs[4] = dom.createElementMorph(element1);
-          return morphs;
-        },
-        statements: [["content", "slot.id", ["loc", [null, [14, 10], [14, 21]]]], ["content", "slot.location", ["loc", [null, [15, 10], [15, 27]]]], ["content", "slot.isEmpty", ["loc", [null, [16, 10], [16, 26]]]], ["content", "slot.cost", ["loc", [null, [17, 10], [17, 23]]]], ["element", "action", ["remove", ["get", "slot.id", ["loc", [null, [25, 28], [25, 35]]]]], [], ["loc", [null, [25, 10], [25, 37]]]]],
-        locals: ["slot"],
-        templates: []
-      };
-    })();
-    return {
-      meta: {
-        "fragmentReason": {
-          "name": "missing-wrapper",
-          "problems": ["multiple-nodes"]
-        },
-        "revision": "Ember@2.4.6",
-        "loc": {
-          "source": null,
-          "start": {
-            "line": 1,
-            "column": 0
-          },
-          "end": {
-            "line": 54,
-            "column": 8
-          }
-        },
-        "moduleName": "av-frontend/templates/components/slot-list.hbs"
-      },
-      isEmpty: false,
-      arity: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      buildFragment: function buildFragment(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createElement("h3");
-        var el2 = dom.createTextNode("Slots");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("table");
-        dom.setAttribute(el1, "class", "table table-striped");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("thead");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("tr");
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("th");
-        var el5 = dom.createTextNode("id");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("th");
-        var el5 = dom.createTextNode("Location");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("th");
-        var el5 = dom.createTextNode("Empty");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("th");
-        var el5 = dom.createTextNode("Cost");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n    ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("tbody");
-        var el3 = dom.createTextNode("\n");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createComment("");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("tr");
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("td");
-        var el5 = dom.createTextNode("#");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("td");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createComment("");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("td");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createComment("");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("td");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createComment("");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("td");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("span");
-        dom.setAttribute(el5, "class", "glyphicon glyphicon-plus");
-        dom.setAttribute(el5, "aria-hidden", "true");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n    ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element2 = dom.childAt(fragment, [2, 3]);
-        var element3 = dom.childAt(element2, [3]);
-        var element4 = dom.childAt(element3, [9, 1]);
-        var morphs = new Array(5);
-        morphs[0] = dom.createMorphAt(element2, 1, 1);
-        morphs[1] = dom.createMorphAt(dom.childAt(element3, [3]), 1, 1);
-        morphs[2] = dom.createMorphAt(dom.childAt(element3, [5]), 1, 1);
-        morphs[3] = dom.createMorphAt(dom.childAt(element3, [7]), 1, 1);
-        morphs[4] = dom.createElementMorph(element4);
-        return morphs;
-      },
-      statements: [["block", "each", [["get", "attrs.model.slots", ["loc", [null, [12, 12], [12, 29]]]]], [], 0, null, ["loc", [null, [12, 4], [29, 13]]]], ["inline", "input", [], ["type", "number", "placeholder", "#", "value", ["subexpr", "@mut", [["get", "newSlot.location", ["loc", [null, [36, 16], [36, 32]]]]], [], []]], ["loc", [null, [33, 8], [36, 34]]]], ["inline", "input", [], ["type", "checkbox", "checked", ["subexpr", "@mut", [["get", "newSlot.isEmpty", ["loc", [null, [41, 18], [41, 33]]]]], [], []]], ["loc", [null, [39, 8], [41, 35]]]], ["inline", "input", [], ["type", "number", "placeholder", "1", "value", ["subexpr", "@mut", [["get", "newSlot.cost", ["loc", [null, [47, 16], [47, 28]]]]], [], []]], ["loc", [null, [44, 8], [47, 30]]]], ["element", "action", ["add"], [], ["loc", [null, [50, 14], [50, 30]]]]],
-      locals: [],
-      templates: [child0]
-    };
-  })());
-});
 define("av-frontend/templates/index", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
     return {
@@ -7010,7 +6704,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("av-frontend/app")["default"].create({"name":"av-frontend","version":"0.0.0+b0516945"});
+  require("av-frontend/app")["default"].create({"name":"av-frontend","version":"0.0.0+520b32ce"});
 }
 
 /* jshint ignore:end */
