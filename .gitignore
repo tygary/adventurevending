@@ -1,6 +1,6 @@
 av-api/avdatatmp
 .idea
 *.pyc
-vendingmachine-frontend/node_modules
-vendingmachine-frontend/bower_components
-vendingmachine-frontend/tmp
+frontend/node_modules
+frontend/bower_components
+frontend/tmp
