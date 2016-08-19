@@ -1,0 +1,89 @@
+<p>
+Use control + F to search
+</p>
+
+{{!--
+{{bootstrap.bootstrap-dropdown
+  toggleTitle=(action toggleProperty "viewConfig.showTitle")
+  toggleDescription=(action toggleProperty "viewConfig.showDescription")
+  toggleEnabled=(action toggleProperty "viewConfig.showEnabled")}}
+--}}
+
+<div class="btn-group">
+  <button class="btn btn-secondary" {{action toggleProperty 'viewConfig.showTitle'}}>Toggle Title</button>
+  <button class="btn btn-secondary" {{action toggleProperty 'viewConfig.showDescription'}}>Toggle Description</button>
+  <button class="btn btn-secondary" {{action toggleProperty 'viewConfig.showLocation'}}>Toggle Location</button>
+  <button class="btn btn-secondary" {{action toggleProperty 'viewConfig.showType'}}>Toggle Type</button>
+  <button class="btn btn-secondary" {{action toggleProperty 'viewConfig.showEnabled'}}>Toggle Enabled</button>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      {{#if viewConfig.showTitle}}
+        {{#column-head sort=(action "sort") sortBy="title" currentSort=currentSort}}Title{{/column-head}}
+      {{/if}}
+      {{#if viewConfig.showDescription}}
+        {{#column-head sort=(action "sort") sortBy="desc" currentSort=currentSort}}Description{{/column-head}}
+      {{/if}}
+      {{#if viewConfig.showLocation}}
+        {{#column-head sort=(action "sort") sortBy="loc" currentSort=currentSort}}Location{{/column-head}}
+      {{/if}}
+      {{#if viewConfig.showType}}
+        {{#column-head sort=(action "sort") sortBy="type" currentSort=currentSort}}Type{{/column-head}}
+      {{/if}}
+      {{#if viewConfig.showEnabled}}
+        {{#column-head sort=(action "sort") sortBy="enabled" currentSort=currentSort}}Enabled{{/column-head}}
+      {{/if}}
+      <th colspan="2">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each adventures as |adventure|}}
+      {{adventure-list-item
+        adventure=(mut adventure)
+        viewConfig=viewConfig
+        remove=(action "remove" adventure.id)}}
+    {{/each}}
+    <tr>
+      {{#if viewConfig.showTitle}}
+        <td>
+          {{input
+            type="text"
+            placeholder="Title"
+            value=newAdventure.title}}
+        </td>
+      {{/if}}
+      {{#if viewConfig.showDescription}}
+        <td>
+          {{input
+            type="text"
+            placeholder="Description"
+            value=newAdventure.desc}}
+        </td>
+      {{/if}}
+      {{#if viewConfig.showLocation}}
+        <td>
+          {{input
+            type="text"
+            placeholder="Location"
+            value=newAdventure.loc}}
+        </td>
+      {{/if}}
+      {{#if viewConfig.showType}}
+        <td>
+          {{input
+            type="text"
+            placeholder="Type"
+            value=newAdventure.type}}
+        </td>
+      {{/if}}
+      {{#if viewConfig.showEnabled}}
+        <td></td>
+      {{/if}}
+      <td colspan="2">
+        <span {{action "add"}} class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+      </td>
+    </tr>
+  </tbody>
+</table>

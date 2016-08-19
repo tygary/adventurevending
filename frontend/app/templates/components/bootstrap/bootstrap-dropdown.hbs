@@ -1,0 +1,11 @@
+<button class="btn btn-default dropdown-toggle" {{action "toggleDropdown"}}>
+  Show/Hide Columns
+  <span class="caret"></span>
+</button>
+{{#if showDropdown}}
+  <ul class="dropdown-menu">
+    <li {{action toggleTitle}}><a>Title</a></li>
+    <li {{action toggleDescription}}><a>Description</a></li>
+    <li {{action toggleEnabled}}><a>Enabled</a></li>
+  </ul>
+{{/if}}
