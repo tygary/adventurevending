@@ -4,9 +4,11 @@ import threading
 import imp
 import random
 import textwrap
-import ..lights
+from lights.light_system_manager import LightSystemManager
 from vendingmachine.src.printer import Printer
 from vendingmachine.src.coinmachine import CoinMachine
+
+#Deprecated by LightSystemManager
 from vendingmachine.src.lightingcontroller import LightingController
 from vendingmachine.src.binaryboxcontroller import BinaryBoxController
 from vendingmachine.src.binaryknob import BinaryKnob
@@ -36,6 +38,7 @@ class VendingMachine(object):
 
     box_controller = None
     printer = None
+    #deprecated by ligting system
     lighting = None
     server = None
     adventure_knob_a = None
@@ -53,6 +56,8 @@ class VendingMachine(object):
         self.__init_pins()
         self.box_controller = BinaryBoxController()
         self.printer = Printer()
+        LightSystemManager.setup()
+        #depracted by lighting system manager
         self.lighting = LightingController()
         self.adventure_knob_a = BinaryKnob(self.box_select_pins_a)
         self.adventure_knob_b = BinaryKnob(self.box_select_pins_b)
@@ -134,7 +139,8 @@ class VendingMachine(object):
         if (self.coin_machine.current_value >= box_cost):
             self.logger.log("  Signalling to open box %s" % box_number)
             self.box_controller.set_box(box_number)
-            lights.LightSystemManager.open_box()
+            #play this LED routine for opening a box
+            LightSystemManager.open_box(box_number)
             self.box_controller.open_current_box()
             self.lighting.dispense_prize(box_number)
             self.gift_count = self.gift_count + 1
