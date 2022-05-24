@@ -26,7 +26,7 @@ class Printer(object):
     def __init__(self):
         self.logger = Logger()
         with open("explorey/src/quotes.json", "r") as file:
-            quotes = json.load(file)
+            self.quotes = json.load(file)
 
     def __print_quiz(self):
         self.logger.log("Printer: printing quiz using %s" % self.printer_name)
@@ -94,7 +94,7 @@ class Printer(object):
         pdf.multi_cell(0, 6, grade, align='C')
         pdf.ln()
         pdf.set_font('Arial', '', 12)
-        pdf.multi_cell(0, 6, "\"%s\" - %s" % (quote.quote, quote.author), align='C')
+        pdf.multi_cell(0, 6, "\"%s\" - %s" % (quote["quote"], quote["author"]), align='C')
         pdf.output(self.tmpBadgePath, 'F')
 
     def __get_a_for_grade(self, grade):
