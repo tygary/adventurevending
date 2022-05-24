@@ -94,10 +94,9 @@ class Printer(object):
         pdf.multi_cell(0, 6, grade, align='C')
         pdf.ln()
         pdf.set_font('Arial', '', 12)
-        pdf.multi_cell(0, 6, "\"%s\" - %s" % (quote["quote"], quote["author"]), align='C')
-        num_lines = len(quote["quote"]) // 32
-        pdf.ln(6 * num_lines + 1)
-
+        pdf.multi_cell(0, 12, "\"%s\"" % (quote["quote"]), align='C')
+        pdf.multi_cell(0, 6, "-%s" % (quote["author"]), align='C')
+        pdf.ln()
         pdf.output(self.tmpBadgePath, 'F')
 
     def __get_a_for_grade(self, grade):

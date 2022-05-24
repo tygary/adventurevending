@@ -12,4 +12,4 @@ class ExploreyQuiz(FPDF):
     def footer(self):
         self.set_y(-15)
         self.set_font('Arial', 'I', 8)
-        self.multi_cell(0, 5, "Explorey Torium 2022\nExplorey your inner glory", 0, 'C')
+        self.multi_cell(0, 5, "Explorey Torium 2022\nFind your inner glory", 0, 'C')
