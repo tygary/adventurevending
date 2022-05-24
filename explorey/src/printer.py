@@ -1,6 +1,7 @@
 import cups
 import os
 import random
+import json
 from explorey.src.ExploreyQuiz import ExploreyQuiz
 import threading
 from logger.logger import Logger
@@ -18,11 +19,14 @@ class Printer(object):
     tmpQuizPath = "/home/admin/exploreyquiz.pdf"
     tmpBadgePath = "/home/admin/exploreybadge.pdf"
     ready_to_print = True
+    quotes = []
 
     logger = None
 
     def __init__(self):
         self.logger = Logger()
+        with open("explorey/src/quotes.json", "r") as file:
+            quotes = json.load(file)
 
     def __print_quiz(self):
         self.logger.log("Printer: printing quiz using %s" % self.printer_name)
@@ -71,6 +75,7 @@ class Printer(object):
         desc = "Congratulations!  You have earned your Explorey Badge.  You are now a certified Explorey Scout.  "
         grade = self.__get_random_grade()
         grade_str = "You earned %s " % (self.__get_a_for_grade(grade))
+        quote = self.__get_random_quote()
 
         pdf = ExploreyQuiz()
         pdf.set_margins(left=18, top=0, right=0)
@@ -87,6 +92,9 @@ class Printer(object):
         pdf.multi_cell(0, 6, grade_str, align='C')
         pdf.set_font('Arial', '', 16)
         pdf.multi_cell(0, 6, grade, align='C')
+        pdf.ln()
+        pdf.set_font('Arial', '', 12)
+        pdf.multi_cell(0, 6, "\"%s\" - %s" % (quote.quote, quote.author), align='C')
         pdf.output(self.tmpBadgePath, 'F')
 
     def __get_a_for_grade(self, grade):
@@ -99,6 +107,8 @@ class Printer(object):
         grades = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-"]
         return random.choice(grades)
 
+    def __get_random_quote(self):
+        return random.choice(self.quotes)
 
     def __ready_to_print(self):
         self.logger.log("Printer: setting ready to print from %s to True" % self.ready_to_print)
