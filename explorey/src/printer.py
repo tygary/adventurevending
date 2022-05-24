@@ -15,8 +15,8 @@ class Printer(object):
     conn = cups.Connection()
     printers = conn.getPrinters()
     printer_name = list(printers.keys())[0]
-    tmpQuizPath = "/home/pi/exploreyquiz.pdf"
-    tmpBadgePath = "/home/pi/exploreybadge.pdf"
+    tmpQuizPath = "/home/admin/exploreyquiz.pdf"
+    tmpBadgePath = "/home/admin/exploreybadge.pdf"
     ready_to_print = True
 
     logger = None
