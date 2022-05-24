@@ -42,8 +42,10 @@ class Printer(object):
         except OSError:
             self.logger.log("  Failure")
             pass
-        title = quiz["title"].replace("\\n", "\n")
-        desc = quiz["desc"].replace("\\n", "\n")
+#         title = quiz["title"].replace("\\n", "\n")
+        title = "Explorey Quiz!!"
+#         desc = quiz["desc"].replace("\\n", "\n")
+        desc = "This is a question!"
 
         pdf = ExploreyQuiz()
         pdf.set_margins(left=18, top=0, right=0)
