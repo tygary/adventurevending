@@ -95,6 +95,11 @@ class Printer(object):
         pdf.ln()
         pdf.set_font('Arial', '', 12)
         pdf.multi_cell(0, 6, "\"%s\" - %s" % (quote["quote"], quote["author"]), align='C')
+        quote_length = len(quote["quote"])
+        if quote_length > 64:
+            pdf.ln()
+        if quote_length > 128:
+            pdf.ln()
         pdf.ln()
         pdf.output(self.tmpBadgePath, 'F')
 
