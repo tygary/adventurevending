@@ -40,7 +40,7 @@ class Explorey(object):
     logger = None
 
     quiz_count = 0
-    gift_count = 0
+    badge_count = 0
 
     def __init__(self):
         GPIO.cleanup()
@@ -88,6 +88,13 @@ class Explorey(object):
         self.quiz_count = self.quiz_count + 1
         if self.print_quizzes == True:
             self.printer.printQuiz()
+
+    def dispense_badge(self):
+            self.logger.log("Machine: preparing to dispense quiz with printing set to: %s" % self.print_quizzes)
+    #         adventure = self.get_adventure()
+            self.badge_count = self.badge_count + 1
+            if self.print_quizzes == True:
+                self.printer.printBadge()
 
     def start(self):
         self.logger.log("Machine: starting")

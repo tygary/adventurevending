@@ -67,12 +67,10 @@ class Printer(object):
         except OSError:
             self.logger.log("  Failure")
             pass
-#         title = quiz["title"].replace("\\n", "\n")
-        title = "Explorey Quiz!!"
-#         desc = quiz["desc"].replace("\\n", "\n")
-        desc = "This is a question!"
+        title = "Explorey Badge"
+        desc = "Congratulations!  You have earned your Explorey Badge.  You are now a certified Explorey Scout.  "
         grade = self.__get_random_grade()
-        desc += " Your grade is %s" % (grade)
+        grade_str = "You earned %s " % (self.__get_a_for_grade(grade))
 
         pdf = ExploreyQuiz()
         pdf.set_margins(left=18, top=0, right=0)
@@ -84,8 +82,18 @@ class Printer(object):
         pdf.ln()
         pdf.set_font('Arial', '', 12)
         pdf.multi_cell(0, 6, desc, align='C')
+        pdf.ln()
+        pdf.set_font('Arial', '', 12)
+        pdf.multi_cell(0, 6, grade_str, align='C')
+        pdf.set_font('Arial', '', 16)
+        pdf.multi_cell(0, 6, grade, align='C')
         pdf.output(self.tmpBadgePath, 'F')
 
+    def __get_a_for_grade(self, grade):
+        if "A" in grade:
+            return "an"
+        else:
+            return "a"
 
     def __get_random_grade(self):
         grades = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-"]
