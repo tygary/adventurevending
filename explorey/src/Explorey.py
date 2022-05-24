@@ -16,13 +16,9 @@ from logger.logger import Logger
 #   Toggle the demo_mode flag to use for the burn
 ##-----------------------------------------------------------------------
 class Explorey(object):
-    adventure_button_pin = 18
-    gift_button_pin = 16
-    adventure_type_pin = 22
-    box_select_pins_a = [24,26,32]
-    box_select_pins_b = [36,38,40]
-    out_of_service_pin = 23
-    price_pins = [33,35,37]
+    quiz_button_pin = 18
+    badge_button_pin = 16
+
     #Change this to False to use in the real vending machine
     #Leave as True to use the demo box with three buttons
     demo_mode = True
@@ -53,13 +49,6 @@ class Explorey(object):
 
     def __init_pins(self):
         self.logger.log("Machine: initializing pins")
-        GPIO.setup(self.out_of_service_pin, GPIO.OUT)
-        GPIO.setup(self.price_pins, GPIO.OUT)
-        GPIO.setup(self.adventure_type_pin, GPIO.IN)
-        GPIO.output(self.out_of_service_pin, True)
-        GPIO.output(self.price_pins[0], True)
-        GPIO.output(self.price_pins[1], True)
-        GPIO.output(self.price_pins[2], True)
 
     def __quiz_button_cb(self, pin):
         self.logger.log("Machine: quiz button pressed with waiting status: %s" % self.waiting_to_print)
@@ -70,14 +59,22 @@ class Explorey(object):
             t = threading.Timer(1.0, self.__allow_printing)
             t.start()
 
+    def __badge_button_cb(self, pin):
+            self.logger.log("Machine: badge button pressed with waiting status: %s" % self.waiting_to_print)
+            if self.waiting_to_print == True:
+                self.logger.log("  Dispensing Badge")
+                self.dispense_badge()
+                self.waiting_to_print = False
+                t = threading.Timer(1.0, self.__allow_printing)
+                t.start()
+
     def __allow_printing(self):
         self.waiting_to_print = True
 
     def __start_waiting_for_user(self):
-        self.logger.log("Machine: waiting for user at pin %s" % self.adventure_button_pin)
-        add_event_detection(self.adventure_button_pin, callback=self.__adventure_button_cb)
-        add_event_detection(self.gift_button_pin, callback=self.__gift_button_pressed)
-
+        self.logger.log("Machine: waiting for user at pin %s" % self.quiz_button_pin)
+        add_event_detection(self.quiz_button_pin, callback=self.__quiz_button_cb)
+        add_event_detection(self.badge_button_pin, callback=self.__badge_button_cb)
         self.__allow_printing()
 
 
