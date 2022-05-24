@@ -95,7 +95,7 @@ class Printer(object):
         pdf.ln()
         pdf.set_font('Arial', '', 12)
         pdf.multi_cell(0, 6, "\"%s\" - %s" % (quote["quote"], quote["author"]), align='C')
-        num_lines = len(quote["quote"]) / 32
+        num_lines = len(quote["quote"]) // 32
         for n in range(num_lines):
             pdf.ln()
         pdf.ln()
