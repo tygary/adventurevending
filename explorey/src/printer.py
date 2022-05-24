@@ -99,6 +99,7 @@ class Printer(object):
         for n in range(num_lines):
             pdf.ln()
         pdf.ln()
+        pdf.ln()
         pdf.output(self.tmpBadgePath, 'F')
 
     def __get_a_for_grade(self, grade):
