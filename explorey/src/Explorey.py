@@ -12,27 +12,16 @@ from logger.logger import Logger
 ##-----------------------------------------------------------------------
 #   Vending Machine
 #
-#   Main class, use this to control the vending machine.
-#   Toggle the demo_mode flag to use for the burn
+#   Main class, use this to control the Explorey Printer.
 ##-----------------------------------------------------------------------
 class Explorey(object):
     quiz_button_pin = 18
-    badge_button_pin = 16
-
-    #Change this to False to use in the real vending machine
-    #Leave as True to use the demo box with three buttons
-    demo_mode = True
+    badge_button_pin = 22
 
     print_quizzes = True
 
-    box_controller = None
     printer = None
-    #deprecated by ligting system
-    lighting = None
-    server = None
-    adventure_knob_a = None
-    adventure_knob_b = None
-    coin_machine = None
+
     logger = None
 
     quiz_count = 0
