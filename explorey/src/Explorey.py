@@ -49,19 +49,19 @@ class Explorey(object):
             t.start()
 
     def __badge_button_cb(self, pin):
-            self.logger.log("Machine: badge button pressed with waiting status: %s" % self.waiting_to_print)
-            if self.waiting_to_print == True:
-                self.logger.log("  Dispensing Badge")
-                self.dispense_badge()
-                self.waiting_to_print = False
-                t = threading.Timer(1.0, self.__allow_printing)
-                t.start()
+        self.logger.log("Machine: badge button pressed with waiting status: %s" % self.waiting_to_print)
+        if self.waiting_to_print == True:
+            self.logger.log("  Dispensing Badge")
+            self.dispense_badge()
+            self.waiting_to_print = False
+            t = threading.Timer(1.0, self.__allow_printing)
+            t.start()
 
     def __allow_printing(self):
         self.waiting_to_print = True
 
     def __start_waiting_for_user(self):
-        self.logger.log("Machine: waiting for user at pin %s" % self.quiz_button_pin)
+        self.logger.log("Machine: waiting for user at pins %s and %s" % (self.quiz_button_pin, self.badge_button_pin))
         add_event_detection(self.quiz_button_pin, callback=self.__quiz_button_cb)
         add_event_detection(self.badge_button_pin, callback=self.__badge_button_cb)
         self.__allow_printing()
@@ -88,3 +88,4 @@ class Explorey(object):
 
     def stop(self):
         self.logger.log("Machine: stopping")
+        self.waiting_to_print = False
