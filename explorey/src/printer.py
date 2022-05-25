@@ -46,9 +46,8 @@ class Printer(object):
         except OSError:
             self.logger.log("  Failure")
             pass
-#         title = quiz["title"].replace("\\n", "\n")
+
         title = "Explorey Quiz!!"
-#         desc = quiz["desc"].replace("\\n", "\n")
         desc = "This is a question!"
 
         pdf = ExploreyQuiz()
@@ -96,8 +95,7 @@ class Printer(object):
         pdf.set_font('Arial', '', 12)
         pdf.multi_cell(0, 6, "\"%s\"" % (quote["quote"]), align='C')
         pdf.multi_cell(0, 6, "-%s" % (quote["author"]), align='C')
-#         num_lines = len(quote["quote"]) // 32
-#         pdf.ln(6 * num_lines + 1)
+        pdf.ln()
 
         pdf.output(self.tmpBadgePath, 'F')
 
