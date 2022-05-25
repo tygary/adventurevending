@@ -47,19 +47,52 @@ class Printer(object):
             self.logger.log("  Failure")
             pass
 
-        title = "Explorey Quiz!!"
-        desc = "This is a question!"
+        title = "Welcome to the Explorey Torium"
+        desc = "To earn your Explorey Badge, find the answers to the following questions:"
+        question_one = "How many wizards exist in the mirror dimension?"
+        question_two = "Who sits on a throne of fur next to the snail?"
+        question_three = "What color is the goobely gotch in the foobley lair?"
+        question_four = "Who is the founder of the Explorey Torium?"
+        question_five = "What is the smarglesplort?"
+        ending = "When you have found all of the answers, pick up the telephone and dial 9."
 
         pdf = ExploreyQuiz()
         pdf.set_margins(left=18, top=0, right=0)
         pdf.set_auto_page_break(False)
 
-        pdf.add_page(orientation='P', format=(90,115))
+        pdf.add_page(orientation='P', format=(90,180))
         pdf.set_font('Arial', 'B', 16)
         pdf.multi_cell(0, 6, title, align='C')
         pdf.ln()
+
         pdf.set_font('Arial', '', 12)
         pdf.multi_cell(0, 6, desc, align='C')
+        pdf.ln()
+
+        pdf.set_font('Arial', '', 12)
+        pdf.multi_cell(0, 6, question_one, align='L')
+        pdf.ln()
+
+        pdf.set_font('Arial', '', 12)
+        pdf.multi_cell(0, 6, question_two, align='L')
+        pdf.ln()
+
+        pdf.set_font('Arial', '', 12)
+        pdf.multi_cell(0, 6, question_three, align='L')
+        pdf.ln()
+
+        pdf.set_font('Arial', '', 12)
+        pdf.multi_cell(0, 6, question_four, align='L')
+        pdf.ln()
+
+        pdf.set_font('Arial', '', 12)
+        pdf.multi_cell(0, 6, question_five, align='L')
+        pdf.ln()
+
+        pdf.set_font('Arial', '', 12)
+        pdf.multi_cell(0, 6, ending, align='C')
+        pdf.ln()
+
         pdf.output(self.tmpQuizPath, 'F')
 
     def __create_badge(self):
@@ -80,7 +113,7 @@ class Printer(object):
         pdf.set_margins(left=18, top=0, right=0)
         pdf.set_auto_page_break(False)
 
-        pdf.add_page(orientation='P', format=(90,115))
+        pdf.add_page(orientation='P', format=(90,140))
         pdf.set_font('Arial', 'B', 16)
         pdf.multi_cell(0, 6, title, align='C')
         pdf.ln()
