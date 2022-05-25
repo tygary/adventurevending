@@ -49,18 +49,18 @@ class Printer(object):
 
         title = "Welcome to the Explorey Torium"
         desc = "To earn your Explorey Badge, find the answers to the following questions:"
-        question_one = "How many wizards exist in the mirror dimension?"
-        question_two = "Who sits on a throne of fur next to the snail?"
-        question_three = "What color is the goobely gotch in the foobley lair?"
-        question_four = "Who is the founder of the Explorey Torium?"
-        question_five = "What is the smarglesplort?"
+        question_one = "1) How many wizards exist in the mirror dimension?"
+        question_two = "2) Who sits on a throne of fur next to the snail?"
+        question_three = "3) What color is the goobely gotch in the foobley lair?"
+        question_four = "4) Who is the founder of the Explorey Torium?"
+        question_five = "5) What is the smarglesplort?"
         ending = "When you have found all of the answers, pick up the telephone and dial 9."
 
         pdf = ExploreyQuiz()
         pdf.set_margins(left=18, top=0, right=0)
         pdf.set_auto_page_break(False)
 
-        pdf.add_page(orientation='P', format=(90,180))
+        pdf.add_page(orientation='P', format=(90,210))
         pdf.set_font('Arial', 'B', 16)
         pdf.multi_cell(0, 6, title, align='C')
         pdf.ln()
